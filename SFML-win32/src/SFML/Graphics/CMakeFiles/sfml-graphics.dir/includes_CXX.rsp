@@ -1,0 +1,1 @@
+-IC:/SFML-master/include -IC:/SFML-master/src -IC:/SFML-master/extlibs/headers/stb_image -IC:/SFML-master/extlibs/headers/jpeg -IC:/SFML-master/extlibs/headers/freetype2 

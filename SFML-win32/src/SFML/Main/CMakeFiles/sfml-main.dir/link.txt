@@ -1,0 +1,2 @@
+C:\Qt\Qt5.5.1\Tools\mingw492_32\bin\ar.exe cq ..\..\..\lib\libsfml-main-d.a  CMakeFiles/sfml-main.dir/MainWin32.cpp.obj
+C:\Qt\Qt5.5.1\Tools\mingw492_32\bin\ranlib.exe ..\..\..\lib\libsfml-main-d.a
