@@ -29,14 +29,6 @@ int main(int argc, char *argv[])
     initSettings();
     initJoystick();
 
-    mainWindow->init();
-
-    QObject::connect(server, SIGNAL(imSleeping()), mainWindow, SLOT(serverIsSleeping()));
-    QObject::connect(server, SIGNAL(info(QString s)), mainWindow, SLOT(info(QString s)));
-
-    QObject::connect(mainWindow, SIGNAL(connect_fake()), server, SLOT(connect_fake()));
-    QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
-    QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
 
 
 
@@ -48,11 +40,8 @@ void initMainWindow() {
     mainWindow->joystick = joystick;
     mainWindow->server = server;
     mainWindow->settings = settings;
-    mainWindow->init();
 }
-
 void initServer() {
-    server->settings = settings;
     server->j = joystick;
 }
 
@@ -76,3 +65,4 @@ void initJoystick() {
         joystick->update();
     }
 }
+
