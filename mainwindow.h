@@ -35,39 +35,39 @@ public:
     Settings *settings;
 
 public slots:
-    void info(QString s);
-    void serverIsSleeping();
-    void openNewWindow();
+//    void info(QString s);
+//    void serverIsSleeping();
+      void openNewWindow();
 
 private slots:
 
-    void on_checkBox_Calibration_Control_toggled(bool checked);
+//    void on_checkBox_Calibration_Control_toggled(bool checked);
 
-    void on_pushButton_Test_Motor_released();
+//    void on_pushButton_Test_Motor_released();
 
     void on_pushButton_Connect_released();
 
-    void on_pushButton_Stop_Test_released();
+//    void on_pushButton_Stop_Test_released();
 
-    void on_pushButton_Save_released();
+//    void on_pushButton_Save_released();
 
-    void on_spinBox_Motor_Slot_valueChanged(int arg1);
+//    void on_spinBox_Motor_Slot_valueChanged(int arg1);
 
     void on_pushButton_Disconnect_released();
 
-    void on_pushButton_load_config_released();
+//    void on_pushButton_load_config_released();
 
-    void on_pushButton_send_config_released();
+//    void on_pushButton_send_config_released();
 
     void on_pushButton_released();
 
-    void on_pushButton_2_released();
+//    void on_pushButton_2_released();
 
-    void on_pushButton_3_released();
+//    void on_pushButton_3_released();
 
-    void on_pushButton_save_config_released();
+//    void on_pushButton_save_config_released();
 
-    void on_pushButton_4_released();
+//    void on_pushButton_4_released();
 
     void on_radioButton_Joystick_released();
 
@@ -80,7 +80,7 @@ private slots:
 signals:
     void newValues(int* vals);\
 
-    //void changeMessageType(uint8_t type);
+//    void changeMessageType(uint8_t type);
 
     void tryConnect();
     void disconnect();
