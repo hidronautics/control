@@ -12,21 +12,22 @@
 
 #define REQUEST_NORMAL_LIGHT            13
 #define REQUEST_NORMAL_GRAB             14
-#define REQUEST_NORMAL_GRAB2_SQUEEZE    15
-#define REQUEST_NORMAL_GRAB2_ROTATE     16
-#define REQUEST_NORMAL_TILT             17
+#define REQUEST_NORMAL_TILT             15
+#define REQUEST_NORMAL_ROTATE           16
+#define REQUEST_NORMAL_BT               17
+#define REQUEST_NORMAL_BOTTOM_LIGHT     18
 
-#define REQUEST_NORMAL_STABILIZE_DEPTH  18
-#define REQUEST_NORMAL_STABILIZE_ROLL   19
-#define REQUEST_NORMAL_STABILIZE_PITCH  20
-#define REQUEST_NORMAL_STABILIZE_YAW    21
-#define REQUEST_NORMAL_RESET_IMU        22
+#define REQUEST_NORMAL_STABILIZE_DEPTH  19
+#define REQUEST_NORMAL_STABILIZE_ROLL   20
+#define REQUEST_NORMAL_STABILIZE_PITCH  21
+#define REQUEST_NORMAL_STABILIZE_YAW    22
+#define REQUEST_NORMAL_RESET_IMU        23
 
-#define REQUEST_NORMAL_CHECKSUM         23
-
-
+#define REQUEST_NORMAL_CHECKSUM         24
 
 
+
+// Важно оставить в рабочем состоянии!
 #define REQUEST_DIRECT_CODE             0xAA
 
 #define REQUEST_DIRECT_LENGTH           11
@@ -42,7 +43,7 @@
 #define REQUEST_DIRECT_8                8
 #define REQUEST_DIRECT_CHECKSUM         9
 
-
+// В разработке
 #define REQUEST_CONFIG_CODE             0x55
 
 #define REQUEST_CONFIG_LENGTH           151
@@ -125,9 +126,10 @@
 #define RESPONSE_PITCH_SPEED            8
 #define RESPONSE_YAW_SPEED              10
 
-#define RESPONSE_TEMPERATURE            12
-#define RESPONSE_PRESSURE               14
+#define RESPONSE_PRESSURE               12
 
-#define RESPONSE_MOTOR_ERRORS           16
+#define RESPONSE_BT                      14
 
-#define RESPONSE_CHECKSUM               18
+#define RESPONSE_MOTOR_ERRORS           21
+
+#define RESPONSE_CHECKSUM               23

@@ -21,8 +21,9 @@ public:
     int8_t grab        = 0;     //[-127,127]
     int8_t tilt        = 0;     //[-127,127]
 
-    int8_t grab2_squeeze = 0;   //[-127, 127]
-    int8_t grab2_rotate  = 0;   //[-127, 127]
+    int8_t bt           =0; //BOOL
+
+    int8_t bottom_light  = 0;   //[-127, 127]
 
     float sensitivity = 0.0;       //[0.0,2.0]
 
@@ -32,10 +33,7 @@ public:
     bool btn_grab_strong = false;  // 14
     bool btn_ungrab      = false;  // 5
 
-    bool btn_grab2_squeeze = false;                 //19
-    bool btn_grab2_unsqueeze = false;               //21
-    bool btn_grab2_rotate_clockwise = false;        //20
-    bool btn_grab2_rotate_counterclockwise = false; //22
+    bool btn_bt = false; //22 ПОМЕНЯТЬ ПОЗЖЕ
 
     bool isControlJoystick = true;
     bool isControlKeyboard = false;
@@ -53,10 +51,7 @@ private:
     const int SFML_BTN_GRAB_STRONG = 14;
     const int SFML_BTN_UNGRAB      = 5;
 
-    const int SFML_BTN_GRAB2_SQUEEZE                 = 19;
-    const int SFML_BTN_GRAB2_UNSQUEEZE               = 21;
-    const int SFML_BTN_GRAB2_ROTATE_CLOCKWISE        = 20;
-    const int SFML_BTN_GRAB2_ROTATE_COUNTERCLOCKWISE = 22;
+    const int SFML_BTN_BT = 22;
 
     int joystick_id = 0;
 
