@@ -28,5 +28,12 @@
         <file>images/pfd/pfd_hsi_marks.svg</file>
         <file>images/pfd/pfd_vsi_arrow.svg</file>
         <file>images/pfd/pfd_vsi_scale.svg</file>
+        <file>images/background.png</file>
+        <file>images/BT.png</file>
+        <file>images/LED2.png</file>
+        <file>images/LED3.png</file>
+        <file>images/LEDgreen.png</file>
+        <file>images/LEDred.png</file>
+        <file>images/Motors.png</file>
     </qresource>
 </RCC>
