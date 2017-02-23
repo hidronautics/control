@@ -145,19 +145,19 @@ void Joystick::updateKeyboard() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         march = 127;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        march = 127;
+        march = -127;
     else
         march = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         lag = 127;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        lag = 127;
+        lag = -127;
     else
         lag = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         yaw = 127;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-        yaw = 127;
+        yaw = -127;
     else
         yaw = 0;
 
