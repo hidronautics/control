@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     initSettings();
     initJoystick();
 
-
+    Q_INIT_RESOURCE(qfi);
 
 
     mainWindow->show();

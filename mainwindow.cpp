@@ -8,12 +8,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QPixmap pix_back("D:/Gidronavtika/control/images/background.png");
+    QPixmap pix_back(":/qfi/images/background.png");
     ui->label_pic->setScaledContents(true);
     ui->label_pic->setPixmap(pix_back);
 
     //Motors
-    QPixmap pix_mot("D:/Gidronavtika/control/images/Motors.png");
+    QPixmap pix_mot(":/qfi/images/Motors.png");
     ui->label_motors->setScaledContents(true);
     ui->label_motors->setPixmap(pix_mot);
 
@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor1
     if (5==5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1->setScaledContents(true);
         ui->label_indicator1->setPixmap(pix_green);
         ui->textBrowser->setText("Current");
@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1->setScaledContents(true);
        ui->label_indicator1->setPixmap(pix_red);
        ui->textBrowser->setText("Error");
@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor2
     if (5>5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_2->setScaledContents(true);
         ui->label_indicator1_2->setPixmap(pix_green);
         ui->textBrowser_2->setText("Current");
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_2->setScaledContents(true);
        ui->label_indicator1_2->setPixmap(pix_red);
        ui->textBrowser_2->setText("Error");
@@ -58,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor3
     if (5>5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_3->setScaledContents(true);
         ui->label_indicator1_3->setPixmap(pix_green);
         ui->textBrowser_3->setText("Current");
@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_3->setScaledContents(true);
        ui->label_indicator1_3->setPixmap(pix_red);
        ui->textBrowser_3->setText("Error");
@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor4
     if (5==5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_4->setScaledContents(true);
         ui->label_indicator1_4->setPixmap(pix_green);
         ui->textBrowser_4->setText("Current");
@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_4->setScaledContents(true);
        ui->label_indicator1_4->setPixmap(pix_red);
        ui->textBrowser_4->setText("Error");
@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor5
     if (5==5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_5->setScaledContents(true);
         ui->label_indicator1_5->setPixmap(pix_green);
         ui->textBrowser_5->setText("Current");
@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_5->setScaledContents(true);
        ui->label_indicator1_5->setPixmap(pix_red);
        ui->textBrowser_5->setText("Error");
@@ -112,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor6
     if (5==5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_6->setScaledContents(true);
         ui->label_indicator1_6->setPixmap(pix_green);
         ui->textBrowser_6->setText("Current");
@@ -121,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_6->setScaledContents(true);
        ui->label_indicator1_6->setPixmap(pix_red);
        ui->textBrowser_6->setText("Error");
@@ -130,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor7
     if (5>5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_7->setScaledContents(true);
         ui->label_indicator1_7->setPixmap(pix_green);
         ui->textBrowser_7->setText("Current");
@@ -139,7 +139,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_7->setScaledContents(true);
        ui->label_indicator1_7->setPixmap(pix_red);
        ui->textBrowser_7->setText("Error");
@@ -148,7 +148,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //motor8
     if (5==5)
     {
-        QPixmap pix_green("D:/Gidronavtika/control/images/LEDgreen");
+        QPixmap pix_green(":/qfi/images/LEDgreen");
         ui->label_indicator1_8->setScaledContents(true);
         ui->label_indicator1_8->setPixmap(pix_green);
         ui->textBrowser_8->setText("Current");
@@ -157,7 +157,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     else //error
     {
-       QPixmap pix_red("D:/Gidronavtika/control/images/LEDred");
+       QPixmap pix_red(":/qfi/images/LEDred");
        ui->label_indicator1_8->setScaledContents(true);
        ui->label_indicator1_8->setPixmap(pix_red);
        ui->textBrowser_8->setText("Error");
@@ -165,19 +165,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //Indicator bluetooth
-    QPixmap pix_bt("D:/Gidronavtika/control/images/BT.png");
+    QPixmap pix_bt(":/qfi/images/BT.png");
     ui->label->setScaledContents(true);
     ui->label->setPixmap(pix_bt);
 
     if (5==5) //No bluetooth signal
     {
-        QPixmap pix_redB("D:/Gidronavtika/control/images/LED2");
+        QPixmap pix_redB(":/qfi/images/LED2");
         ui->label_indicator2->setScaledContents(true);
         ui->label_indicator2->setPixmap(pix_redB);
     }
     else
     {
-       QPixmap pix_greenB("D:/Gidronavtika/control/images/LED3");
+       QPixmap pix_greenB(":/qfi/images/LED3");
        ui->label_indicator2->setScaledContents(true);
        ui->label_indicator2->setPixmap(pix_greenB);
     }
