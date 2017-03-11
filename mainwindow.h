@@ -7,6 +7,7 @@
 #include "server.h"
 #include "joystick.h"
 #include "settings.h"
+#include "NewWindow.h"
 
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
 #define RESPONSE_TABLE_ROW_COUNT        RESPONSE_LENGTH
@@ -35,6 +36,7 @@ public:
 public slots:
     void info(QString s);
     void serverIsSleeping();
+    void openNewWindow();
 
 private slots:
 
@@ -72,6 +74,8 @@ private slots:
 
     void on_radioButton_XBox_released();
 
+    void on_pushButton_Bluetooth_clicked();
+
 signals:
     void newValues(int* vals);\
 
@@ -84,7 +88,7 @@ signals:
 
 private:
     Ui::MainWindow *ui;
-
+    NewWindow *bluetooth_menu;
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];

@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     joystick.cpp \
     settings.cpp \
-    qfi_PFD.cpp
+    qfi_PFD.cpp \
+    newwindow.cpp
 
 HEADERS += \
     server.h \
@@ -22,7 +23,8 @@ HEADERS += \
     mainwindow.h \
     joystick.h \
     settings.h \
-    qfi_PFD.h
+    qfi_PFD.h \
+    newwindow.h
 
 DEFINES += SFML_STATIC
 
@@ -37,7 +39,8 @@ CONFIG(debug, debug|release): LIBS += -lsfml-window-d
 
 FORMS += \
     mainwindow.ui \
-    WidgetPFD.ui
+    bluetooth.ui
 
 RESOURCES += \
-    qfi.qrc
+    qfi.qrc \
+    pictures.qrc
