@@ -1,0 +1,98 @@
+{
+    "motors": [
+        {
+            "code": "HLB",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 0
+        },
+        {
+            "code": "HLF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 1
+        },
+        {
+            "code": "HRB",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 2
+        },
+        {
+            "code": "HRF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 3
+        },
+        {
+            "code": "VB",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 4
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 5
+        },
+        {
+            "code": "VL",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 6
+        },
+        {
+            "code": "VR",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 7
+        }
+    ],
+    "stabilization": {
+        "depth": {
+            "const_time": false,
+            "gain": 1,
+            "k1": 1,
+            "k2": 1,
+            "start": 1
+        },
+        "pitch": {
+            "const_time": false,
+            "gain": 1,
+            "k1": 1,
+            "k2": 1,
+            "start": 1
+        },
+        "roll": {
+            "const_time": true,
+            "gain": 1,
+            "k1": 2,
+            "k2": 1.0039999485015869,
+            "start": 1
+        },
+        "yaw": {
+            "const_time": false,
+            "gain": 1,
+            "k1": 1,
+            "k2": 1,
+            "start": 1.0069999694824219
+        }
+    }
+}

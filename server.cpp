@@ -97,9 +97,8 @@ void Server::sendMessageNormal()
 
     msg_to_send[REQUEST_NORMAL_LIGHT]      = j->light;
     msg_to_send[REQUEST_NORMAL_GRAB]       = j->grab;
-    msg_to_send[REQUEST_NORMAL_TILT]       = j->tilt;
-    msg_to_send[REQUEST_NORMAL_GRAB2_ROTATE] = j->grab2_rotate;
-    msg_to_send[REQUEST_NORMAL_GRAB2_SQUEEZE] = j->grab2_squeeze;
+    msg_to_send[REQUEST_NORMAL_BT]       = j->bt;
+    msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;
 
     msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = false;
     msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = false;
@@ -330,10 +329,16 @@ void Server::receiveMessage() {
         int16_t pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
         int16_t yaw_speed = msg_in[RESPONSE_YAW_SPEED];
 
-        uint8_t temperature_MS = msg_in[RESPONSE_TEMPERATURE];
-        uint8_t temperature_LS = msg_in[RESPONSE_TEMPERATURE+1];
+        //uint8_t temperature_MS = msg_in[RESPONSE_TEMPERATURE];
+        //uint8_t temperature_LS = msg_in[RESPONSE_TEMPERATURE+1];
 
-        temperature = encodeTemperature(temperature_MS, temperature_LS);
+        char bt[8];  //Важно, чтобы история не затерлась! -> логи, выгружаемые на другое устройство
+        for (int i = 0; i < 8; ++i) {
+            bt[i] = msg_in[RESPONSE_BT + i];
+        }
+
+
+        //temperature = encodeTemperature(temperature_MS, temperature_LS);
 
         int16_t pressure = msg_in[RESPONSE_PRESSURE];
 
@@ -343,6 +348,7 @@ void Server::receiveMessage() {
         std::cout << "roll" << roll << "pitch" << pitch << "yaw" << yaw << std::endl;
         std::cout << "roll_speed" << roll_speed << "pitch_speed" << pitch_speed << "yaw_speed" << yaw_speed << std::endl;
         std::cout << "temperature=" << temperature << " pressure=" << pressure << std::endl;
+        std::cout << "bluetooth: " << bt << std::endl;
         std::cout << "motor_errors" << motor_errors << std::endl;
     }
 }
@@ -421,7 +427,7 @@ void Server::addSNP(uint8_t * msg) {
     msg[2] = 'P';
 }
 
-float Server::encodeTemperature(uint8_t MS, uint8_t LS) {
+/*float Server::encodeTemperature(uint8_t MS, uint8_t LS) {
     uint8_t sign_bytes = MS >> 3;
     int sign = 0;
     if (sign_bytes == 0) {
@@ -444,7 +450,7 @@ float Server::encodeTemperature(uint8_t MS, uint8_t LS) {
     if (bit_power_minus_3) temperature += 0.125;
     if (bit_power_minus_4) temperature += 0.0625;
     return temperature;
-}
+}*/
 
 Server::~Server() {
     std::cout << "Server shutting down..." << std::endl;

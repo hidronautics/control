@@ -41,7 +41,7 @@ void Joystick::update() {
     std::cout << "pitch=" << pitch << " roll=" << roll << "   yaw="      << yaw   << std::endl;
     std::cout << "march=" << march << "  lag=" << lag  << " depth="      << depth << std::endl;
     std::cout << "light=" << light << " grab=" << grab << "sensitivity=" << sensitivity << std::endl;
-    std::cout << "tilt =" << tilt  << " grab2_squeeze=" << grab2_squeeze << "grab2_rotate" << grab2_rotate << std::endl;
+    //std::cout << "tilt =" << tilt  << " grab2_squeeze=" << grab2_squeeze << "grab2_rotate" << grab2_rotate << std::endl;
 }
 
 void Joystick::printButtons() {
@@ -97,11 +97,6 @@ void Joystick::updateJoystick() {
     this->btn_grab_strong = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB_STRONG);
     this->btn_ungrab      = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_UNGRAB);
 
-    this->btn_grab2_squeeze = sf::Joystick::isButtonPressed(joystick_id, SFML_BTN_GRAB2_SQUEEZE);
-    this->btn_grab2_unsqueeze = sf::Joystick::isButtonPressed(joystick_id, SFML_BTN_GRAB2_UNSQUEEZE);
-    this->btn_grab2_rotate_clockwise = sf::Joystick::isButtonPressed(joystick_id, SFML_BTN_GRAB2_ROTATE_CLOCKWISE);
-    this->btn_grab2_rotate_counterclockwise = sf::Joystick::isButtonPressed(joystick_id, SFML_BTN_GRAB2_ROTATE_COUNTERCLOCKWISE);
-
 
     if (btn_depth_inv)
         depth = -depth;
@@ -115,21 +110,6 @@ void Joystick::updateJoystick() {
     else
         grab = 0;
 
-    if (btn_grab2_unsqueeze) {
-        grab2_squeeze = -50;
-    } else if (btn_grab2_squeeze) {
-        grab2_squeeze = 50;
-    } else {
-        grab2_squeeze = 0;
-    }
-
-    if (btn_grab2_rotate_clockwise) {
-        grab2_rotate = -50;
-    } else if (btn_grab2_rotate_counterclockwise){
-        grab2_rotate = 50;
-    } else {
-        grab2_rotate = 0;
-    }
 }
 
 void Joystick::updateKeyboard() {
@@ -145,19 +125,19 @@ void Joystick::updateKeyboard() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         march = 127;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        march = 127;
+        march = -127;
     else
         march = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         lag = 127;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        lag = 127;
+        lag = -127;
     else
         lag = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         yaw = 127;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-        yaw = 127;
+        yaw = -127;
     else
         yaw = 0;
 
@@ -185,9 +165,9 @@ void Joystick::updateKeyboard() {
 
     // Light
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-        light += 1;
+        light += 10;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
-        light -= 1;
+        light -= 10;
 
     // Grab
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
@@ -197,19 +177,6 @@ void Joystick::updateKeyboard() {
     else
         grab = 0;
 
-    // Grab2
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-        grab2_squeeze = -50;
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
-        grab2_squeeze = 50;
-    else
-        grab2_squeeze = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
-        grab2_rotate = -50;
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-        grab2_rotate = 50;
-    else
-        grab2_rotate = 0;
 
     // Tilt
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageDown))
@@ -218,6 +185,16 @@ void Joystick::updateKeyboard() {
         tilt = 50;
     else
         tilt = 0;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+        bt = 127;
+    else
+        bt = 0;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+        bottom_light = 127;
+    else
+        bottom_light = 0;
 
 }
 
