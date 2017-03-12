@@ -7,5 +7,7 @@
         <file>images/LEDgreen.png</file>
         <file>images/LEDred.png</file>
         <file>images/Motors.png</file>
+        <file>images/Reference.png</file>
+        <file>images/Keyboard.png</file>
     </qresource>
 </RCC>

@@ -39,7 +39,7 @@ CONFIG(debug, debug|release): LIBS += -lsfml-window-d
 
 FORMS += \
     mainwindow.ui \
-    bluetooth.ui
+    reference.ui
 
 RESOURCES += \
     qfi.qrc \

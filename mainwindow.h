@@ -7,6 +7,7 @@
 #include "server.h"
 #include "joystick.h"
 #include "settings.h"
+//#include "status.h"
 #include "NewWindow.h"
 
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
@@ -32,6 +33,8 @@ public:
     Server *server;
     Joystick *joystick;
     Settings *settings;
+//    Status *status;
+
 
 public slots:
     void info(QString s);
@@ -74,7 +77,7 @@ private slots:
 
     void on_radioButton_XBox_released();
 
-    void on_pushButton_Bluetooth_clicked();
+    void on_pushButton_Reference_clicked();
 
 signals:
     void newValues(int* vals);\
@@ -88,7 +91,7 @@ signals:
 
 private:
     Ui::MainWindow *ui;
-    NewWindow *bluetooth_menu;
+    NewWindow *reference_menu;
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];

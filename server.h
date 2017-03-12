@@ -14,6 +14,8 @@
 
 #include "joystick.h"
 #include "settings.h"
+//#include "status.h"
+
 
 
 #define REQUEST_DELAY					25
@@ -41,6 +43,20 @@ public:
     QTimer *sendTimer;
 
     Settings* settings;
+
+    int16_t pitch_sens       = 0;     //[-32767,32767]
+    int16_t roll_sens        = 0;     //[-32767,32767]
+    int16_t yaw_sens         = 0;     //[-32767,32767]
+
+    int16_t pitch_speed_sens = 0;     //[-32767,32767]
+    int16_t roll_speed_sens  = 0;     //[-32767,32767]
+    int16_t yaw_speed_sens   = 0;     //[-32767,32767]
+
+    int16_t pressure         = 0;     //[-32767,32767]
+
+    char bt_s[8];
+
+//    Status* status;
 
     float temperature = 0;
 

@@ -3,6 +3,8 @@
 
 
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QPixmap pix_mot(":images/images/Motors.png");
     ui->label_motors->setScaledContents(true);
     ui->label_motors->setPixmap(pix_mot);
-
 
     //Indicator motor
     //motor1
@@ -169,6 +170,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QPixmap pix_bt(":images/images/BT.png");
     ui->label->setScaledContents(true);
     ui->label->setPixmap(pix_bt);
+    ui->textBrowser_Bluetooth->setText("Message");
+
 
     if (5==5) //No bluetooth signal
     {
@@ -183,7 +186,7 @@ MainWindow::MainWindow(QWidget *parent) :
        ui->label_indicator2->setPixmap(pix_greenB);
     }
 
-    connect(ui->pushButton_Bluetooth, SIGNAL(click()), this, SLOT(openNewWindow()));
+    connect(ui->pushButton_Reference, SIGNAL(click()), this, SLOT(openNewWindow()));
 
 
     ui->tableWidgetRequest->setColumnCount(2);
@@ -277,6 +280,8 @@ void MainWindow::init() {
     on_spinBox_Motor_Slot_valueChanged(0);
     on_pushButton_load_config_released();
 }
+
+
 
 MainWindow::~MainWindow()
 {
@@ -464,15 +469,17 @@ void MainWindow::on_radioButton_XBox_released()
 
 void MainWindow::openNewWindow()
 {
-    bluetooth_menu = new NewWindow();
+    reference_menu = new NewWindow();
 
-    bluetooth_menu->show();
+    reference_menu->show();
 
 }
 
 
-void MainWindow::on_pushButton_Bluetooth_clicked()
+void MainWindow::on_pushButton_Reference_clicked()
 {
   openNewWindow();
 }
+
+
 

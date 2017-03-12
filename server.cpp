@@ -325,9 +325,17 @@ void Server::receiveMessage() {
         int16_t pitch = msg_in[RESPONSE_PITCH];
         int16_t yaw = msg_in[RESPONSE_YAW];
 
+        roll_sens = msg_in[RESPONSE_ROLL];
+        pitch_sens = msg_in[RESPONSE_PITCH];
+        yaw_sens = msg_in[RESPONSE_YAW];
+
         int16_t roll_speed = msg_in[RESPONSE_ROLL_SPEED];
         int16_t pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
         int16_t yaw_speed = msg_in[RESPONSE_YAW_SPEED];
+
+        roll_speed_sens = msg_in[RESPONSE_ROLL_SPEED];
+        pitch_speed_sens = msg_in[RESPONSE_PITCH_SPEED];
+        yaw_speed_sens = msg_in[RESPONSE_YAW_SPEED];
 
         //uint8_t temperature_MS = msg_in[RESPONSE_TEMPERATURE];
         //uint8_t temperature_LS = msg_in[RESPONSE_TEMPERATURE+1];
@@ -335,6 +343,7 @@ void Server::receiveMessage() {
         char bt[8];  //Важно, чтобы история не затерлась! -> логи, выгружаемые на другое устройство
         for (int i = 0; i < 8; ++i) {
             bt[i] = msg_in[RESPONSE_BT + i];
+            bt_s[i] = bt[i];
         }
 
 

@@ -2,7 +2,7 @@
 #define NEWWINDOW_H
 
 
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 
 namespace Ui {
     class NewWindow;

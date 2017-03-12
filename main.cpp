@@ -2,6 +2,8 @@
 #include "server.h"
 #include "mainwindow.h"
 #include "settings.h"
+//#include "status.h"
+
 
 const int MAX_JOYSTICK_ID = 5;
 
@@ -9,11 +11,13 @@ MainWindow* mainWindow;
 Server* server;
 Settings* settings;
 Joystick* joystick;
+//Status* status;
 
 void initMainWindow();
 void initServer();
 void initSettings();
 void initJoystick();
+//void initStatus();
 
 int main(int argc, char *argv[])
 {
@@ -23,11 +27,13 @@ int main(int argc, char *argv[])
     server = new Server();
     settings = new Settings();
     joystick = new Joystick();
+//    status = new Status();
 
     initMainWindow();
     initServer();
     initSettings();
     initJoystick();
+//    initStatus();
 
     mainWindow->init();
 
@@ -48,17 +54,23 @@ void initMainWindow() {
     mainWindow->joystick = joystick;
     mainWindow->server = server;
     mainWindow->settings = settings;
+//    mainWindow->status = status;
     mainWindow->init();
 }
 
 void initServer() {
     server->settings = settings;
+//    server->status = status;
     server->j = joystick;
 }
 
 void initSettings() {
 
 }
+/*
+void initStatus() {
+    status->server = server;
+} */
 
 void initJoystick() {
     std::cout << "Connecting joystick..." << std::endl;
