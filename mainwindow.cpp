@@ -213,19 +213,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidgetRequest->setHorizontalHeaderLabels(headerLabels);
 
 
-    ui->tableWidgetResponse->setColumnCount(1);
+    ui->tableWidgetResponse->setColumnCount(2);
     ui->tableWidgetResponse->setRowCount(RESPONSE_TABLE_ROW_COUNT);
 
     for (int i = 0; i < RESPONSE_TABLE_ROW_COUNT; ++i) {
-        responseQTableWidgetItems[i] = new QTableWidgetItem(tr("no msg yet"));
-        responseQTableWidgetItems[i]->setTextAlignment(Qt::AlignVCenter);
-        ui->tableWidgetResponse->setItem(i, 0, responseQTableWidgetItems[i]);
+        responseQTableWidgetItemsHEX[i] = new QTableWidgetItem(tr("no msg yet"));
+        responseQTableWidgetItemsHEX[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetResponse->setItem(i, 0, responseQTableWidgetItemsHEX[i]);
 
         QVariant data = model_response->headerData(i, Qt::Vertical);
         labels_response << QString("%1").arg(data.toInt() - 1);
+
+        responseQTableWidgetItemsDEC[i] = new QTableWidgetItem(tr("no msg yet"));
+        responseQTableWidgetItemsDEC[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetResponse->setItem(i, 1, responseQTableWidgetItemsDEC[i]);
     }
 
-    ui->tableWidgetResponse->setVerticalHeaderLabels(labels_request);
+    ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
 }
 
@@ -262,7 +266,13 @@ void MainWindow::serverIsSleeping() {
     }
 
     for (int i = 0; i < RESPONSE_LENGTH; ++i) {
-        responseQTableWidgetItems[i]->setText(QString::number(server->msg_in[i], 16));
+        responseQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_in[i], 16));
+        responseQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_in[i], 10));
+    }
+
+    for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
+        responseQTableWidgetItemsHEX[i]->setText(QString("not presented"));
+        responseQTableWidgetItemsDEC[i]->setText(QString("not presented"));
     }
 
    // ui->doubleSpinBoxTemperature->setValue(server->temperature);

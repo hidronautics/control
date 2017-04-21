@@ -1,6 +1,6 @@
 #include "server.h"
 
-const int MAX_COM_ID = 42;
+const int MAX_COM_ID = 20;
 
 Server::Server(QObject *parent) : QObject(parent)
 {
@@ -13,35 +13,34 @@ Server::Server(QObject *parent) : QObject(parent)
 
 bool Server::COMconnect(int com_num)
 {
-    int openFlag;
+    int isOpened = false;
 
     QString str = "COM";
     str.append(QString::number(com_num));
 
-    std::cout << "Trying to open port |" << str.toStdString() << "|" << std::endl;
+    std::cout << "Trying to open port |" << str.toStdString() << "|...";
 
     newPort = new QSerialPort(str);
-    newPort->setBaudRate(QSerialPort::Baud57600, QSerialPort::AllDirections);
+    newPort->setBaudRate(QSerialPort::Baud115200, QSerialPort::AllDirections);
     newPort->setDataBits(QSerialPort::Data8);
     newPort->setParity(QSerialPort::NoParity);
     newPort->setStopBits(QSerialPort::OneStop);
     newPort->setFlowControl(QSerialPort::NoFlowControl);
 
-    std::cout << "Initializing port COM" << com_num << std::endl;
     try {
-        openFlag = newPort->open(QIODevice::ReadWrite);
+        isOpened = newPort->open(QIODevice::ReadWrite);
     } catch(...) {
-        std::cout << "Serial port openning error" << std::endl;
+        std::cout << " serial port openning error" << std::endl;
         emit info("Serial port openning error");
         return false;
     }
 
-    if (openFlag) {
-        std::cout << "Serial port was successfully opened!" << std::endl;
+    if (isOpened) {
+        std::cout << " successfully opened!" << std::endl;
         sendTimer->start(REQUEST_DELAY);
     } else {
-        std::cout << "Cannot open serial port" << std::endl;
-        emit info("Cannot open serial port");
+        std::cout << ". Unable to open serial port" << std::endl;
+        emit info("Unable to open serial port");
         return false;
     }
     return true;
@@ -62,7 +61,7 @@ void Server::sendMessage() {
         sendMessageDirect();
         break;
     default:
-        std::cout << "Unknown current message code!" << std::endl;
+        std::cout << "ERROR: Unknown current message code!" << std::endl;
     }
 }
 
@@ -108,7 +107,6 @@ void Server::sendMessageNormal()
 
     addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
 
-
     std::cout << "Sending NORMAL message:" << std::endl;
     for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
@@ -127,7 +125,6 @@ void Server::sendMessageDirect() {
     }
 
     msg_to_send[REQUEST_DIRECT_TYPE] = REQUEST_DIRECT_CODE;
-    //addSNP(msg_to_send);
 
     msg_to_send[REQUEST_DIRECT_1] = settings->motors[0].speed;
     msg_to_send[REQUEST_DIRECT_2] = settings->motors[1].speed;
@@ -157,7 +154,6 @@ void Server::sendMessageConfig() {
         msg_to_send[i] = 0x00;
     }
 
-    //addSNP(msg_to_send);
     msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
     msg_to_send[REQUEST_CONFIG_CONST_TIME_DEPTH]    = settings->depth.const_time;
@@ -298,8 +294,6 @@ void Server::sendMessageConfig() {
 
 
 
-
-
 void Server::receiveMessage() {
     int buffer_size = newPort->bytesAvailable();
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
@@ -334,7 +328,7 @@ void Server::receiveMessage() {
 
         char bt[8];  //Важно, чтобы история не затерлась! -> логи, выгружаемые на другое устройство
         for (int i = 0; i < 8; ++i) {
-            bt[i] = msg_in[RESPONSE_BT + i];
+            bt[i] = msg_in[RESPONSE_AGAR + i];
         }
 
 
@@ -342,7 +336,7 @@ void Server::receiveMessage() {
 
         int16_t pressure = msg_in[RESPONSE_PRESSURE];
 
-        uint16_t motor_errors = msg_in[RESPONSE_MOTOR_ERRORS];
+        uint16_t motor_errors = msg_in[RESPONSE_VMA_ERRORS];
 
         std::cout << "Received  data:" << std::endl;
         std::cout << "roll" << roll << "pitch" << pitch << "yaw" << yaw << std::endl;
@@ -400,7 +394,6 @@ void Server::addFloat(uint8_t * msg, int position, float value) {
 void Server::connect_fake() {
     std::cout << "Warning! Overriding COM port!" << std::endl;
     newPort = new QSerialPort();
-
     sendTimer->start(300);
 }
 

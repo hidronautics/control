@@ -29,24 +29,22 @@ int main(int argc, char *argv[])
     initSettings();
     initJoystick();
 
-    mainWindow->init();
+    mainWindow->init(); // Дублирование кода
 
     QObject::connect(server, SIGNAL(imSleeping()), mainWindow, SLOT(serverIsSleeping()));
     QObject::connect(server, SIGNAL(info(QString s)), mainWindow, SLOT(info(QString s)));
-
     QObject::connect(mainWindow, SIGNAL(connect_fake()), server, SLOT(connect_fake()));
     QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
     QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
 
-
-
     mainWindow->show();
+
     return a.exec();
 }
 
 void initMainWindow() {
     mainWindow->joystick = joystick;
-    mainWindow->server = server;
+    mainWindow->server = server; // Не должно быть
     mainWindow->settings = settings;
     mainWindow->init();
 }

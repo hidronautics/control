@@ -1,29 +1,30 @@
 #define REQUEST_NORMAL_CODE             0xFF
 
-#define REQUEST_NORMAL_LENGTH           25
+#define REQUEST_NORMAL_LENGTH           27
 
 #define REQUEST_NORMAL_TYPE             0
-#define REQUEST_NORMAL_MARCH            1
-#define REQUEST_NORMAL_LAG              3
-#define REQUEST_NORMAL_DEPTH            5
-#define REQUEST_NORMAL_ROLL             7
-#define REQUEST_NORMAL_PITCH            9
-#define REQUEST_NORMAL_YAW              11
+#define REQUEST_NORMAL_FLAGS            1
+#define REQUEST_NORMAL_MARCH            2
+#define REQUEST_NORMAL_LAG              4
+#define REQUEST_NORMAL_DEPTH            6
+#define REQUEST_NORMAL_ROLL             8
+#define REQUEST_NORMAL_PITCH            10
+#define REQUEST_NORMAL_YAW              12
 
-#define REQUEST_NORMAL_LIGHT            13
-#define REQUEST_NORMAL_GRAB             14
-#define REQUEST_NORMAL_TILT             15
-#define REQUEST_NORMAL_ROTATE           16
-#define REQUEST_NORMAL_BT               17
-#define REQUEST_NORMAL_BOTTOM_LIGHT     18
+#define REQUEST_NORMAL_LIGHT            14
+#define REQUEST_NORMAL_GRAB             15
+#define REQUEST_NORMAL_TILT             16
+#define REQUEST_NORMAL_ROTATE           17
+#define REQUEST_NORMAL_BT               18
+#define REQUEST_NORMAL_BOTTOM_LIGHT     19
 
-#define REQUEST_NORMAL_STABILIZE_DEPTH  19
-#define REQUEST_NORMAL_STABILIZE_ROLL   20
-#define REQUEST_NORMAL_STABILIZE_PITCH  21
-#define REQUEST_NORMAL_STABILIZE_YAW    22
-#define REQUEST_NORMAL_RESET_IMU        23
+#define REQUEST_NORMAL_STABILIZE_DEPTH  20
+#define REQUEST_NORMAL_STABILIZE_ROLL   21
+#define REQUEST_NORMAL_STABILIZE_PITCH  22
+#define REQUEST_NORMAL_STABILIZE_YAW    23
+#define REQUEST_NORMAL_RESET_IMU        24
 
-#define REQUEST_NORMAL_CHECKSUM         24
+#define REQUEST_NORMAL_CHECKSUM         25
 
 
 
@@ -116,7 +117,7 @@
 
 
 
-#define RESPONSE_LENGTH                 20
+#define RESPONSE_LENGTH                 63
 
 #define RESPONSE_ROLL                   0
 #define RESPONSE_PITCH                  2
@@ -128,8 +129,36 @@
 
 #define RESPONSE_PRESSURE               12
 
-#define RESPONSE_BT                      14
+#define RESPONSE_AGAR                   14
 
-#define RESPONSE_MOTOR_ERRORS           21
+#define RESPONSE_VMA_CURRENT_HLB        22
+#define RESPONSE_VMA_CURRENT_HLF        24
+#define RESPONSE_VMA_CURRENT_HRB        26
+#define RESPONSE_VMA_CURRENT_HRF        28
+#define RESPONSE_VMA_CURRENT_VB         30
+#define RESPONSE_VMA_CURRENT_VF         32
+#define RESPONSE_VMA_CURRENT_VL         34
+#define RESPONSE_VMA_CURRENT_VR         36
 
-#define RESPONSE_CHECKSUM               23
+
+#define RESPONSE_VMA_VELOCITY_HLB       38
+#define RESPONSE_VMA_VELOCITY_HLF       39
+#define RESPONSE_VMA_VELOCITY_HRB       40
+#define RESPONSE_VMA_VELOCITY_HRF       41
+#define RESPONSE_VMA_VELOCITY_VB        42
+#define RESPONSE_VMA_VELOCITY_VF        43
+#define RESPONSE_VMA_VELOCITY_VL        44
+#define RESPONSE_VMA_VELOCITY_VR        45
+
+#define RESPONSE_DEV_CURRENT_1          46
+#define RESPONSE_DEV_CURRENT_2          48
+#define RESPONSE_DEV_CURRENT_3          50
+#define RESPONSE_DEV_CURRENT_4          52
+#define RESPONSE_DEV_CURRENT_5          54
+#define RESPONSE_DEV_CURRENT_6          56
+
+#define RESPONSE_VMA_ERRORS             58
+
+#define RESPONSE_DEV_ERRORS             60
+
+#define RESPONSE_CHECKSUM               61
