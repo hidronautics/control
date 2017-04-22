@@ -231,6 +231,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
+
 }
 
 
@@ -254,6 +255,8 @@ void MainWindow::serverIsSleeping() {
     default:
         std::cout << "Unknown current message code!" << std::endl;
     }
+
+
     for (int i = 0; i < request_length; ++i) {
         //requestQTableWidgetItems[i]->setText(QString("%1").arg(server->msg_to_send[i]));
         requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
@@ -270,7 +273,7 @@ void MainWindow::serverIsSleeping() {
         responseQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_in[i], 10));
     }
 
-    for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
+    for (int i = RESPONSE_LENGTH; i < RESPONSE_TABLE_ROW_COUNT; ++i) {
         responseQTableWidgetItemsHEX[i]->setText(QString("not presented"));
         responseQTableWidgetItemsDEC[i]->setText(QString("not presented"));
     }
