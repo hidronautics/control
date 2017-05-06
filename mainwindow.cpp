@@ -197,7 +197,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    labels_request <<   "0:roll"<<
+    labels_response <<   "0:roll"<<
                         "1:"<<
                         "2:pitch"<<
                         "3:"<<
@@ -261,7 +261,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         "61:checksum"<<
                         "62:";
 
-    labels_response << "0:code"<<
+    labels_request << "0:code"<<
                       "1:"<<
                       "2:march"<<
                       "3:"<<
