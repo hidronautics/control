@@ -33,6 +33,10 @@ public:
     bool btn_grab_strong = false;  // 14
     bool btn_ungrab      = false;  // 5
 
+
+    bool btn_tilt_up      = false;  // 19
+    bool btn_tilt_down    = false;  // 21
+
     bool btn_bt = false; //22 ПОМЕНЯТЬ ПОЗЖЕ
 
     bool isControlJoystick = true;
@@ -50,6 +54,9 @@ private:
     const int SFML_BTN_GRAB        = 0;
     const int SFML_BTN_GRAB_STRONG = 14;
     const int SFML_BTN_UNGRAB      = 5;
+
+    const int SFML_BTN_TILT_UP = 19;
+    const int SFML_BTN_TILT_DOWN = 21;
 
     const int SFML_BTN_BT = 22;
 

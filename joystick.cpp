@@ -86,8 +86,12 @@ void Joystick::updateJoystick() {
 
     this->light = +
                 joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
+
+
+
     this->tilt = +
                 0;
+
 
     this->sensitivity = +
         (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
@@ -96,7 +100,8 @@ void Joystick::updateJoystick() {
     this->btn_grab        = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB);
     this->btn_grab_strong = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB_STRONG);
     this->btn_ungrab      = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_UNGRAB);
-
+    this->btn_tilt_up     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_UP);
+    this->btn_tilt_down     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_DOWN);
 
     if (btn_depth_inv)
         depth = -depth;
@@ -109,6 +114,13 @@ void Joystick::updateJoystick() {
         grab = 200;
     else
         grab = 0;
+
+    if      (btn_tilt_up)
+        tilt = 50;
+    else if (btn_tilt_down)
+        tilt = -50;
+    else
+        tilt = 0;
 
 }
 
