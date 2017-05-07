@@ -88,11 +88,6 @@ void Joystick::updateJoystick() {
                 joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
 
 
-
-    this->tilt = +
-                0;
-
-
     this->sensitivity = +
         (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
 
@@ -116,9 +111,9 @@ void Joystick::updateJoystick() {
         grab = 0;
 
     if      (btn_tilt_up)
-        tilt = 50;
+        tilt = 60;
     else if (btn_tilt_down)
-        tilt = -50;
+        tilt = -60;
     else
         tilt = 0;
 
