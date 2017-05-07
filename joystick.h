@@ -19,6 +19,7 @@ public:
 
     int8_t light       = 0;     //[0,127]
     int8_t grab        = 0;     //[-127,127]
+    int8_t grab_rotate = 0;     //[-127,127]?
     int8_t tilt        = 0;     //[-127,127]
 
     int8_t bt           =0; //BOOL

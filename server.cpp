@@ -99,6 +99,7 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_BT]       = j->bt;
     msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;
     msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
+    msg_to_send[REQUEST_NORMAL_ROTATE] = j->grab_rotate;
 
     msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = false;
     msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = false;
