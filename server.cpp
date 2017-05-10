@@ -21,7 +21,7 @@ bool Server::COMconnect(int com_num)
     std::cout << "Trying to open port |" << str.toStdString() << "|...";
 
     newPort = new QSerialPort(str);
-    newPort->setBaudRate(QSerialPort::Baud115200, QSerialPort::AllDirections);
+    newPort->setBaudRate(QSerialPort::Baud57600, QSerialPort::AllDirections);
     newPort->setDataBits(QSerialPort::Data8);
     newPort->setParity(QSerialPort::NoParity);
     newPort->setStopBits(QSerialPort::OneStop);
@@ -99,7 +99,7 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_BT]       = j->bt;
     msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;
     msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
-    msg_to_send[REQUEST_NORMAL_ROTATE] = j->grab_rotate;
+    msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
 
     msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = false;
     msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = false;

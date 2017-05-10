@@ -73,16 +73,16 @@ void Joystick::updateJoystick() {
     this->pitch = +
                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovY));
     this->roll  = +
-                joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovX));
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovX));
     this->yaw   = +
-                joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::R));
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::R));
 
     this->march = +
-                joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Y));
+                 -joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Y));
     this->lag  = +
-                joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::X));
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::X));
     this->depth = +
-                joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
+                 joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
 
     this->light = +
                 joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
@@ -91,7 +91,7 @@ void Joystick::updateJoystick() {
     this->sensitivity = 0;
 
     this->grab_rotate = +
-        (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V));
+      (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V));
 
     this->btn_depth_inv   = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_DEPTH_INV);
     this->btn_grab        = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB);
@@ -104,11 +104,11 @@ void Joystick::updateJoystick() {
         depth = -depth;
 
     if      (btn_ungrab)
-        grab = -200;
+        grab = -127;
     else if (btn_grab_strong)
-        grab = 200;
+        grab = 127;
     else if (btn_grab)
-        grab = 200;
+        grab = 127;
     else
         grab = 0;
 
