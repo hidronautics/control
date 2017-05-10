@@ -7,8 +7,8 @@ Server::Server(QObject *parent) : QObject(parent)
     sendTimer = new QTimer(this);
     connect(sendTimer, SIGNAL(timeout()), this, SLOT( sendMessage() ));
     newPort = 0;
-    nextMessageType = 0xFF;
-    currentMessageType = 0xFF;
+    nextMessageType = 0xA5;
+    currentMessageType = 0xA5;
 }
 
 bool Server::COMconnect(int com_num)
@@ -70,7 +70,7 @@ void Server::sendMessageNormal()
     for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
-
+    msg_to_send[0] = 0xFF;
     j->update();
 
     msg_to_send[REQUEST_NORMAL_TYPE] = REQUEST_NORMAL_CODE;
@@ -125,6 +125,7 @@ void Server::sendMessageDirect() {
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
+    msg_to_send[0] = 0xFF;
 
     msg_to_send[REQUEST_DIRECT_TYPE] = REQUEST_DIRECT_CODE;
 
@@ -155,7 +156,7 @@ void Server::sendMessageConfig() {
     for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
-
+    msg_to_send[0] = 0xFF;
     msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
     msg_to_send[REQUEST_CONFIG_CONST_TIME_DEPTH]    = settings->depth.const_time;
@@ -358,7 +359,7 @@ uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
 
     crcGot = (uint16_t)( msg[length-1] + (msg[length-2] << 8) );
 
-    for(i=0; i < length - 2; i++){
+    for(i=0; i < length - 2; i++){ //i теперь не с 0, а с 1
         crc = (uint8_t)(crc >> 8) | (crc << 8);
         crc ^= msg[i];
         crc ^= (uint8_t)(crc & 0xff) >> 4;
@@ -371,12 +372,12 @@ uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
     else return 0;
 }
 
-void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)
+void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)//i теперь не с 0, а с 1
 {
     uint16_t crc = 0;
     int i = 0;
 
-    for(i=0; i < length - 2; i++){
+    for(i=1; i < length - 2; i++){
         crc = (uint8_t)(crc >> 8) | (crc << 8);
         crc ^= msg[i];
         crc ^= (uint8_t)(crc & 0xff) >> 4;
