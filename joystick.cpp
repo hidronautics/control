@@ -88,7 +88,17 @@ void Joystick::updateJoystick() {
                 joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
 
 
-    this->sensitivity = 0;
+    this->sensitivity = +
+            (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
+
+    this->pitch *= sensitivity;
+    this->roll *= sensitivity;
+    this->yaw *= sensitivity;
+    this->march *= sensitivity;
+    this->lag *= sensitivity;
+    this->depth *= sensitivity;
+
+
 
     this->grab_rotate = +
       (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V));
