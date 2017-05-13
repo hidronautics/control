@@ -90,13 +90,13 @@ void Joystick::updateJoystick() {
 
     this->sensitivity = +
             (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
-
+    /*
     this->pitch *= sensitivity;
     this->roll *= sensitivity;
     this->yaw *= sensitivity;
     this->march *= sensitivity;
     this->lag *= sensitivity;
-    this->depth *= sensitivity;
+    this->depth *= sensitivity;*/
 
 
 
