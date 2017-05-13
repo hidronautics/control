@@ -1,6 +1,6 @@
 #define REQUEST_NORMAL_CODE             0xA5
 
-#define REQUEST_NORMAL_LENGTH           27
+#define REQUEST_NORMAL_LENGTH           28
 
 #define REQUEST_NORMAL_TYPE             1
 #define REQUEST_NORMAL_FLAGS            2
