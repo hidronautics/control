@@ -73,6 +73,9 @@ public:
        case 2400:
            return QSerialPort::BaudRate::Baud2400;
            break;
+       case 4800:
+           return QSerialPort::BaudRate::Baud4800;
+           break;
        case 9600:
            return QSerialPort::BaudRate::Baud9600;
            break;

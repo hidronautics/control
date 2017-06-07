@@ -386,7 +386,13 @@ void MainWindow::info(QString s) {
 
 void MainWindow::init() {
     on_spinBox_Motor_Slot_valueChanged(0);
-    on_pushButton_load_config_released();
+    on_pushButton_load_config_released(); // Зло во плоти (в коде)
+
+
+
+
+    //settings->connection->num = ui->spinBox_COM->value();
+    //settings->connection->baudRate = settings->connection->getBaudRate(ui->comboBox_BaudRate->currentText().toInt());
 }
 
 MainWindow::~MainWindow()
@@ -413,7 +419,6 @@ void MainWindow::on_pushButton_Connect_released()
 {
     emit tryConnect();
 }
-
 
 
 void MainWindow::on_pushButton_Stop_Test_released()
@@ -479,6 +484,13 @@ void MainWindow::on_pushButton_load_config_released()
         ui->doubleSpinBox_yaw_start->setValue(settings->yaw.start);
         ui->doubleSpinBox_yaw_gain->setValue(settings->yaw.gain);
         ui->checkBox_const_time_yaw->setChecked(settings->yaw.const_time);
+
+        ui->spinBox_COM->setValue(settings->connection->num);
+        ui->comboBox_BaudRate->setCurrentText(QString::number(settings->connection->setBaudRate(settings->connection->baudRate)));
+        ui->comboBox_DataBits->setCurrentText(QString::number(settings->connection->setDataBits(settings->connection->dataBits)));
+        ui->comboBox_Parity->setCurrentText(settings->connection->setParity(settings->connection->parity));
+        ui->comboBox_StopBits->setCurrentText(settings->connection->setStopBits(settings->connection->stopBits));
+        ui->comboBox_FlowControl->setCurrentText(settings->connection->setFlowControl(settings->connection->flowControl));
 
         ui->statusbar->showMessage("Settings successfully loaded", 5000);
     } else {
@@ -581,9 +593,37 @@ void MainWindow::openNewWindow()
 
 }
 
-
 void MainWindow::on_pushButton_Bluetooth_clicked()
 {
   openNewWindow();
 }
 
+void MainWindow::on_comboBox_BaudRate_currentIndexChanged(int index)
+{
+    settings->connection->baudRate = settings->connection->getBaudRate(index);
+}
+
+void MainWindow::on_comboBox_DataBits_currentIndexChanged(int index)
+{
+    settings->connection->dataBits = settings->connection->getDataBits(index);
+}
+
+void MainWindow::on_comboBox_Parity_currentTextChanged(const QString &arg1)
+{
+    settings->connection->parity = settings->connection->getParity(arg1);
+}
+
+void MainWindow::on_comboBox_StopBits_currentTextChanged(const QString &arg1)
+{
+    settings->connection->stopBits = settings->connection->getStopBits(arg1);
+}
+
+void MainWindow::on_comboBox_FlowControl_currentTextChanged(const QString &arg1)
+{
+    settings->connection->flowControl = settings->connection->getFlowControl(arg1);
+}
+
+void MainWindow::on_spinBox_COM_valueChanged(int arg1)
+{
+    settings->connection->num = arg1;
+}

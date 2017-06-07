@@ -21,11 +21,11 @@ bool Server::COMconnect(int com_num)
     std::cout << "Trying to open port |" << str.toStdString() << "|...";
 
     newPort = new QSerialPort(str);
-    newPort->setBaudRate(QSerialPort::Baud57600, QSerialPort::AllDirections);
-    newPort->setDataBits(QSerialPort::Data8);
-    newPort->setParity(QSerialPort::NoParity);
-    newPort->setStopBits(QSerialPort::OneStop);
-    newPort->setFlowControl(QSerialPort::NoFlowControl);
+    newPort->setBaudRate(settings->connection->baudRate, QSerialPort::AllDirections);
+    newPort->setDataBits(settings->connection->dataBits);
+    newPort->setParity(settings->connection->parity);
+    newPort->setStopBits(settings->connection->stopBits);
+    newPort->setFlowControl(settings->connection->flowControl);
 
     try {
         isOpened = newPort->open(QIODevice::ReadWrite);
