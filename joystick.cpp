@@ -14,7 +14,7 @@ int8_t joystickFloatToInt8_t(float n) { // SFML gives numbers in [-100;100]
     return (int8_t)(n*1.27);
 }
 
-bool Joystick::init(int joystick_id) {
+bool Joystick::init(int joystick_id) { // TODO идентификация джойстика
     sf::Joystick::update();
     if (sf::Joystick::isConnected(joystick_id)) {
         this->joystick_id = joystick_id;
@@ -33,10 +33,6 @@ void Joystick::update() {
     } else if (isControlXbox) {
         updateXbox();
     }
-
-
-
-
 
     std::cout << "pitch=" << pitch << " roll=" << roll << "   yaw="      << yaw   << std::endl;
     std::cout << "march=" << march << "  lag=" << lag  << " depth="      << depth << std::endl;
@@ -69,7 +65,8 @@ void Joystick::printAxises() {
 
 void Joystick::updateJoystick() {
     sf::Joystick::update();
-
+    printAxises();
+    printButtons();
     this->pitch = +
                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovY));
     this->roll  = +
@@ -218,5 +215,64 @@ void Joystick::updateKeyboard() {
 }
 
 void Joystick::updateXbox() {
-    std::cout << "XBOX CONTROL UNAVAILIBLE" << std::endl;
+    sf::Joystick::update();
+
+    this->pitch = +
+                joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::R));
+    this->roll  = +
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U));
+    //this->yaw   = +
+    //             joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::R));
+
+    this->march = +
+                 -joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Y));
+    this->lag  = +
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::X));
+    this->depth = +
+                 joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
+
+    //this->light = +
+    //            joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
+
+
+    this->sensitivity = +
+            (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
+    /*
+    this->pitch *= sensitivity;
+    this->roll *= sensitivity;
+    this->yaw *= sensitivity;
+    this->march *= sensitivity;
+    this->lag *= sensitivity;
+    this->depth *= sensitivity;*/
+
+
+
+    this->grab_rotate = +
+      (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V));
+
+    this->btn_depth_inv   = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_DEPTH_INV);
+    this->btn_grab        = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB);
+    this->btn_grab_strong = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB_STRONG);
+    this->btn_ungrab      = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_UNGRAB);
+    this->btn_tilt_up     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_UP);
+    this->btn_tilt_down     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_DOWN);
+
+    if (btn_depth_inv)
+        depth = -depth;
+
+    if      (btn_ungrab)
+        grab = -127;
+    else if (btn_grab_strong)
+        grab = 127;
+    else if (btn_grab)
+        grab = 127;
+    else
+        grab = 0;
+
+    if      (btn_tilt_up)
+        tilt = 60;
+    else if (btn_tilt_down)
+        tilt = -60;
+    else
+        tilt = 0;
 }
