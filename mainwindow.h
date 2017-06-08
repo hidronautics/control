@@ -36,7 +36,6 @@ public:
 public slots:
     void info(QString s);
     void serverIsSleeping();
-    void openNewWindow();
 
 private slots:
 
@@ -73,8 +72,6 @@ private slots:
     void on_radioButton_Keyboard_released();
 
     void on_radioButton_XBox_released();
-
-    void on_pushButton_Bluetooth_clicked();
 
     void on_comboBox_Parity_currentTextChanged(const QString &arg1);
 
