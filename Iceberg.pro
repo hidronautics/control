@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     joystick.cpp \
     settings.cpp \
     qfi_PFD.cpp \
-    newwindow.cpp
+    newwindow.cpp \
+    logging_categories.cpp
 
 HEADERS += \
     server.h \
@@ -24,7 +25,8 @@ HEADERS += \
     joystick.h \
     settings.h \
     qfi_PFD.h \
-    newwindow.h
+    newwindow.h \
+    logging_categories.h
 
 DEFINES += SFML_STATIC
 

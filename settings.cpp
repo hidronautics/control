@@ -177,6 +177,9 @@ void Settings::write(QJsonObject &json) const
 
     QJsonObject connection_json;
 
+    std::cout << "!!!" << connection->baudRate << std::endl;
+    std::cout << "!!!" << connection->dataBits << std::endl;
+
     connection_json["comNumber"] = connection->num;
     connection_json["baudRate"] = connection->setBaudRate(connection->baudRate);
     connection_json["dataBits"] = connection->setDataBits(connection->dataBits);

@@ -76,10 +76,6 @@ private slots:
 
     void on_pushButton_Bluetooth_clicked();
 
-    void on_comboBox_BaudRate_currentIndexChanged(int index);
-
-    void on_comboBox_DataBits_currentIndexChanged(int index);
-
     void on_comboBox_Parity_currentTextChanged(const QString &arg1);
 
     void on_comboBox_StopBits_currentTextChanged(const QString &arg1);
@@ -87,6 +83,10 @@ private slots:
     void on_comboBox_FlowControl_currentTextChanged(const QString &arg1);
 
     void on_spinBox_COM_valueChanged(int arg1);
+
+    void on_comboBox_DataBits_currentTextChanged(const QString &arg1);
+
+    void on_comboBox_BaudRate_currentTextChanged(const QString &arg1);
 
 signals:
     void newValues(int* vals);\

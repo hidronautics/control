@@ -486,6 +486,8 @@ void MainWindow::on_pushButton_load_config_released()
         ui->checkBox_const_time_yaw->setChecked(settings->yaw.const_time);
 
         ui->spinBox_COM->setValue(settings->connection->num);
+        std::cout << QString::number(settings->connection->setBaudRate(settings->connection->baudRate)).toStdString() << std::endl;
+        std::cout << QString::number(settings->connection->setDataBits(settings->connection->dataBits)).toStdString() << std::endl;
         ui->comboBox_BaudRate->setCurrentText(QString::number(settings->connection->setBaudRate(settings->connection->baudRate)));
         ui->comboBox_DataBits->setCurrentText(QString::number(settings->connection->setDataBits(settings->connection->dataBits)));
         ui->comboBox_Parity->setCurrentText(settings->connection->setParity(settings->connection->parity));
@@ -598,16 +600,6 @@ void MainWindow::on_pushButton_Bluetooth_clicked()
   openNewWindow();
 }
 
-void MainWindow::on_comboBox_BaudRate_currentIndexChanged(int index)
-{
-    settings->connection->baudRate = settings->connection->getBaudRate(index);
-}
-
-void MainWindow::on_comboBox_DataBits_currentIndexChanged(int index)
-{
-    settings->connection->dataBits = settings->connection->getDataBits(index);
-}
-
 void MainWindow::on_comboBox_Parity_currentTextChanged(const QString &arg1)
 {
     settings->connection->parity = settings->connection->getParity(arg1);
@@ -627,3 +619,14 @@ void MainWindow::on_spinBox_COM_valueChanged(int arg1)
 {
     settings->connection->num = arg1;
 }
+
+void MainWindow::on_comboBox_DataBits_currentTextChanged(const QString &arg1)
+{
+    settings->connection->dataBits = settings->connection->getDataBits(arg1.toInt());
+}
+
+void MainWindow::on_comboBox_BaudRate_currentTextChanged(const QString &arg1)
+{
+    settings->connection->baudRate = settings->connection->getBaudRate(arg1.toInt());
+}
+
