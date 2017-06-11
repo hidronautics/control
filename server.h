@@ -43,6 +43,13 @@ public:
     Settings* settings;
 
     float temperature = 0;
+    int16_t imu_roll;
+    int16_t imu_pitch;
+    int16_t imu_yaw;
+
+    int16_t imu_roll_speed;
+    int16_t imu_pitch_speed;
+    int16_t imu_yaw_speed;
 
 private:
     QSerialPort *newPort;

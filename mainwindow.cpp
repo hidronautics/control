@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //this->setStyleSheet("background-color: black;");
+
     ui->tableWidgetRequest->setColumnCount(2);
     ui->tableWidgetRequest->setRowCount(REQUEST_TABLE_ROW_COUNT);
 
@@ -199,7 +201,10 @@ void MainWindow::serverIsSleeping() {
         responseQTableWidgetItemsDEC[i]->setText(QString("not presented"));
     }
 
-   // ui->doubleSpinBoxTemperature->setValue(server->temperature);
+    ui->graphicsPFD_2->setRoll(server->imu_roll);
+    ui->graphicsPFD_2->setPitch(server->imu_pitch);
+    ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
+    ui->graphicsPFD_2->update();
 }
 
 void MainWindow::info(QString s) {
@@ -210,9 +215,6 @@ void MainWindow::info(QString s) {
 void MainWindow::init() {
     on_spinBox_Motor_Slot_valueChanged(0);
     on_pushButton_load_config_released(); // Зло во плоти (в коде)
-
-
-
 
     //settings->connection->num = ui->spinBox_COM->value();
     //settings->connection->baudRate = settings->connection->getBaudRate(ui->comboBox_BaudRate->currentText().toInt());

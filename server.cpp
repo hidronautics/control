@@ -318,13 +318,13 @@ void Server::receiveMessage() {
             return;
         }
 
-        int16_t roll = msg_in[RESPONSE_ROLL];
-        int16_t pitch = msg_in[RESPONSE_PITCH];
-        int16_t yaw = msg_in[RESPONSE_YAW];
+        imu_roll = msg_in[RESPONSE_ROLL];
+        imu_pitch = msg_in[RESPONSE_PITCH];
+        imu_yaw = msg_in[RESPONSE_YAW];
 
-        int16_t roll_speed = msg_in[RESPONSE_ROLL_SPEED];
-        int16_t pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
-        int16_t yaw_speed = msg_in[RESPONSE_YAW_SPEED];
+        imu_roll_speed = msg_in[RESPONSE_ROLL_SPEED];
+        imu_pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
+        imu_yaw_speed = msg_in[RESPONSE_YAW_SPEED];
 
         //uint8_t temperature_MS = msg_in[RESPONSE_TEMPERATURE];
         //uint8_t temperature_LS = msg_in[RESPONSE_TEMPERATURE+1];
@@ -342,8 +342,8 @@ void Server::receiveMessage() {
         uint16_t motor_errors = msg_in[RESPONSE_VMA_ERRORS];
 
         std::cout << "Received  data:" << std::endl;
-        std::cout << "roll" << roll << "pitch" << pitch << "yaw" << yaw << std::endl;
-        std::cout << "roll_speed" << roll_speed << "pitch_speed" << pitch_speed << "yaw_speed" << yaw_speed << std::endl;
+        std::cout << "roll" << imu_roll << "pitch" << imu_pitch << "yaw" << imu_yaw << std::endl;
+        std::cout << "roll_speed" << imu_roll_speed << "pitch_speed" << imu_pitch_speed << "yaw_speed" << imu_yaw_speed << std::endl;
         std::cout << "temperature=" << temperature << " pressure=" << pressure << std::endl;
         std::cout << "bluetooth: " << bt << std::endl;
         std::cout << "motor_errors" << motor_errors << std::endl;

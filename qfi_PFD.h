@@ -350,12 +350,9 @@ private:
         QGraphicsSvgItem  *m_itemFrame;
         QGraphicsTextItem *m_itemAltitude;
         QGraphicsTextItem *m_itemPressure;
-        QGraphicsSvgItem *m_itemMask;
 
         QColor m_frameTextColor;
-        QColor m_pressTextColorG;
-        QColor m_pressTextColorO;
-        QColor m_pressTextColorR;
+        QColor m_pressTextColor;
         QColor m_labelsColor;
 
         QFont  m_frameTextFont;
@@ -434,7 +431,6 @@ private:
         QGraphicsSvgItem  *m_itemFrame;
         QGraphicsTextItem *m_itemAirspeed;
         QGraphicsTextItem *m_itemMachNo;
-        QGraphicsSvgItem *m_itemMask;
 
         QColor m_frameTextColor;
         QColor m_labelsColor;
