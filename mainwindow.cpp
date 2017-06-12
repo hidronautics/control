@@ -204,6 +204,7 @@ void MainWindow::serverIsSleeping() {
     ui->graphicsPFD_2->setRoll(server->imu_roll);
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
     ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
+    ui->graphicsPFD_2->setHeading(server->imu_yaw);
     ui->graphicsPFD_2->update();
 }
 
@@ -442,3 +443,8 @@ void MainWindow::on_comboBox_BaudRate_currentTextChanged(const QString &arg1)
     settings->connection->baudRate = settings->connection->getBaudRate(arg1.toInt());
 }
 
+
+void MainWindow::on_checkBox_toggled(bool checked)
+{
+    server->emulation_mode = checked;
+}

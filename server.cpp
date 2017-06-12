@@ -110,9 +110,9 @@ void Server::sendMessageNormal()
     addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
 
     std::cout << "Sending NORMAL message:" << std::endl;
-    for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
+    /*for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    }
+    }*/
 
     newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
 
@@ -300,7 +300,21 @@ void Server::sendMessageConfig() {
 void Server::receiveMessage() {
     int buffer_size = newPort->bytesAvailable();
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
-    if (buffer_size == 0)
+
+
+    if (emulation_mode){
+        std::cout << "WARNING: Emulation mode" << std::endl;
+
+        imu_roll = imu_roll + j->roll/10000;
+        imu_pitch = imu_pitch + j->pitch/10000;
+        imu_yaw = imu_yaw + j->yaw/10000;
+
+        imu_roll_speed = j->roll/10000;
+        imu_pitch_speed = j->pitch/10000;
+        imu_yaw_speed = j->yaw/10000;
+
+
+    } else if (buffer_size == 0)
         std::cout << "No message to read. Buffer is empty" << std::endl;
     else if (buffer_size != RESPONSE_LENGTH) {
         std::cout << "Wrong response message size! Got " << buffer_size << ", when " << RESPONSE_LENGTH << " expected." << std::endl;

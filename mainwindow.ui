@@ -1317,7 +1317,7 @@
       </widget>
       <widget class="QRadioButton" name="radioButton_XBox">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -1329,6 +1329,9 @@
        </property>
        <property name="text">
         <string>XBox joystick</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
@@ -1626,7 +1629,7 @@
       <widget class="QPushButton" name="pushButton">
        <property name="geometry">
         <rect>
-         <x>120</x>
+         <x>130</x>
          <y>140</y>
          <width>81</width>
          <height>23</height>
@@ -1634,6 +1637,19 @@
        </property>
        <property name="text">
         <string>Fake connect</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>120</y>
+         <width>111</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Emulation mode</string>
        </property>
       </widget>
      </widget>

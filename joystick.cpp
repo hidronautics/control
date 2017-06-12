@@ -6,11 +6,11 @@ Joystick::Joystick(QObject *parent) : QObject(parent)
 
 }
 
-int16_t joystickFloatToInt16_t(float n) { // SFML gives numbers in [-100;100]
+int16_t joystickFloatToInt16_t(float n) { // SFML gives numbers in [-100;100] converting to [-32767; 32767]
     return (int16_t)(n*327.67);
 }
 
-int8_t joystickFloatToInt8_t(float n) { // SFML gives numbers in [-100;100]
+int8_t joystickFloatToInt8_t(float n) { // SFML gives numbers in [-100;100] converting to [-127; 127]
     return (int8_t)(n*1.27);
 }
 
@@ -68,22 +68,20 @@ void Joystick::updateJoystick() {
     printAxises();
     printButtons();
     this->pitch = +
-                joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovY));
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovY));
     this->roll  = +
                  joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovX));
     this->yaw   = +
                  joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::R));
-
-    this->march = +
-                 -joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Y));
-    this->lag  = +
+    this->march = -
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Y));
+    this->lag   = +
                  joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::X));
     this->depth = +
                  joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
 
     this->light = +
-                joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
-
+                 joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
 
     this->sensitivity = +
             (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
@@ -139,41 +137,41 @@ void Joystick::updateKeyboard() {
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        march = 127;
+        march = 32767;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        march = -127;
+        march = -32767;
     else
         march = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        lag = 127;
+        lag = 32767;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        lag = -127;
+        lag = -32767;
     else
         lag = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        yaw = 127;
+        yaw = 32767;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-        yaw = -127;
+        yaw = -32767;
     else
         yaw = 0;
 
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        pitch = 127;
+        pitch = 32767;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        pitch = -127;
+        pitch = -32767;
     else
         pitch = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        roll = 127;
+        roll = 32767;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        roll = -127;
+        roll = -32767;
     else
         roll = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-        depth = 127;
+        depth = 32767;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-        depth = -127;
+        depth = -32767;
     else
         depth = 0;
 
@@ -187,9 +185,9 @@ void Joystick::updateKeyboard() {
 
     // Grab
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-        grab = 200;
+        grab = 100;
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
-        grab = -200;
+        grab = -100;
     else
         grab = 0;
 
@@ -229,10 +227,16 @@ void Joystick::updateXbox() {
     this->lag  = +
                  joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::X));
     this->depth = +
-                 joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
+                 joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z));
 
     //this->light = +
     //            joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
+
+    if (abs(this->pitch) < XBOX_DEAD_ZONE) this->pitch = 0;
+    if (abs(this->roll)  < XBOX_DEAD_ZONE) this->roll = 0;
+    if (abs(this->march) < XBOX_DEAD_ZONE) this->march = 0;
+    if (abs(this->lag)   < XBOX_DEAD_ZONE) this->lag = 0;
+    if (abs(this->depth) < XBOX_DEAD_ZONE) this->depth = 0;
 
 
     this->sensitivity = +

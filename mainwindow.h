@@ -85,6 +85,8 @@ private slots:
 
     void on_comboBox_BaudRate_currentTextChanged(const QString &arg1);
 
+    void on_checkBox_toggled(bool checked);
+
 signals:
     void newValues(int* vals);\
 

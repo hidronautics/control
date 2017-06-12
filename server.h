@@ -51,6 +51,8 @@ public:
     int16_t imu_pitch_speed;
     int16_t imu_yaw_speed;
 
+    bool emulation_mode = false;
+
 private:
     QSerialPort *newPort;
 

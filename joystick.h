@@ -3,26 +3,31 @@
 
 #include <QObject>
 #include <iostream>
+#include <math.h>
 #include <SFML/Window.hpp>
 
 class Joystick : public QObject
 {
     Q_OBJECT
 public:
-    int16_t pitch       = 0;     //[-32767,32767]
-    int16_t roll        = 0;     //[-32767,32767]
-    int16_t yaw         = 0;     //[-32767,32767]
+    /*
+     * Для любого устройства ввода должны быть соблюдены ограничения в комментариях
+     */
 
-    int16_t march       = 0;     //[-32767,32767]
-    int16_t lag         = 0;     //[-32767,32767]
-    int16_t depth       = 0;     //[-32767,32767]
+    int16_t pitch       = 0;     //[-32767,32767] (вперед)
+    int16_t roll        = 0;     //[-32767,32767] (право)
+    int16_t yaw         = 0;     //[-32767,32767] (вправо)
 
-    int8_t light       = 0;     //[0,127]
-    int8_t grab        = 0;     //[-127,127]
-    int8_t grab_rotate = 0;     //[-127,127]?
-    int8_t tilt        = 0;     //[-127,127]
+    int16_t march       = 0;     //[-32767,32767] (погружение)
+    int16_t lag         = 0;     //[-32767,32767] (против ч/ч)
+    int16_t depth       = 0;     //[-32767,32767] (носом вниз)
 
-    int8_t bt           =0; //BOOL
+    int8_t light       = 0;      //[0,127]
+    int8_t grab        = 0;      //[-127,127]
+    int8_t grab_rotate = 0;      //[-127,127]?
+    int8_t tilt        = 0;      //[-127,127]
+
+    int8_t bt           =0;     //BOOL
 
     int8_t bottom_light  = 0;   //[-127, 127]
 
@@ -60,6 +65,17 @@ private:
     const int SFML_BTN_TILT_DOWN = 21;
 
     const int SFML_BTN_BT = 22;
+
+    // Пока не используется
+    sf::Joystick::Axis SFML_AXIS_PITCH = sf::Joystick::PovY;
+    sf::Joystick::Axis SFML_AXIS_ROLL  = sf::Joystick::PovX;
+    sf::Joystick::Axis SFML_AXIS_YAW   = sf::Joystick::R;
+    sf::Joystick::Axis SFML_AXIS_MARCH = sf::Joystick::Y;
+    sf::Joystick::Axis SFML_AXIS_LAG   = sf::Joystick::X;
+    sf::Joystick::Axis SFML_AXIS_DEPTH = sf::Joystick::Z;
+
+
+    const int XBOX_DEAD_ZONE = 10000;
 
     int joystick_id = 0;
 
