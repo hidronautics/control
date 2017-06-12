@@ -87,6 +87,10 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_spinBox_PauseAfterSent_valueChanged(int arg1);
+
+    void on_spinBox_PauseAfterReceived_valueChanged(int arg1);
+
 signals:
     void newValues(int* vals);\
 

@@ -25,6 +25,8 @@ void Settings::initialize() {
     connection->parity = QSerialPort::Parity::NoParity;
     connection->stopBits = QSerialPort::StopBits::OneStop;
     connection->flowControl = QSerialPort::FlowControl::NoFlowControl;
+    connection->pause_after_sent = 50;
+    connection->pause_after_received = 50;
 }
 
 
@@ -115,6 +117,9 @@ void Settings::read(const QJsonObject &json)
     if (s.compare("")) connection->flowControl = connection->getFlowControl(s);
     std::cout << "flowControl: " << connection->flowControl << std::endl;
 
+    connection->pause_after_sent = connection_json["pauseAfterSent"].toInt();
+    connection->pause_after_received = connection_json["pauseAfterReceived"].toInt();
+
 }
 
 void Settings::write(QJsonObject &json) const
@@ -186,6 +191,9 @@ void Settings::write(QJsonObject &json) const
     connection_json["parity"] = connection->setParity(connection->parity);
     connection_json["stopBits"] = connection->setStopBits(connection->stopBits);
     connection_json["flowControl"] = connection->setFlowControl(connection->flowControl);
+
+    connection_json["pauseAfterSent"] = connection->pause_after_sent;
+    connection_json["pauseAfterReceived"] = connection->pause_after_received;
 
     json["connection"] = connection_json;
 }

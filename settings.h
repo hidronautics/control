@@ -64,6 +64,8 @@ public:
    QSerialPort::Parity parity;
    QSerialPort::StopBits stopBits;
    QSerialPort::FlowControl flowControl;
+   int pause_after_sent;
+   int pause_after_received;
 
    QSerialPort::BaudRate getBaudRate(int num) {
        switch (num) {

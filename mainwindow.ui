@@ -1018,7 +1018,7 @@
         <x>10</x>
         <y>550</y>
         <width>461</width>
-        <height>131</height>
+        <height>121</height>
        </rect>
       </property>
       <property name="title">
@@ -1340,7 +1340,7 @@
        <rect>
         <x>490</x>
         <y>10</y>
-        <width>331</width>
+        <width>501</width>
         <height>181</height>
        </rect>
       </property>
@@ -1603,7 +1603,7 @@
       <widget class="QPushButton" name="pushButton_Connect">
        <property name="geometry">
         <rect>
-         <x>230</x>
+         <x>390</x>
          <y>140</y>
          <width>84</width>
          <height>23</height>
@@ -1629,7 +1629,7 @@
       <widget class="QPushButton" name="pushButton">
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>210</x>
          <y>140</y>
          <width>81</width>
          <height>23</height>
@@ -1642,14 +1642,60 @@
       <widget class="QCheckBox" name="checkBox">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>120</y>
+         <x>330</x>
+         <y>100</y>
          <width>111</width>
          <height>17</height>
         </rect>
        </property>
        <property name="text">
         <string>Emulation mode</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_30">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>70</y>
+         <width>111</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Pause after received</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_31">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>40</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Pause after sent</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox_PauseAfterSent">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>30</y>
+         <width>42</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox_PauseAfterReceived">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>60</y>
+         <width>42</width>
+         <height>22</height>
+        </rect>
        </property>
       </widget>
      </widget>
@@ -1715,8 +1761,8 @@
      <widget class="QPushButton" name="pushButton_load_config">
       <property name="geometry">
        <rect>
-        <x>920</x>
-        <y>20</y>
+        <x>10</x>
+        <y>680</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -1731,8 +1777,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>920</x>
-        <y>50</y>
+        <x>100</x>
+        <y>680</y>
         <width>75</width>
         <height>23</height>
        </rect>

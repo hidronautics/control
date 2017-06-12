@@ -320,6 +320,9 @@ void MainWindow::on_pushButton_load_config_released()
         ui->comboBox_StopBits->setCurrentText(settings->connection->setStopBits(settings->connection->stopBits));
         ui->comboBox_FlowControl->setCurrentText(settings->connection->setFlowControl(settings->connection->flowControl));
 
+        ui->spinBox_PauseAfterSent->setValue(settings->connection->pause_after_sent);
+        ui->spinBox_PauseAfterReceived->setValue(settings->connection->pause_after_received);
+
         ui->statusbar->showMessage("Settings successfully loaded", 5000);
     } else {
         ui->statusbar->showMessage("Cannot load settings. Invalid file or file does not exist.", 5000);
@@ -371,6 +374,9 @@ void MainWindow::on_pushButton_save_config_released()
     settings->yaw.gain = ui->doubleSpinBox_yaw_gain->value();
     settings->yaw.start = ui->doubleSpinBox_yaw_start->value();
     settings->yaw.const_time = ui->checkBox_const_time_yaw->isChecked();
+
+    settings->connection->pause_after_sent = ui->spinBox_PauseAfterSent->value();
+    settings->connection->pause_after_received = ui->spinBox_PauseAfterReceived->value();
 
     settings->saveToJSONFIle();
 }
@@ -447,4 +453,14 @@ void MainWindow::on_comboBox_BaudRate_currentTextChanged(const QString &arg1)
 void MainWindow::on_checkBox_toggled(bool checked)
 {
     server->emulation_mode = checked;
+}
+
+void MainWindow::on_spinBox_PauseAfterSent_valueChanged(int arg1)
+{
+    settings->connection->pause_after_sent = arg1;
+}
+
+void MainWindow::on_spinBox_PauseAfterReceived_valueChanged(int arg1)
+{
+    settings->connection->pause_after_received = arg1;
 }

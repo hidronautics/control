@@ -117,7 +117,7 @@ void Server::sendMessageNormal()
     newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
 
     emit imSleeping();
-    QTest::qSleep (REQUEST_TIMEOUT);
+    QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
@@ -148,7 +148,7 @@ void Server::sendMessageDirect() {
     newPort->write((char*)msg_to_send, REQUEST_DIRECT_LENGTH);
 
     emit imSleeping();
-    QTest::qSleep (REQUEST_TIMEOUT);
+    QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
@@ -291,7 +291,7 @@ void Server::sendMessageConfig() {
     newPort->write((char*)msg_to_send, REQUEST_CONFIG_LENGTH);
 
     emit imSleeping();
-    QTest::qSleep (REQUEST_TIMEOUT);
+    QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
@@ -362,6 +362,7 @@ void Server::receiveMessage() {
         std::cout << "bluetooth: " << bt << std::endl;
         std::cout << "motor_errors" << motor_errors << std::endl;
     }
+    QTest::qSleep (settings->connection->pause_after_received);
 }
 
 
