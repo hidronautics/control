@@ -11,15 +11,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //this->setStyleSheet("background-color: black;");
 
-    ui->tableWidgetRequest->setColumnCount(2);
+    ui->tableWidgetRequest->setColumnCount(3);
     ui->tableWidgetRequest->setRowCount(REQUEST_TABLE_ROW_COUNT);
 
     QAbstractItemModel *model_request = ui->tableWidgetRequest->model();
     QAbstractItemModel *model_response = ui->tableWidgetResponse->model();
     QStringList labels_request, labels_response;
     QStringList headerLabels;
-    headerLabels << QString("Values");
-
+    headerLabels << QString("HEX") << QString("DEX") << QString("Binary");
 
 
     labels_response <<   "0:roll"<<
@@ -115,7 +114,6 @@ MainWindow::MainWindow(QWidget *parent) :
                       "26:";
 
 
-
     for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
         requestQTableWidgetItemsHEX[i] = new QTableWidgetItem(tr("no msg yet"));
         requestQTableWidgetItemsHEX[i]->setTextAlignment(Qt::AlignVCenter);
@@ -123,21 +121,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
         QVariant data = model_request->headerData(i, Qt::Vertical);
 
-
-        //labels_request << QString("%1").arg(data.toInt() - 1); ЧИСЛА ВМЕСТО НАЗВАНИЙ ПЕРЕМЕННЫХ
-
-
         requestQTableWidgetItemsDEC[i] = new QTableWidgetItem(tr("no msg yet"));
         requestQTableWidgetItemsDEC[i]->setTextAlignment(Qt::AlignVCenter);
         ui->tableWidgetRequest->setItem(i, 1, requestQTableWidgetItemsDEC[i]);
+
+        requestQTableWidgetItemsBinary[i] = new QTableWidgetItem(tr("no msg yet"));
+        requestQTableWidgetItemsBinary[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetRequest->setItem(i, 2, requestQTableWidgetItemsBinary[i]);
     }
 
     ui->tableWidgetRequest->setVerticalHeaderLabels(labels_request);
     ui->tableWidgetRequest->setHorizontalHeaderLabels(headerLabels);
+    ui->tableWidgetRequest->setColumnWidth(0,35);
+    ui->tableWidgetRequest->setColumnWidth(1,35);
+    ui->tableWidgetRequest->setColumnWidth(2,80);
 
-
-    ui->tableWidgetResponse->setColumnCount(2);
+    ui->tableWidgetResponse->setColumnCount(3);
     ui->tableWidgetResponse->setRowCount(RESPONSE_TABLE_ROW_COUNT);
+    ui->tableWidgetResponse->setColumnWidth(0,35);
+    ui->tableWidgetResponse->setColumnWidth(1,35);
+    ui->tableWidgetResponse->setColumnWidth(2,80);
+
 
     for (int i = 0; i < RESPONSE_TABLE_ROW_COUNT; ++i) {
         responseQTableWidgetItemsHEX[i] = new QTableWidgetItem(tr("no msg yet"));
@@ -150,6 +154,10 @@ MainWindow::MainWindow(QWidget *parent) :
         responseQTableWidgetItemsDEC[i] = new QTableWidgetItem(tr("no msg yet"));
         responseQTableWidgetItemsDEC[i]->setTextAlignment(Qt::AlignVCenter);
         ui->tableWidgetResponse->setItem(i, 1, responseQTableWidgetItemsDEC[i]);
+
+        responseQTableWidgetItemsBinary[i] = new QTableWidgetItem(tr("no msg yet"));
+        responseQTableWidgetItemsBinary[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetResponse->setItem(i, 2, responseQTableWidgetItemsBinary[i]);
     }
 
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
@@ -184,27 +192,62 @@ void MainWindow::serverIsSleeping() {
         //requestQTableWidgetItems[i]->setText(QString("%1").arg(server->msg_to_send[i]));
         requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
         requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send[i], 10));
+        requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
     }
 
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
-        requestQTableWidgetItemsHEX[i]->setText(QString("not presented"));
-        requestQTableWidgetItemsDEC[i]->setText(QString("not presented"));
+        requestQTableWidgetItemsHEX[i]->setText(QString("NO"));
+        requestQTableWidgetItemsDEC[i]->setText(QString("NO"));
+        requestQTableWidgetItemsBinary[i]->setText(QString("NO"));
     }
 
     for (int i = 0; i < RESPONSE_LENGTH; ++i) {
         responseQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_in[i], 16));
         responseQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_in[i], 10));
+        responseQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_in[i], 2));
     }
 
     for (int i = RESPONSE_LENGTH; i < RESPONSE_TABLE_ROW_COUNT; ++i) {
-        responseQTableWidgetItemsHEX[i]->setText(QString("not presented"));
-        responseQTableWidgetItemsDEC[i]->setText(QString("not presented"));
+        responseQTableWidgetItemsHEX[i]->setText(QString("NO"));
+        responseQTableWidgetItemsDEC[i]->setText(QString("NO"));
+        responseQTableWidgetItemsBinary[i]->setText(QString("NO"));
     }
+
+    ui->lcdNumber_current_HLB->display(QString::number(server->current_HLB));
+    ui->lcdNumber_current_HLF->display(QString::number(server->current_HLF));
+    ui->lcdNumber_current_HRB->display(QString::number(server->current_HRB));
+    ui->lcdNumber_current_HRF->display(QString::number(server->current_HRF));
+
+    ui->lcdNumber_current_VB->display(QString::number(server->current_VB));
+    ui->lcdNumber_current_VF->display(QString::number(server->current_VF));
+    ui->lcdNumber_current_VL->display(QString::number(server->current_VL));
+    ui->lcdNumber_current_VR->display(QString::number(server->current_VR));
+
+
+    ui->lcdNumber_velocity_HLB->display(QString::number(server->velocity_HLB));
+    ui->lcdNumber_velocity_HLF->display(QString::number(server->velocity_HLF));
+    ui->lcdNumber_velocity_HRB->display(QString::number(server->velocity_HRB));
+    ui->lcdNumber_velocity_HRF->display(QString::number(server->velocity_HRF));
+
+    ui->lcdNumber_velocity_VB->display(QString::number(server->velocity_VB));
+    ui->lcdNumber_velocity_VF->display(QString::number(server->velocity_VF));
+    ui->lcdNumber_velocity_VL->display(QString::number(server->velocity_VL));
+    ui->lcdNumber_velocity_VR->display(QString::number(server->velocity_VR));
+
+    ui->label_BT->setText(server->bt_data);
+
+    ui->lcdNumber_velocity_Light->display(QString::number(server->current_light));
+    ui->lcdNumber_velocity_bottomLight->display(QString::number(server->current_bottom_light));
+    ui->lcdNumber_velocity_Agar->display(QString::number(server->current_agar));
+    ui->lcdNumber_velocity_Grab->display(QString::number(server->current_grab));
+    ui->lcdNumber_velocity_Rotate->display(QString::number(server->current_grab_rotate));
+    ui->lcdNumber_velocity_Tilt->display(QString::number(server->current_tilt));
 
     ui->graphicsPFD_2->setRoll(server->imu_roll);
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
     ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
     ui->graphicsPFD_2->setHeading(server->imu_yaw);
+    ui->graphicsPFD_2->setAltitude(server->imu_depth);
     ui->graphicsPFD_2->update();
 }
 

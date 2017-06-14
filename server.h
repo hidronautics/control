@@ -51,6 +51,38 @@ public:
     int16_t imu_pitch_speed;
     int16_t imu_yaw_speed;
 
+    int16_t imu_depth;
+
+    uint16_t current_HLB;
+    uint16_t current_HLF;
+    uint16_t current_HRB;
+    uint16_t current_HRF;
+    uint16_t current_VB;
+    uint16_t current_VF;
+    uint16_t current_VL;
+    uint16_t current_VR;
+
+    int16_t velocity_HLB;
+    int16_t velocity_HLF;
+    int16_t velocity_HRB;
+    int16_t velocity_HRF;
+    int16_t velocity_VB;
+    int16_t velocity_VF;
+    int16_t velocity_VL;
+    int16_t velocity_VR;
+
+    uint16_t current_light;
+    uint16_t current_bottom_light;
+    uint16_t current_agar;
+    uint16_t current_grab;
+    uint16_t current_grab_rotate;
+    uint16_t current_tilt;
+
+    uint16_t err_vma;
+    uint16_t err_dev;
+
+    QString bt_data;
+
     bool emulation_mode = false;
 
 private:

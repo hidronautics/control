@@ -31,7 +31,7 @@ public:
 
     int8_t bottom_light  = 0;   //[-127, 127]
 
-    float sensitivity = 0.0;       //[0.0,2.0]
+    float sensitivity = 0.0;    //[0.0,1.0]
 
 
     bool btn_depth_inv   = false;  // 6

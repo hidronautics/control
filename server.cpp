@@ -313,6 +313,35 @@ void Server::receiveMessage() {
         imu_pitch_speed = j->pitch/10000;
         imu_yaw_speed = j->yaw/10000;
 
+        imu_depth = imu_depth + j->depth/10000;
+
+        current_HLB = 1;
+        current_HLF = 11;
+        current_HRB = 111;
+        current_HRF = 1111;
+        current_VB = 11111;
+        current_VF = 234;
+        current_VL = 4567;
+        current_VR = 7808;
+
+        velocity_HLB = 87;
+        velocity_HLF = 89;
+        velocity_HRB = 90;
+        velocity_HRF = 35;
+        velocity_VB = 76;
+        velocity_VF = 88;
+        velocity_VL = 99;
+        velocity_VR = 999;
+
+        current_light = 5;
+        current_bottom_light = 10;
+        current_agar = 15;
+        current_grab = 20;
+        current_grab_rotate = 25;
+        current_tilt = 30;
+
+        bt_data = "testMSG";
+
 
     } else if (buffer_size == 0)
         std::cout << "No message to read. Buffer is empty" << std::endl;
@@ -340,14 +369,49 @@ void Server::receiveMessage() {
         imu_pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
         imu_yaw_speed = msg_in[RESPONSE_YAW_SPEED];
 
-        //uint8_t temperature_MS = msg_in[RESPONSE_TEMPERATURE];
-        //uint8_t temperature_LS = msg_in[RESPONSE_TEMPERATURE+1];
+        imu_depth = msg_in[RESPONSE_PRESSURE]; // Pressure вместо depth
+
+        current_HLB = msg_in[RESPONSE_VMA_CURRENT_HLB];
+        current_HLF = msg_in[RESPONSE_VMA_CURRENT_HLF];
+        current_HRB = msg_in[RESPONSE_VMA_CURRENT_HRB];
+        current_HRF = msg_in[RESPONSE_VMA_CURRENT_HRF];
+        current_VB = msg_in[RESPONSE_VMA_CURRENT_VB];
+        current_VF = msg_in[RESPONSE_VMA_CURRENT_VF];
+        current_VL = msg_in[RESPONSE_VMA_CURRENT_VL];
+        current_VR = msg_in[RESPONSE_VMA_CURRENT_VR];
+
+        velocity_HLB = msg_in[RESPONSE_VMA_VELOCITY_HLB];
+        velocity_HLF = msg_in[RESPONSE_VMA_VELOCITY_HLF];
+        velocity_HRB = msg_in[RESPONSE_VMA_VELOCITY_HRB];
+        velocity_HRF = msg_in[RESPONSE_VMA_VELOCITY_HRF];
+        velocity_VB = msg_in[RESPONSE_VMA_VELOCITY_VB];
+        velocity_VF = msg_in[RESPONSE_VMA_VELOCITY_VF];
+        velocity_VL = msg_in[RESPONSE_VMA_VELOCITY_VL];
+        velocity_VR = msg_in[RESPONSE_VMA_VELOCITY_VR];
+
+        current_light = msg_in[RESPONSE_DEV_CURRENT_1];
+        current_bottom_light = msg_in[RESPONSE_DEV_CURRENT_2];
+        current_agar = msg_in[RESPONSE_DEV_CURRENT_3];
+        current_grab = msg_in[RESPONSE_DEV_CURRENT_4];
+        current_grab_rotate = msg_in[RESPONSE_DEV_CURRENT_5];
+        current_tilt = msg_in[RESPONSE_DEV_CURRENT_6];
+
+
+        err_vma = msg_in[RESPONSE_VMA_ERRORS];
+        err_dev = msg_in[RESPONSE_DEV_ERRORS];
+
+
+        // !!!!! СДВИГИ, ЧТОБЫ ОБРАЗОВАТЬ ПРАВИЛЬНОЕ ЧИСЛО
 
         char bt[8];  //Важно, чтобы история не затерлась! -> логи, выгружаемые на другое устройство
         for (int i = 0; i < 8; ++i) {
             bt[i] = msg_in[RESPONSE_AGAR + i];
         }
 
+        QString s(bt);
+        bt_data = s;
+
+        //bt_data = QString::fromAscii_helper(bt, 7);
 
         //temperature = encodeTemperature(temperature_MS, temperature_LS);
 
@@ -362,7 +426,7 @@ void Server::receiveMessage() {
         std::cout << "bluetooth: " << bt << std::endl;
         std::cout << "motor_errors" << motor_errors << std::endl;
     }
-    QTest::qSleep (settings->connection->pause_after_received);
+    //QTest::qSleep (settings->connection->pause_after_received);
 }
 
 

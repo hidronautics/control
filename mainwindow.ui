@@ -109,7 +109,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -207,7 +207,7 @@
        <string>Bluetooth:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_29">
+     <widget class="QLabel" name="label_BT">
       <property name="geometry">
        <rect>
         <x>80</x>
@@ -220,12 +220,362 @@
        <string>TextLabel</string>
       </property>
      </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_VF">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>40</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_HRF">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>100</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_VR">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>160</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_HRB">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>230</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_VB">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>290</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="value" stdset="0">
+       <double>0.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_HLB">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>230</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_VL">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>160</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_current_HLF">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>100</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_VF">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="segmentStyle">
+       <enum>QLCDNumber::Filled</enum>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_HRF">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>130</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_VR">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>190</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_HRB">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>260</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_VB">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>320</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_HLB">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>260</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_VL">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_HLF">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>130</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_light">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>380</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Light</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_bottomLight">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>380</y>
+        <width>71</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bottom light</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_agar">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>380</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Agar</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Grab">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>460</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Grab</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Rotate">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>460</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Rotate</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Tilt">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>460</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Tilt</string>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_Light">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>400</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_bottomLight">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>400</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_Agar">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>400</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_Grab">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>480</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_Rotate">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>480</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_velocity_Tilt">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>480</y>
+        <width>51</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
      <zorder>label_pic</zorder>
      <zorder>label_indicator2</zorder>
      <zorder>label</zorder>
      <zorder>graphicsPFD_2</zorder>
      <zorder>label_28</zorder>
-     <zorder>label_29</zorder>
+     <zorder>label_BT</zorder>
+     <zorder>lcdNumber_current_VF</zorder>
+     <zorder>lcdNumber_current_HRF</zorder>
+     <zorder>lcdNumber_current_VR</zorder>
+     <zorder>lcdNumber_current_HRB</zorder>
+     <zorder>lcdNumber_current_VB</zorder>
+     <zorder>lcdNumber_current_HLB</zorder>
+     <zorder>lcdNumber_current_VL</zorder>
+     <zorder>lcdNumber_current_HLF</zorder>
+     <zorder>lcdNumber_velocity_VF</zorder>
+     <zorder>lcdNumber_velocity_HRF</zorder>
+     <zorder>lcdNumber_velocity_VR</zorder>
+     <zorder>lcdNumber_velocity_HRB</zorder>
+     <zorder>lcdNumber_velocity_VB</zorder>
+     <zorder>lcdNumber_velocity_HLB</zorder>
+     <zorder>lcdNumber_velocity_VL</zorder>
+     <zorder>lcdNumber_velocity_HLF</zorder>
+     <zorder>label_light</zorder>
+     <zorder>label_bottomLight</zorder>
+     <zorder>label_agar</zorder>
+     <zorder>label_Grab</zorder>
+     <zorder>label_Rotate</zorder>
+     <zorder>label_Tilt</zorder>
+     <zorder>lcdNumber_velocity_Light</zorder>
+     <zorder>lcdNumber_velocity_bottomLight</zorder>
+     <zorder>lcdNumber_velocity_Agar</zorder>
+     <zorder>lcdNumber_velocity_Grab</zorder>
+     <zorder>lcdNumber_velocity_Rotate</zorder>
+     <zorder>lcdNumber_velocity_Tilt</zorder>
     </widget>
     <widget class="QWidget" name="tab_1">
      <attribute name="title">
@@ -340,7 +690,7 @@
        <rect>
         <x>10</x>
         <y>130</y>
-        <width>461</width>
+        <width>411</width>
         <height>411</height>
        </rect>
       </property>
@@ -350,7 +700,7 @@
       <widget class="QGroupBox" name="groupBox_5">
        <property name="geometry">
         <rect>
-         <x>260</x>
+         <x>210</x>
          <y>200</y>
          <width>191</width>
          <height>171</height>
@@ -682,7 +1032,7 @@
       <widget class="QGroupBox" name="groupBox_3">
        <property name="geometry">
         <rect>
-         <x>260</x>
+         <x>210</x>
          <y>20</y>
          <width>191</width>
          <height>171</height>
@@ -1017,7 +1367,7 @@
        <rect>
         <x>10</x>
         <y>550</y>
-        <width>461</width>
+        <width>411</width>
         <height>121</height>
        </rect>
       </property>
@@ -1059,7 +1409,7 @@
       <widget class="QDoubleSpinBox" name="doubleSpinBox_back">
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>330</x>
          <y>60</y>
          <width>62</width>
          <height>22</height>
@@ -1205,7 +1555,7 @@
       <widget class="QDoubleSpinBox" name="doubleSpinBox_forw">
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>330</x>
          <y>30</y>
          <width>62</width>
          <height>22</height>
@@ -1250,7 +1600,7 @@
       <widget class="QLabel" name="label_forw">
        <property name="geometry">
         <rect>
-         <x>310</x>
+         <x>290</x>
          <y>30</y>
          <width>41</width>
          <height>16</height>
@@ -1263,7 +1613,7 @@
       <widget class="QLabel" name="label_back">
        <property name="geometry">
         <rect>
-         <x>310</x>
+         <x>290</x>
          <y>60</y>
          <width>41</width>
          <height>16</height>
@@ -1279,7 +1629,7 @@
        <rect>
         <x>270</x>
         <y>10</y>
-        <width>201</width>
+        <width>151</width>
         <height>111</height>
        </rect>
       </property>
@@ -1338,7 +1688,7 @@
      <widget class="QGroupBox" name="groupBox_10">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>460</x>
         <y>10</y>
         <width>501</width>
         <height>181</height>
@@ -1644,12 +1994,12 @@
         <rect>
          <x>330</x>
          <y>100</y>
-         <width>111</width>
+         <width>151</width>
          <height>17</height>
         </rect>
        </property>
        <property name="text">
-        <string>Emulation mode</string>
+        <string>Sensors emulation mode</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_30">
@@ -1689,6 +2039,9 @@
        </property>
       </widget>
       <widget class="QSpinBox" name="spinBox_PauseAfterReceived">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>440</x>
@@ -1702,9 +2055,9 @@
      <widget class="QTableWidget" name="tableWidgetRequest">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>430</x>
         <y>220</y>
-        <width>231</width>
+        <width>271</width>
         <height>461</height>
        </rect>
       </property>
@@ -1712,9 +2065,9 @@
      <widget class="QTableWidget" name="tableWidgetResponse">
       <property name="geometry">
        <rect>
-        <x>750</x>
+        <x>730</x>
         <y>220</y>
-        <width>241</width>
+        <width>281</width>
         <height>461</height>
        </rect>
       </property>
@@ -1722,7 +2075,7 @@
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>580</x>
+        <x>540</x>
         <y>200</y>
         <width>47</width>
         <height>13</height>
@@ -1735,7 +2088,7 @@
      <widget class="Line" name="line">
       <property name="geometry">
        <rect>
-        <x>730</x>
+        <x>710</x>
         <y>190</y>
         <width>16</width>
         <height>491</height>

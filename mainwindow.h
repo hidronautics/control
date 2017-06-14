@@ -107,8 +107,12 @@ private:
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];
+    QTableWidgetItem *requestQTableWidgetItemsBinary[REQUEST_TABLE_ROW_COUNT];
+
     QTableWidgetItem *responseQTableWidgetItemsHEX[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
+    QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
+
 };
 
 #endif // MAINWINDOW_H

@@ -65,8 +65,8 @@ void Joystick::printAxises() {
 
 void Joystick::updateJoystick() {
     sf::Joystick::update();
-    printAxises();
-    printButtons();
+    //printAxises();
+    //printButtons();
     this->pitch = +
                  joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovY));
     this->roll  = +
@@ -84,14 +84,14 @@ void Joystick::updateJoystick() {
                  joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
 
     this->sensitivity = +
-            (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/2;
-    /*
+            (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/200; //Axis Position от -100 до +100
+
     this->pitch *= sensitivity;
     this->roll *= sensitivity;
     this->yaw *= sensitivity;
     this->march *= sensitivity;
     this->lag *= sensitivity;
-    this->depth *= sensitivity;*/
+    this->depth *= sensitivity;
 
 
 
