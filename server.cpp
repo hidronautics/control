@@ -70,7 +70,7 @@ void Server::sendMessageNormal()
     for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
-    msg_to_send[0] = 0xFF;
+    //msg_to_send[0] = 0xFF;
     j->update();
 
     msg_to_send[REQUEST_NORMAL_TYPE] = REQUEST_NORMAL_CODE;
@@ -456,7 +456,7 @@ void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)//i теперь н�
     uint16_t crc = 0;
     int i = 0;
 
-    for(i=1; i < length - 2; i++){
+    for(i=0; i < length - 2; i++){
         crc = (uint8_t)(crc >> 8) | (crc << 8);
         crc ^= msg[i];
         crc ^= (uint8_t)(crc & 0xff) >> 4;

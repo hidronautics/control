@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     headerLabels << QString("HEX") << QString("DEX") << QString("Binary");
 
 
-    labels_response <<   "0:roll"<<
+    /*labels_response <<   "0:roll"<<
                         "1:"<<
                         "2:pitch"<<
                         "3:"<<
@@ -111,7 +111,100 @@ MainWindow::MainWindow(QWidget *parent) :
                       "23:stabilize_yaw"<<
                       "24:reset_IMU"<<
                       "25:checksum"<<
-                      "26:";
+                      "26:";*/
+
+    labels_response <<   "0:roll"<<
+                            "1:"<<
+                            "2:pitch"<<
+                            "3:"<<
+                            "4:yaw"<<
+                            "5:"<<
+                            "6:roll_speed"<<
+                            "7:"<<
+                            "8:pitch_speed"<<
+                            "9:"<<
+                            "10:yaw_speed"<<
+                            "11:"<<
+                            "12:pressure"<<
+                            "13:"<<
+                            "14:Bluetooth"<<
+                            "15:"<<
+                            "16:"<<
+                            "17:"<<
+                            "18:"<<
+                            "19:"<<
+                            "20:"<<
+                            "21:"<<
+                            "22:current_HLB"<<
+                            "23:"<<
+                            "24:current_HLF"<<
+                            "25:"<<
+                            "26:current_HRB"<<
+                            "27:"<<
+                            "28:current_HRF"<<
+                            "29:"<<
+                            "30:current_VB"<<
+                            "31:"<<
+                            "32:current_VF"<<
+                            "33:"<<
+                            "34:current_VL"<<
+                            "35:"<<
+                            "36:current_VR"<<
+                            "37:"<<
+                            "38:velocity_HLB"<<
+                            "39:velocity_HLF"<<
+                            "40:velocity_HRB"<<
+                            "41:velocity_HRF"<<
+                            "42:velocity_VB"<<
+                            "43:velocity_VF"<<
+                            "44:velocity_VL"<<
+                            "45:velocity_VR"<<
+                            "46:current_light"<<
+                            "47:"<<
+                            "48:current_bottom_light"<<
+                            "49:"<<
+                            "50:current_arar"<<
+                            "51:"<<
+                            "52:current_grab"<<
+                            "53:"<<
+                            "54:current_grab_rotate"<<
+                            "55:"<<
+                            "56:current_tilt"<<
+                            "57:"<<
+                            "58:"<<
+                            "59:"<<
+                            "60:"<<
+                            "61:checksum"<<
+                            "62:";
+
+        labels_request << "0:code"<<
+                          "1:"<<
+                          "2:march"<<
+                          "3:"<<
+                          "4:lag"<<
+                          "5:"<<
+                          "6:depth"<<
+                          "7:"<<
+                          "8:roll"<<
+                          "9:"<<
+                          "10:pitch"<<
+                          "11:"<<
+                          "12:yaw"<<
+                          "13:"<<
+                          "14:light"<<
+                          "15:grab"<<
+                          "16:tilt"<<
+                          "17:rotate"<<
+                          "18:bt"<<
+                          "19:bottom_light"<<
+                          "20:stabilize_depth"<<
+                          "21:stabilize_roll"<<
+                          "22:stabilize_pitch"<<
+                          "23:stabilize_yaw"<<
+                          "24:reset_IMU"<<
+                          "25:checksum"<<
+                          "26:";
+
 
 
     for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {

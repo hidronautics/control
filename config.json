@@ -1,11 +1,13 @@
 {
     "connection": {
-        "baudRate": -1,
+        "baudRate": 57600,
         "comNumber": 1,
-        "dataBits": -1,
-        "flowControl": "hardware",
-        "parity": "odd",
-        "stopBits": "oneandhalf"
+        "dataBits": 8,
+        "flowControl": "no",
+        "parity": "no",
+        "pauseAfterReceived": 0,
+        "pauseAfterSent": 25,
+        "stopBits": "one"
     },
     "motors": [
         {
@@ -77,7 +79,7 @@
         "depth": {
             "const_time": false,
             "gain": 0,
-            "k1": 0.0005000000237487257,
+            "k1": 0,
             "k2": 0,
             "start": 0
         },

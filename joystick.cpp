@@ -80,11 +80,13 @@ void Joystick::updateJoystick() {
     this->depth = +
                  joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
 
-    this->light = +
-                 joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
+    //this->light = +
+    //             joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
 
     this->sensitivity = +
-            (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V) + 100)/200; //Axis Position от -100 до +100
+            (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.)/200.; //Axis Position от -100 до +100
+
+    std::cout << sensitivity << std::endl;
 
     this->pitch *= sensitivity;
     this->roll *= sensitivity;
