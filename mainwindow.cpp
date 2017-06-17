@@ -204,6 +204,9 @@ MainWindow::MainWindow(QWidget *parent) :
                           "24:reset_IMU"<<
                           "25:checksum"<<
                           "26:";
+        for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
+            labels_request << QString::number(27+i);
+        }
 
 
 
@@ -286,6 +289,7 @@ void MainWindow::serverIsSleeping() {
         requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
         requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send[i], 10));
         requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
+        std::cout << i << " < " << request_length << std::endl;
     }
 
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
