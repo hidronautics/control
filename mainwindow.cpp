@@ -113,69 +113,69 @@ MainWindow::MainWindow(QWidget *parent) :
                       "25:checksum"<<
                       "26:";*/
 
-    labels_response <<   "0:roll"<<
-                            "1:"<<
-                            "2:pitch"<<
-                            "3:"<<
-                            "4:yaw"<<
-                            "5:"<<
-                            "6:roll_speed"<<
-                            "7:"<<
-                            "8:pitch_speed"<<
-                            "9:"<<
-                            "10:yaw_speed"<<
-                            "11:"<<
-                            "12:pressure"<<
-                            "13:"<<
-                            "14:Bluetooth"<<
-                            "15:"<<
-                            "16:"<<
-                            "17:"<<
-                            "18:"<<
-                            "19:"<<
-                            "20:"<<
-                            "21:"<<
-                            "22:current_HLB"<<
-                            "23:"<<
-                            "24:current_HLF"<<
-                            "25:"<<
-                            "26:current_HRB"<<
-                            "27:"<<
-                            "28:current_HRF"<<
-                            "29:"<<
-                            "30:current_VB"<<
-                            "31:"<<
-                            "32:current_VF"<<
-                            "33:"<<
-                            "34:current_VL"<<
-                            "35:"<<
-                            "36:current_VR"<<
-                            "37:"<<
-                            "38:velocity_HLB"<<
-                            "39:velocity_HLF"<<
-                            "40:velocity_HRB"<<
-                            "41:velocity_HRF"<<
-                            "42:velocity_VB"<<
-                            "43:velocity_VF"<<
-                            "44:velocity_VL"<<
-                            "45:velocity_VR"<<
-                            "46:current_light"<<
-                            "47:"<<
-                            "48:current_bottom_light"<<
-                            "49:"<<
-                            "50:current_arar"<<
-                            "51:"<<
-                            "52:current_grab"<<
-                            "53:"<<
-                            "54:current_grab_rotate"<<
-                            "55:"<<
-                            "56:current_tilt"<<
-                            "57:"<<
-                            "58:"<<
-                            "59:"<<
-                            "60:"<<
-                            "61:checksum"<<
-                            "62:";
+    labels_response <<  "0:roll"<<
+                        "1:"<<
+                        "2:pitch"<<
+                        "3:"<<
+                        "4:yaw"<<
+                        "5:"<<
+                        "6:roll_speed"<<
+                        "7:"<<
+                        "8:pitch_speed"<<
+                        "9:"<<
+                        "10:yaw_speed"<<
+                        "11:"<<
+                        "12:pressure"<<
+                        "13:"<<
+                        "14:Bluetooth"<<
+                        "15:"<<
+                        "16:"<<
+                        "17:"<<
+                        "18:"<<
+                        "19:"<<
+                        "20:"<<
+                        "21:"<<
+                        "22:current_HLB"<<
+                        "23:"<<
+                        "24:current_HLF"<<
+                        "25:"<<
+                        "26:current_HRB"<<
+                        "27:"<<
+                        "28:current_HRF"<<
+                        "29:"<<
+                        "30:current_VB"<<
+                        "31:"<<
+                        "32:current_VF"<<
+                        "33:"<<
+                        "34:current_VL"<<
+                        "35:"<<
+                        "36:current_VR"<<
+                        "37:"<<
+                        "38:velocity_HLB"<<
+                        "39:velocity_HLF"<<
+                        "40:velocity_HRB"<<
+                        "41:velocity_HRF"<<
+                        "42:velocity_VB"<<
+                        "43:velocity_VF"<<
+                        "44:velocity_VL"<<
+                        "45:velocity_VR"<<
+                        "46:current_light"<<
+                        "47:"<<
+                        "48:current_bottom_light"<<
+                        "49:"<<
+                        "50:current_arar"<<
+                        "51:"<<
+                        "52:current_grab"<<
+                        "53:"<<
+                        "54:current_grab_rotate"<<
+                        "55:"<<
+                        "56:current_tilt"<<
+                        "57:"<<
+                        "58:"<<
+                        "59:"<<
+                        "60:"<<
+                        "61:checksum"<<
+                        "62:";
 
         labels_request << "0:code"<<
                           "1:"<<
@@ -204,10 +204,6 @@ MainWindow::MainWindow(QWidget *parent) :
                           "24:reset_IMU"<<
                           "25:checksum"<<
                           "26:";
-        for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
-            labels_request << QString::number(27+i);
-        }
-
 
 
     for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
@@ -289,7 +285,6 @@ void MainWindow::serverIsSleeping() {
         requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
         requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send[i], 10));
         requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
-        std::cout << i << " < " << request_length << std::endl;
     }
 
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
@@ -340,11 +335,26 @@ void MainWindow::serverIsSleeping() {
     ui->lcdNumber_velocity_Rotate->display(QString::number(server->current_grab_rotate));
     ui->lcdNumber_velocity_Tilt->display(QString::number(server->current_tilt));
 
+    ui->lcdNumber_Lost->display(server->msg_lost_counter);
+    ui->lcdNumber_Received->display(server->msg_received_counter);
+    ui->lcdNumber_Percent->display(server->msg_lost_percent);
+
+    ui->checkBox_SDepth->setChecked(joystick->stabilize_depth);
+    ui->checkBox_SRoll->setChecked(joystick->stabilize_roll);
+    ui->checkBox_SPitch->setChecked(joystick->stabilize_pitch);
+
+    std::cout << "STABILIZE DEPTH = " << joystick->stabilize_depth << std::endl;
+    std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
+    std::cout << "STABILIZE PITCH = " << joystick->stabilize_pitch << std::endl;
+
     ui->graphicsPFD_2->setRoll(server->imu_roll);
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
     ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
     ui->graphicsPFD_2->setHeading(server->imu_yaw);
     ui->graphicsPFD_2->setAltitude(server->imu_depth);
+
+
+
     ui->graphicsPFD_2->update();
 }
 
@@ -603,4 +613,9 @@ void MainWindow::on_spinBox_PauseAfterSent_valueChanged(int arg1)
 void MainWindow::on_spinBox_PauseAfterReceived_valueChanged(int arg1)
 {
     settings->connection->pause_after_received = arg1;
+}
+
+void MainWindow::on_checkBox_2_toggled(bool checked)
+{
+    joystick->inverseDepth = checked;
 }
