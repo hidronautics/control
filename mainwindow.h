@@ -93,6 +93,12 @@ private slots:
 
     void on_checkBox_2_toggled(bool checked);
 
+    void on_checkBox_SDepth_toggled(bool checked);
+
+    void on_checkBox_SRoll_toggled(bool checked);
+
+    void on_checkBox_SPitch_toggled(bool checked);
+
 signals:
     void newValues(int* vals);\
 

@@ -619,3 +619,18 @@ void MainWindow::on_checkBox_2_toggled(bool checked)
 {
     joystick->inverseDepth = checked;
 }
+
+void MainWindow::on_checkBox_SDepth_toggled(bool checked)
+{
+    joystick->stabilize_depth = checked;
+}
+
+void MainWindow::on_checkBox_SRoll_toggled(bool checked)
+{
+    joystick->stabilize_roll = checked;
+}
+
+void MainWindow::on_checkBox_SPitch_toggled(bool checked)
+{
+    joystick->stabilize_pitch = checked;
+}
