@@ -113,11 +113,7 @@ MainWindow::MainWindow(QWidget *parent) :
                       "25:checksum"<<
                       "26:";*/
 
-<<<<<<< HEAD
-labels_response <<   "0:roll"<<
-=======
     labels_response <<  "0:roll"<<
->>>>>>> d9a5c34084645c4ae7230f425e8059118c6fd77b
                         "1:"<<
                         "2:pitch"<<
                         "3:"<<
