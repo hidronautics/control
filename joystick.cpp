@@ -104,6 +104,10 @@ void Joystick::updateJoystick() {
     this->btn_grab        = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB);
     this->btn_grab_strong = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB_STRONG);
     this->btn_ungrab      = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_UNGRAB);
+    this->btn_agar_forward= sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_AGAR_FORWARD);
+    this->btn_agar_reverse= sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_AGAR_REVERSE);
+    this->btn_bottom_light= sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_BOTTOM_LIGHT);
+
     this->btn_tilt_up     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_UP);
     this->btn_tilt_down     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_DOWN);
 
@@ -125,6 +129,18 @@ void Joystick::updateJoystick() {
         tilt = -60;
     else
         tilt = 0;
+
+    if (btn_agar_forward)
+        agar = 127;
+    else if (btn_agar_reverse)
+        agar = -127;
+    else
+        agar = 0;
+
+    if (btn_bottom_light)
+        bottom_light = -126;
+    else
+        bottom_light = 0;
 
 }
 

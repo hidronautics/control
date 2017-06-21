@@ -26,10 +26,12 @@ public:
     int8_t grab        = 0;      //[-127,127]
     int8_t grab_rotate = 0;      //[-127,127]?
     int8_t tilt        = 0;      //[-127,127]
+    int8_t agar        = 0;
+    int8_t bottom_light= 0;      //[-127, 127]
 
     int8_t bt           =0;     //BOOL
 
-    int8_t bottom_light  = 0;   //[-127, 127]
+
 
     float sensitivity = 0.0;    //[0.0,1.0]
 
@@ -38,6 +40,9 @@ public:
     bool btn_grab        = false;  // 0
     bool btn_grab_strong = false;  // 14
     bool btn_ungrab      = false;  // 5
+    bool btn_agar_forward= false;  // ???
+    bool btn_agar_reverse= false;  // ???
+    bool btn_bottom_light= false;  // ???
 
 
     bool btn_tilt_up      = false;  // 19
@@ -60,6 +65,9 @@ private:
     const int SFML_BTN_GRAB        = 0;
     const int SFML_BTN_GRAB_STRONG = 14;
     const int SFML_BTN_UNGRAB      = 5;
+    const int SFML_BTN_AGAR_FORWARD= 23;
+    const int SFML_BTN_AGAR_REVERSE= 25;
+    const int SFML_BTN_BOTTOM_LIGHT= 15;
 
     const int SFML_BTN_TILT_UP = 19;
     const int SFML_BTN_TILT_DOWN = 21;

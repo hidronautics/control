@@ -98,6 +98,7 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_GRAB]       = j->grab;
     msg_to_send[REQUEST_NORMAL_BT]       = j->bt;
     msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;
+    msg_to_send[REQUEST_NORMAL_BT] = j->agar;
     msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
     msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
 
