@@ -9,6 +9,8 @@ Server::Server(QObject *parent) : QObject(parent)
     newPort = 0;
     nextMessageType = 0xA5;
     currentMessageType = 0xA5;
+    msg_lost_counter = 0;
+    msg_received_counter = 0;
 }
 
 bool Server::COMconnect(int com_num)
@@ -102,15 +104,15 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
     msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
 
-    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = false;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = false;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = false;
+    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = j->stabilize_depth;
+    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = j->stabilize_roll;
+    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = j->stabilize_pitch;
     msg_to_send[REQUEST_NORMAL_STABILIZE_YAW] = false;
     msg_to_send[REQUEST_NORMAL_RESET_IMU] = false;
 
     addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
 
-    std::cout << "Sending NORMAL message:" << std::endl;
+    //std::cout << "Sending NORMAL message:" << std::endl;
     /*for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     }*/
@@ -118,6 +120,7 @@ void Server::sendMessageNormal()
     newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
 
     emit imSleeping();
+
     QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
@@ -141,7 +144,7 @@ void Server::sendMessageDirect() {
 
     addCheckSumm16b(msg_to_send, REQUEST_DIRECT_LENGTH);
 
-    std::cout << "Sending DIRECT message:" << std::endl;
+    //std::cout << "Sending DIRECT message:" << std::endl;
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     }
@@ -284,10 +287,10 @@ void Server::sendMessageConfig() {
 
     addCheckSumm16b(msg_to_send, REQUEST_CONFIG_LENGTH);
 
-    std::cout << "Sending CONFIG message:" << std::endl;
-    for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
-        std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    }
+    //std::cout << "Sending CONFIG message:" << std::endl;
+    //for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
+    //    std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
+    //}
 
     newPort->write((char*)msg_to_send, REQUEST_CONFIG_LENGTH);
 
@@ -299,7 +302,9 @@ void Server::sendMessageConfig() {
 
 
 void Server::receiveMessage() {
+    newPort->waitForReadyRead(25);
     int buffer_size = newPort->bytesAvailable();
+
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
 
 
@@ -344,12 +349,21 @@ void Server::receiveMessage() {
         bt_data = "testMSG";
 
 
-    } else if (buffer_size == 0)
+    } else if (buffer_size == 0) {
         std::cout << "No message to read. Buffer is empty" << std::endl;
-    else if (buffer_size != RESPONSE_LENGTH) {
-        std::cout << "Wrong response message size! Got " << buffer_size << ", when " << RESPONSE_LENGTH << " expected." << std::endl;
-        newPort->readAll();
+        msg_lost_counter++;
     } else {
+        int counter = 0;
+        while (true) {
+            int bytesAvailible = newPort->bytesAvailable();
+            if (bytesAvailible % RESPONSE_LENGTH == 0) {
+                break;
+            } else if (counter > 250000) {
+                newPort->clear();
+            } else {
+                counter++;
+            }
+        }
         msg_in = newPort->readAll();
 
         std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
@@ -357,18 +371,20 @@ void Server::receiveMessage() {
 
         if (isCheckSumm16bCorrect((uint8_t*) msg_in.data(), RESPONSE_LENGTH)) {
             std::cout << "OK" << std::endl;
+            msg_received_counter++;
         } else {
             std::cout << "INCORRECT!" << std::endl;
+            msg_lost_counter++;
             return;
         }
 
-        imu_roll = msg_in[RESPONSE_ROLL];
-        imu_pitch = msg_in[RESPONSE_PITCH];
-        imu_yaw = msg_in[RESPONSE_YAW];
+        imu_roll = (int16_t) (msg_in[RESPONSE_ROLL]) << 8 | msg_in[RESPONSE_ROLL+1];
+        imu_pitch = (int16_t) (msg_in[RESPONSE_PITCH]) << 8 | msg_in[RESPONSE_PITCH+1];
+        imu_yaw = (int16_t) (msg_in[RESPONSE_YAW]) << 8 | msg_in[RESPONSE_YAW+1];
 
-        imu_roll_speed = msg_in[RESPONSE_ROLL_SPEED];
-        imu_pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
-        imu_yaw_speed = msg_in[RESPONSE_YAW_SPEED];
+        imu_roll_speed = (int16_t) (msg_in[RESPONSE_ROLL_SPEED]) << 8 | msg_in[RESPONSE_ROLL_SPEED+1];
+        imu_pitch_speed = (int16_t) (msg_in[RESPONSE_PITCH_SPEED]) << 8 | msg_in[RESPONSE_PITCH_SPEED+1];
+        imu_yaw_speed = (int16_t) (msg_in[RESPONSE_YAW_SPEED]) << 8 | msg_in[RESPONSE_YAW_SPEED+1];
 
         imu_depth = msg_in[RESPONSE_PRESSURE]; // Pressure вместо depth
 
@@ -420,14 +436,24 @@ void Server::receiveMessage() {
 
         uint16_t motor_errors = msg_in[RESPONSE_VMA_ERRORS];
 
+
+
+        /*
         std::cout << "Received  data:" << std::endl;
-        std::cout << "roll" << imu_roll << "pitch" << imu_pitch << "yaw" << imu_yaw << std::endl;
+        std::cout << "roll " << imu_roll << "pitch " << imu_pitch << "yaw " << imu_yaw << std::endl;
         std::cout << "roll_speed" << imu_roll_speed << "pitch_speed" << imu_pitch_speed << "yaw_speed" << imu_yaw_speed << std::endl;
         std::cout << "temperature=" << temperature << " pressure=" << pressure << std::endl;
         std::cout << "bluetooth: " << bt << std::endl;
         std::cout << "motor_errors" << motor_errors << std::endl;
+        */
     }
     //QTest::qSleep (settings->connection->pause_after_received);
+    msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter+ (float)msg_lost_counter);
+    msg_lost_percent *= 100;
+
+    std::cout << "RECEIVED = " << msg_received_counter << std::endl;
+    std::cout << "LOST = " << msg_lost_counter << std::endl;
+    std::cout << "LOST PERCENT = " << msg_lost_percent << std::endl;
 }
 
 

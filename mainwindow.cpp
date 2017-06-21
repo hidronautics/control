@@ -113,7 +113,11 @@ MainWindow::MainWindow(QWidget *parent) :
                       "25:checksum"<<
                       "26:";*/
 
+<<<<<<< HEAD
 labels_response <<   "0:roll"<<
+=======
+    labels_response <<  "0:roll"<<
+>>>>>>> d9a5c34084645c4ae7230f425e8059118c6fd77b
                         "1:"<<
                         "2:pitch"<<
                         "3:"<<
@@ -204,10 +208,6 @@ labels_response <<   "0:roll"<<
                           "24:reset_IMU"<<
                           "25:checksum"<<
                           "26:";
-        for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
-            labels_request << QString::number(27+i);
-        }
-
 
 
     for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
@@ -289,7 +289,6 @@ void MainWindow::serverIsSleeping() {
         requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
         requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send[i], 10));
         requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
-        std::cout << i << " < " << request_length << std::endl;
     }
 
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
@@ -340,11 +339,26 @@ void MainWindow::serverIsSleeping() {
     ui->lcdNumber_velocity_Rotate->display(QString::number(server->current_grab_rotate));
     ui->lcdNumber_velocity_Tilt->display(QString::number(server->current_tilt));
 
+    ui->lcdNumber_Lost->display(server->msg_lost_counter);
+    ui->lcdNumber_Received->display(server->msg_received_counter);
+    ui->lcdNumber_Percent->display(server->msg_lost_percent);
+
+    ui->checkBox_SDepth->setChecked(joystick->stabilize_depth);
+    ui->checkBox_SRoll->setChecked(joystick->stabilize_roll);
+    ui->checkBox_SPitch->setChecked(joystick->stabilize_pitch);
+
+    std::cout << "STABILIZE DEPTH = " << joystick->stabilize_depth << std::endl;
+    std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
+    std::cout << "STABILIZE PITCH = " << joystick->stabilize_pitch << std::endl;
+
     ui->graphicsPFD_2->setRoll(server->imu_roll);
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
     ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
     ui->graphicsPFD_2->setHeading(server->imu_yaw);
     ui->graphicsPFD_2->setAltitude(server->imu_depth);
+
+
+
     ui->graphicsPFD_2->update();
 }
 
@@ -603,4 +617,24 @@ void MainWindow::on_spinBox_PauseAfterSent_valueChanged(int arg1)
 void MainWindow::on_spinBox_PauseAfterReceived_valueChanged(int arg1)
 {
     settings->connection->pause_after_received = arg1;
+}
+
+void MainWindow::on_checkBox_2_toggled(bool checked)
+{
+    joystick->inverseDepth = checked;
+}
+
+void MainWindow::on_checkBox_SDepth_toggled(bool checked)
+{
+    joystick->stabilize_depth = checked;
+}
+
+void MainWindow::on_checkBox_SRoll_toggled(bool checked)
+{
+    joystick->stabilize_roll = checked;
+}
+
+void MainWindow::on_checkBox_SPitch_toggled(bool checked)
+{
+    joystick->stabilize_pitch = checked;
 }

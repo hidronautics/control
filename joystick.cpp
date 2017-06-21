@@ -79,7 +79,7 @@ void Joystick::updateJoystick() {
                  joystickFloatToInt16_t(sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::X));
     this->depth = +
                  joystickFloatToInt16_t((-sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::Z)+100.0)/2);
-
+    if(inverseDepth)depth=-depth;
     //this->light = +
     //             joystickFloatToInt8_t((sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::U) + 100.0)/2);
 
@@ -110,6 +110,35 @@ void Joystick::updateJoystick() {
 
     this->btn_tilt_up     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_UP);
     this->btn_tilt_down     = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_TILT_DOWN);
+
+    this->btn_stabilize_depth = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_DEPTH);
+    this->btn_stabilize_roll  = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_ROLL);
+    this->btn_stabilize_pitch = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_PITCH);
+
+    if (this->btn_stabilize_depth != false) {
+        if (btn_stabilize_depth_delay <= 0) {
+            stabilize_depth = !stabilize_depth;
+            btn_stabilize_depth_delay = BTN_DELAY;
+        }
+    }
+    if (btn_stabilize_depth_delay > 0) btn_stabilize_depth_delay--;
+
+    if (this->btn_stabilize_roll != false) {
+        if (btn_stabilize_roll_delay <= 0) {
+            stabilize_roll = !stabilize_roll;
+            btn_stabilize_roll_delay = BTN_DELAY;
+        }
+    }
+    if (btn_stabilize_roll_delay > 0) btn_stabilize_roll_delay--;
+
+    if (this->btn_stabilize_pitch != false) {
+        if (btn_stabilize_pitch_delay <= 0) {
+            stabilize_pitch = !stabilize_pitch;
+            btn_stabilize_pitch_delay = BTN_DELAY;
+        }
+    }
+    if (btn_stabilize_pitch_delay > 0) btn_stabilize_pitch_delay--;
+
 
     if (btn_depth_inv)
         depth = -depth;

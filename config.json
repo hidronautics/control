@@ -6,7 +6,7 @@
         "flowControl": "no",
         "parity": "no",
         "pauseAfterReceived": 0,
-        "pauseAfterSent": 25,
+        "pauseAfterSent": 50,
         "stopBits": "one"
     },
     "motors": [

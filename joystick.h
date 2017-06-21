@@ -35,6 +35,7 @@ public:
 
     float sensitivity = 0.0;    //[0.0,1.0]
 
+    bool inverseDepth;
 
     bool btn_depth_inv   = false;  // 6
     bool btn_grab        = false;  // 0
@@ -54,6 +55,18 @@ public:
     bool isControlKeyboard = false;
     bool isControlXbox     = false;
 
+    bool btn_stabilize_depth = false;
+    bool btn_stabilize_roll  = false;
+    bool btn_stabilize_pitch = false;
+
+    int btn_stabilize_depth_delay = 0;
+    int btn_stabilize_roll_delay = 0;
+    int btn_stabilize_pitch_delay = 0;
+
+    bool stabilize_depth = false;
+    bool stabilize_roll  = false;
+    bool stabilize_pitch = false;
+
     explicit Joystick(QObject *parent = 0);
     bool init(int joystick_id);
     void update();    
@@ -69,10 +82,16 @@ private:
     const int SFML_BTN_AGAR_REVERSE= 25;
     const int SFML_BTN_BOTTOM_LIGHT= 15;
 
+    const int SFML_BTN_STABILIZE_DEPTH = 9;
+    const int SFML_BTN_STABILIZE_ROLL  = 11;
+    const int SFML_BTN_STABILIZE_PITCH = 13;
+
     const int SFML_BTN_TILT_UP = 19;
     const int SFML_BTN_TILT_DOWN = 21;
 
     const int SFML_BTN_BT = 22;
+
+    const int BTN_DELAY = 5;
 
     // Пока не используется
     sf::Joystick::Axis SFML_AXIS_PITCH = sf::Joystick::PovY;

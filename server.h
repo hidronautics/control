@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QTest>
+#include <QDebug>
 #include <qtimer.h>
 #include <stdint.h>
 #include <messages.h>
@@ -80,6 +81,10 @@ public:
 
     uint16_t err_vma;
     uint16_t err_dev;
+
+    uint16_t msg_received_counter;
+    uint16_t msg_lost_counter;
+    float msg_lost_percent;
 
     QString bt_data;
 
