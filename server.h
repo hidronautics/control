@@ -41,6 +41,12 @@ public:
 
     QTimer *sendTimer;
 
+    QFile file_csv_response;
+    QFile file_csv_request;
+
+    QTextStream stream_response;
+    QTextStream stream_request;
+
     Settings* settings;
 
     float temperature = 0;
@@ -87,11 +93,14 @@ public:
     float msg_lost_percent;
 
     QString bt_data;
+    QString path_csv_request;
+    QString path_csv_response;
 
     bool emulation_mode = false;
 
 private:
     QSerialPort *newPort;
+    const QString log_folder_path = "C:\\logs\\";
 
     bool COMconnect(int com_name);
 
@@ -106,8 +115,9 @@ private:
     void addFloat(uint8_t * msg, int position, float val);
     void addSNP(uint8_t * msg);
 
-    float encodeTemperature(uint8_t MS, uint8_t LS);
+    //float encodeTemperature(uint8_t MS, uint8_t LS);
 
+    void writeCSV(QTextStream* stream, uint8_t * msg, uint16_t length);
 
 
 signals:

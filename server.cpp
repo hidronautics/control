@@ -45,6 +45,7 @@ bool Server::COMconnect(int com_num)
         emit info("Unable to open serial port");
         return false;
     }
+
     return true;
 }
 
@@ -116,6 +117,23 @@ void Server::sendMessageNormal()
     /*for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     }*/
+    //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
+
+
+    //path_csv_request = log_folder_path + "REQUEST_" + QDateTime::currentDateTime().toString() + ".csv";
+    path_csv_request = log_folder_path + "REQUEST.csv";
+    QFile file_csv_request(path_csv_request);
+    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QTextStream stream_request(&file_csv_request);
+        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+        stream_request << " ;" << j->roll;
+        stream_request << " ;" << j->pitch;
+        stream_request << '\n';
+        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
+    } else {
+        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
+    }
+
 
     newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
 
@@ -292,6 +310,8 @@ void Server::sendMessageConfig() {
     //    std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     //}
 
+
+
     newPort->write((char*)msg_to_send, REQUEST_CONFIG_LENGTH);
 
     emit imSleeping();
@@ -302,10 +322,12 @@ void Server::sendMessageConfig() {
 
 
 void Server::receiveMessage() {
-    newPort->waitForReadyRead(25);
+    if(!emulation_mode) newPort->waitForReadyRead(25);
     int buffer_size = newPort->bytesAvailable();
-
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
+
+
+
 
 
     if (emulation_mode){
@@ -353,6 +375,8 @@ void Server::receiveMessage() {
         std::cout << "No message to read. Buffer is empty" << std::endl;
         msg_lost_counter++;
     } else {
+
+
         int counter = 0;
         while (true) {
             int bytesAvailible = newPort->bytesAvailable();
@@ -365,6 +389,21 @@ void Server::receiveMessage() {
             }
         }
         msg_in = newPort->readAll();
+
+        //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
+        path_csv_response = log_folder_path + "RESPONSE.csv";
+        QFile file_csv_response(path_csv_response);
+        if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
+            QTextStream stream_response(&file_csv_response);
+            stream_response << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+            stream_response << " ;" << imu_roll;
+            stream_response << " ;" << imu_pitch;
+            stream_response << " ;" << imu_roll_speed;
+            stream_response << " ;" << imu_pitch_speed;
+            stream_response << '\n';
+            std::cout << "Response file opened at " << path_csv_response.toStdString() << std::endl;
+        }
+
 
         std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
         std::cout << "Checksum...";
@@ -553,6 +592,14 @@ void Server::addSNP(uint8_t * msg) {
     if (bit_power_minus_4) temperature += 0.0625;
     return temperature;
 }*/
+
+void writeCSV(QTextStream stream, uint8_t * msg, uint16_t length) {
+    stream << QTime::currentTime().toString();
+    for(int i=0; i < length; i++){
+        stream << "," << msg[i];
+    }
+    stream << "\n";
+}
 
 Server::~Server() {
     std::cout << "Server shutting down..." << std::endl;
