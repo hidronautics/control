@@ -38,6 +38,8 @@ void Joystick::update() {
     std::cout << "march=" << march << "  lag=" << lag  << " depth="      << depth << std::endl;
     std::cout << "light=" << light << " grab=" << grab << "sensitivity=" << sensitivity << std::endl;
     //std::cout << "tilt =" << tilt  << " grab2_squeeze=" << grab2_squeeze << "grab2_rotate" << grab2_rotate << std::endl;
+
+
 }
 
 void Joystick::printButtons() {
