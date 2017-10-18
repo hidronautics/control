@@ -37,6 +37,8 @@ public:
 
     bool inverseDepth;
 
+
+
     bool btn_depth_inv   = false;  // 6
     bool btn_grab        = false;  // 0
     bool btn_grab_strong = false;  // 14

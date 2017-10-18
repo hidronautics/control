@@ -123,6 +123,7 @@ void Joystick::updateJoystick() {
             btn_stabilize_depth_delay = BTN_DELAY;
         }
     }
+
     if (btn_stabilize_depth_delay > 0) btn_stabilize_depth_delay--;
 
     if (this->btn_stabilize_roll != false) {

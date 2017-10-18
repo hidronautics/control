@@ -46,6 +46,8 @@ bool Server::COMconnect(int com_num)
         return false;
     }
 
+
+
     return true;
 }
 
@@ -128,6 +130,8 @@ void Server::sendMessageNormal()
         stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
         stream_request << " ;" << j->roll;
         stream_request << " ;" << j->pitch;
+        stream_request << " ;" << j->yaw;
+        stream_request << " ;" << j->depth;
         stream_request << '\n';
         std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
     } else {

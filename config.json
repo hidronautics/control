@@ -14,7 +14,7 @@
             "code": "VF",
             "enabled": true,
             "inverse": false,
-            "k_backward": 1,
+            "k_backward": 1.2,
             "k_forward": 1,
             "slot": 0
         },
