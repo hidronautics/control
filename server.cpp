@@ -1,49 +1,53 @@
 #include "server.h"
 
-const int MAX_COM_ID = 42;
+const int MAX_COM_ID = 20;
 
 Server::Server(QObject *parent) : QObject(parent)
 {
     sendTimer = new QTimer(this);
     connect(sendTimer, SIGNAL(timeout()), this, SLOT( sendMessage() ));
     newPort = 0;
-    nextMessageType = 0xFF;
-    currentMessageType = 0xFF;
+    nextMessageType = 0xA5;
+    currentMessageType = 0xA5;
+    msg_lost_counter = 0;
+    msg_received_counter = 0;
 }
 
 bool Server::COMconnect(int com_num)
 {
-    int openFlag;
+    int isOpened = false;
 
     QString str = "COM";
     str.append(QString::number(com_num));
 
-    std::cout << "Trying to open port |" << str.toStdString() << "|" << std::endl;
+    std::cout << "Trying to open port |" << str.toStdString() << "|...";
 
     newPort = new QSerialPort(str);
-    newPort->setBaudRate(QSerialPort::Baud57600, QSerialPort::AllDirections);
-    newPort->setDataBits(QSerialPort::Data8);
-    newPort->setParity(QSerialPort::NoParity);
-    newPort->setStopBits(QSerialPort::OneStop);
-    newPort->setFlowControl(QSerialPort::NoFlowControl);
+    newPort->setBaudRate(settings->connection->baudRate, QSerialPort::AllDirections);
+    newPort->setDataBits(settings->connection->dataBits);
+    newPort->setParity(settings->connection->parity);
+    newPort->setStopBits(settings->connection->stopBits);
+    newPort->setFlowControl(settings->connection->flowControl);
 
-    std::cout << "Initializing port COM" << com_num << std::endl;
     try {
-        openFlag = newPort->open(QIODevice::ReadWrite);
+        isOpened = newPort->open(QIODevice::ReadWrite);
     } catch(...) {
-        std::cout << "Serial port openning error" << std::endl;
+        std::cout << " serial port openning error" << std::endl;
         emit info("Serial port openning error");
         return false;
     }
 
-    if (openFlag) {
-        std::cout << "Serial port was successfully opened!" << std::endl;
+    if (isOpened) {
+        std::cout << " successfully opened!" << std::endl;
         sendTimer->start(REQUEST_DELAY);
     } else {
-        std::cout << "Cannot open serial port" << std::endl;
-        emit info("Cannot open serial port");
+        std::cout << ". Unable to open serial port" << std::endl;
+        emit info("Unable to open serial port");
         return false;
     }
+
+
+
     return true;
 }
 
@@ -62,7 +66,7 @@ void Server::sendMessage() {
         sendMessageDirect();
         break;
     default:
-        std::cout << "Unknown current message code!" << std::endl;
+        std::cout << "ERROR: Unknown current message code!" << std::endl;
     }
 }
 
@@ -71,7 +75,7 @@ void Server::sendMessageNormal()
     for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
-
+    //msg_to_send[0] = 0xFF;
     j->update();
 
     msg_to_send[REQUEST_NORMAL_TYPE] = REQUEST_NORMAL_CODE;
@@ -99,25 +103,47 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_GRAB]       = j->grab;
     msg_to_send[REQUEST_NORMAL_BT]       = j->bt;
     msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;
+    msg_to_send[REQUEST_NORMAL_BT] = j->agar;
+    msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
+    msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
 
-    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = false;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = false;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = false;
+    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = j->stabilize_depth;
+    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = j->stabilize_roll;
+    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = j->stabilize_pitch;
     msg_to_send[REQUEST_NORMAL_STABILIZE_YAW] = false;
     msg_to_send[REQUEST_NORMAL_RESET_IMU] = false;
 
     addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
 
-
-    std::cout << "Sending NORMAL message:" << std::endl;
-    for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
+    //std::cout << "Sending NORMAL message:" << std::endl;
+    /*for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
+    }*/
+    //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
+
+
+    //path_csv_request = log_folder_path + "REQUEST_" + QDateTime::currentDateTime().toString() + ".csv";
+    path_csv_request = log_folder_path + "REQUEST.csv";
+    QFile file_csv_request(path_csv_request);
+    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QTextStream stream_request(&file_csv_request);
+        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+        stream_request << " ;" << j->roll;
+        stream_request << " ;" << j->pitch;
+        stream_request << " ;" << j->yaw;
+        stream_request << " ;" << j->depth;
+        stream_request << '\n';
+        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
+    } else {
+        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
     }
+
 
     newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
 
     emit imSleeping();
-    QTest::qSleep (REQUEST_TIMEOUT);
+
+    QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
@@ -125,9 +151,9 @@ void Server::sendMessageDirect() {
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
+    msg_to_send[0] = 0xFF;
 
     msg_to_send[REQUEST_DIRECT_TYPE] = REQUEST_DIRECT_CODE;
-    //addSNP(msg_to_send);
 
     msg_to_send[REQUEST_DIRECT_1] = settings->motors[0].speed;
     msg_to_send[REQUEST_DIRECT_2] = settings->motors[1].speed;
@@ -140,7 +166,7 @@ void Server::sendMessageDirect() {
 
     addCheckSumm16b(msg_to_send, REQUEST_DIRECT_LENGTH);
 
-    std::cout << "Sending DIRECT message:" << std::endl;
+    //std::cout << "Sending DIRECT message:" << std::endl;
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     }
@@ -148,7 +174,7 @@ void Server::sendMessageDirect() {
     newPort->write((char*)msg_to_send, REQUEST_DIRECT_LENGTH);
 
     emit imSleeping();
-    QTest::qSleep (REQUEST_TIMEOUT);
+    QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
@@ -156,8 +182,7 @@ void Server::sendMessageConfig() {
     for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
-
-    //addSNP(msg_to_send);
+    msg_to_send[0] = 0xFF;
     msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
     msg_to_send[REQUEST_CONFIG_CONST_TIME_DEPTH]    = settings->depth.const_time;
@@ -284,82 +309,245 @@ void Server::sendMessageConfig() {
 
     addCheckSumm16b(msg_to_send, REQUEST_CONFIG_LENGTH);
 
-    std::cout << "Sending CONFIG message:" << std::endl;
-    for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
-        std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    }
+    //std::cout << "Sending CONFIG message:" << std::endl;
+    //for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
+    //    std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
+    //}
+
+
 
     newPort->write((char*)msg_to_send, REQUEST_CONFIG_LENGTH);
 
     emit imSleeping();
-    QTest::qSleep (REQUEST_TIMEOUT);
+    QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
 
 
-
-
 void Server::receiveMessage() {
+    if(!emulation_mode) newPort->waitForReadyRead(25);
     int buffer_size = newPort->bytesAvailable();
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
-    if (buffer_size == 0)
+
+
+
+
+
+    if (emulation_mode){
+        std::cout << "WARNING: Emulation mode" << std::endl;
+
+        imu_roll = imu_roll + j->roll/10000;
+        imu_pitch = imu_pitch + j->pitch/10000;
+        imu_yaw = imu_yaw + j->yaw/10000;
+
+        imu_roll_speed = j->roll/10000;
+        imu_pitch_speed = j->pitch/10000;
+        imu_yaw_speed = j->yaw/10000;
+
+        imu_depth = imu_depth + j->depth/10000;
+
+        current_HLB = 1;
+        current_HLF = 11;
+        current_HRB = 111;
+        current_HRF = 1111;
+        current_VB = 11111;
+        current_VF = 234;
+        current_VL = 4567;
+        current_VR = 7808;
+
+        velocity_HLB = 87;
+        velocity_HLF = 89;
+        velocity_HRB = 90;
+        velocity_HRF = 35;
+        velocity_VB = 76;
+        velocity_VF = 88;
+        velocity_VL = 99;
+        velocity_VR = 999;
+
+        current_light = 5;
+        current_bottom_light = 10;
+        current_agar = 15;
+        current_grab = 20;
+        current_grab_rotate = 25;
+        current_tilt = 30;
+
+        bt_data = "testMSG";
+
+
+    } else if (buffer_size == 0) {
         std::cout << "No message to read. Buffer is empty" << std::endl;
-    else if (buffer_size != RESPONSE_LENGTH) {
-        std::cout << "Wrong response message size! Got " << buffer_size << ", when " << RESPONSE_LENGTH << " expected." << std::endl;
-        newPort->readAll();
+        msg_lost_counter++;
     } else {
+
+
+        int counter = 0;
+        while (true) {
+            int bytesAvailible = newPort->bytesAvailable();
+            if (bytesAvailible % RESPONSE_LENGTH == 0) {
+                break;
+            } else if (counter > 250000) {
+                newPort->clear();
+            } else {
+                counter++;
+            }
+        }
         msg_in = newPort->readAll();
+
+        //Add plots
+
+        double key1 = QTime::currentTime().msec()*1000;
+        static double lastPointKey = 0;
+        if (lastPointKey = 0)
+        {
+            plot_window_pitch->addGraph();
+            plot_window_pitch->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
+            plot_window_roll->addGraph();
+            plot_window_roll->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
+            plot_window_roll_speed->addGraph();
+            plot_window_roll_speed->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
+            plot_window_pitch_speed->addGraph();
+            plot_window_pitch_speed->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
+
+
+            //plot_pitch = plot_window_pitch->addGraph();
+            //plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+        }
+
+        lastPointKey = 0.01;
+
+        if (key1-lastPointKey > 0.5)
+        {
+        plot_window_pitch->graph(0)->addData(key1, imu_pitch); // Устанавливаем данные
+        plot_window_pitch->xAxis->setRange(key1, 8, Qt::AlignRight);
+        plot_window_pitch->replot();           // Отрисовываем график
+        plot_window_pitch->graph(0)->rescaleValueAxis(true);
+
+        plot_window_roll->graph(0)->addData(key1, imu_roll); // Устанавливаем данные
+        plot_window_roll->xAxis->setRange(key1, 8, Qt::AlignRight);
+        plot_window_roll->replot();           // Отрисовываем график
+        plot_window_roll->graph(0)->rescaleValueAxis(true);
+
+        plot_window_roll_speed->graph(0)->addData(key1, imu_roll_speed); // Устанавливаем данные
+        plot_window_roll_speed->xAxis->setRange(key1, 8, Qt::AlignRight);
+        plot_window_roll_speed->replot();           // Отрисовываем график
+        plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
+
+        plot_window_pitch_speed->graph(0)->addData(key1, imu_pitch_speed); // Устанавливаем данные
+        plot_window_pitch_speed->xAxis->setRange(key1, 8, Qt::AlignRight);
+        plot_window_pitch_speed->replot();           // Отрисовываем график
+        plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
+
+
+        lastPointKey = key1;
+        }
+        //____________________________________________________
+
+
+        //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
+        path_csv_response = log_folder_path + "RESPONSE.csv";
+        QFile file_csv_response(path_csv_response);
+        if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
+            QTextStream stream_response(&file_csv_response);
+            stream_response << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+            stream_response << " ;" << imu_roll;
+            stream_response << " ;" << imu_pitch;
+            stream_response << " ;" << imu_roll_speed;
+            stream_response << " ;" << imu_pitch_speed;
+            stream_response << '\n';
+            std::cout << "Response file opened at " << path_csv_response.toStdString() << std::endl;
+        }
+
+
 
         std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
         std::cout << "Checksum...";
 
         if (isCheckSumm16bCorrect((uint8_t*) msg_in.data(), RESPONSE_LENGTH)) {
             std::cout << "OK" << std::endl;
+            msg_received_counter++;
         } else {
             std::cout << "INCORRECT!" << std::endl;
+            msg_lost_counter++;
             return;
         }
 
-        int16_t roll = msg_in[RESPONSE_ROLL];
-        int16_t pitch = msg_in[RESPONSE_PITCH];
-        int16_t yaw = msg_in[RESPONSE_YAW];
+        imu_roll = (int16_t) (msg_in[RESPONSE_ROLL]) << 8 | msg_in[RESPONSE_ROLL+1];
+        imu_pitch = (int16_t) (msg_in[RESPONSE_PITCH]) << 8 | msg_in[RESPONSE_PITCH+1];
+        imu_yaw = (int16_t) (msg_in[RESPONSE_YAW]) << 8 | msg_in[RESPONSE_YAW+1];
 
-        roll_sens = msg_in[RESPONSE_ROLL];
-        pitch_sens = msg_in[RESPONSE_PITCH];
-        yaw_sens = msg_in[RESPONSE_YAW];
+        imu_roll_speed = (int16_t) (msg_in[RESPONSE_ROLL_SPEED]) << 8 | msg_in[RESPONSE_ROLL_SPEED+1];
+        imu_pitch_speed = (int16_t) (msg_in[RESPONSE_PITCH_SPEED]) << 8 | msg_in[RESPONSE_PITCH_SPEED+1];
+        imu_yaw_speed = (int16_t) (msg_in[RESPONSE_YAW_SPEED]) << 8 | msg_in[RESPONSE_YAW_SPEED+1];
 
-        int16_t roll_speed = msg_in[RESPONSE_ROLL_SPEED];
-        int16_t pitch_speed = msg_in[RESPONSE_PITCH_SPEED];
-        int16_t yaw_speed = msg_in[RESPONSE_YAW_SPEED];
+        imu_depth = msg_in[RESPONSE_PRESSURE]; // Pressure вместо depth
 
-        roll_speed_sens = msg_in[RESPONSE_ROLL_SPEED];
-        pitch_speed_sens = msg_in[RESPONSE_PITCH_SPEED];
-        yaw_speed_sens = msg_in[RESPONSE_YAW_SPEED];
+        current_HLB = msg_in[RESPONSE_VMA_CURRENT_HLB];
+        current_HLF = msg_in[RESPONSE_VMA_CURRENT_HLF];
+        current_HRB = msg_in[RESPONSE_VMA_CURRENT_HRB];
+        current_HRF = msg_in[RESPONSE_VMA_CURRENT_HRF];
+        current_VB = msg_in[RESPONSE_VMA_CURRENT_VB];
+        current_VF = msg_in[RESPONSE_VMA_CURRENT_VF];
+        current_VL = msg_in[RESPONSE_VMA_CURRENT_VL];
+        current_VR = msg_in[RESPONSE_VMA_CURRENT_VR];
 
-        //uint8_t temperature_MS = msg_in[RESPONSE_TEMPERATURE];
-        //uint8_t temperature_LS = msg_in[RESPONSE_TEMPERATURE+1];
+        velocity_HLB = msg_in[RESPONSE_VMA_VELOCITY_HLB];
+        velocity_HLF = msg_in[RESPONSE_VMA_VELOCITY_HLF];
+        velocity_HRB = msg_in[RESPONSE_VMA_VELOCITY_HRB];
+        velocity_HRF = msg_in[RESPONSE_VMA_VELOCITY_HRF];
+        velocity_VB = msg_in[RESPONSE_VMA_VELOCITY_VB];
+        velocity_VF = msg_in[RESPONSE_VMA_VELOCITY_VF];
+        velocity_VL = msg_in[RESPONSE_VMA_VELOCITY_VL];
+        velocity_VR = msg_in[RESPONSE_VMA_VELOCITY_VR];
+
+        current_light = msg_in[RESPONSE_DEV_CURRENT_1];
+        current_bottom_light = msg_in[RESPONSE_DEV_CURRENT_2];
+        current_agar = msg_in[RESPONSE_DEV_CURRENT_3];
+        current_grab = msg_in[RESPONSE_DEV_CURRENT_4];
+        current_grab_rotate = msg_in[RESPONSE_DEV_CURRENT_5];
+        current_tilt = msg_in[RESPONSE_DEV_CURRENT_6];
+
+
+        err_vma = msg_in[RESPONSE_VMA_ERRORS];
+        err_dev = msg_in[RESPONSE_DEV_ERRORS];
+
+
+        // !!!!! СДВИГИ, ЧТОБЫ ОБРАЗОВАТЬ ПРАВИЛЬНОЕ ЧИСЛО
 
         char bt[8];  //Важно, чтобы история не затерлась! -> логи, выгружаемые на другое устройство
         for (int i = 0; i < 8; ++i) {
-            bt[i] = msg_in[RESPONSE_BT + i];
-            bt_s[i] = bt[i];
+            bt[i] = msg_in[RESPONSE_AGAR + i];
         }
 
+        QString s(bt);
+        bt_data = s;
+
+        //bt_data = QString::fromAscii_helper(bt, 7);
 
         //temperature = encodeTemperature(temperature_MS, temperature_LS);
 
         int16_t pressure = msg_in[RESPONSE_PRESSURE];
 
-        uint16_t motor_errors = msg_in[RESPONSE_MOTOR_ERRORS];
+        uint16_t motor_errors = msg_in[RESPONSE_VMA_ERRORS];
 
+
+
+        /*
         std::cout << "Received  data:" << std::endl;
-        std::cout << "roll" << roll << "pitch" << pitch << "yaw" << yaw << std::endl;
-        std::cout << "roll_speed" << roll_speed << "pitch_speed" << pitch_speed << "yaw_speed" << yaw_speed << std::endl;
+        std::cout << "roll " << imu_roll << "pitch " << imu_pitch << "yaw " << imu_yaw << std::endl;
+        std::cout << "roll_speed" << imu_roll_speed << "pitch_speed" << imu_pitch_speed << "yaw_speed" << imu_yaw_speed << std::endl;
         std::cout << "temperature=" << temperature << " pressure=" << pressure << std::endl;
         std::cout << "bluetooth: " << bt << std::endl;
         std::cout << "motor_errors" << motor_errors << std::endl;
+        */
     }
+    //QTest::qSleep (settings->connection->pause_after_received);
+    msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter+ (float)msg_lost_counter);
+    msg_lost_percent *= 100;
+
+    std::cout << "RECEIVED = " << msg_received_counter << std::endl;
+    std::cout << "LOST = " << msg_lost_counter << std::endl;
+    std::cout << "LOST PERCENT = " << msg_lost_percent << std::endl;
 }
 
 
@@ -371,7 +559,7 @@ uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
 
     crcGot = (uint16_t)( msg[length-1] + (msg[length-2] << 8) );
 
-    for(i=0; i < length - 2; i++){
+    for(i=0; i < length - 2; i++){ //i теперь не с 0, а с 1
         crc = (uint8_t)(crc >> 8) | (crc << 8);
         crc ^= msg[i];
         crc ^= (uint8_t)(crc & 0xff) >> 4;
@@ -384,7 +572,7 @@ uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
     else return 0;
 }
 
-void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)
+void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)//i теперь не с 0, а с 1
 {
     uint16_t crc = 0;
     int i = 0;
@@ -409,7 +597,6 @@ void Server::addFloat(uint8_t * msg, int position, float value) {
 void Server::connect_fake() {
     std::cout << "Warning! Overriding COM port!" << std::endl;
     newPort = new QSerialPort();
-
     sendTimer->start(300);
 }
 
@@ -460,6 +647,14 @@ void Server::addSNP(uint8_t * msg) {
     if (bit_power_minus_4) temperature += 0.0625;
     return temperature;
 }*/
+
+void writeCSV(QTextStream stream, uint8_t * msg, uint16_t length) {
+    stream << QTime::currentTime().toString();
+    for(int i=0; i < length; i++){
+        stream << "," << msg[i];
+    }
+    stream << "\n";
+}
 
 Server::~Server() {
     std::cout << "Server shutting down..." << std::endl;

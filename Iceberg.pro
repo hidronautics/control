@@ -1,6 +1,7 @@
 QT += core serialport testlib
 QT += gui widgets
 QT += svg
+QT += printsupport
 
 TARGET = IcebergNOGUI
 CONFIG += console
@@ -15,7 +16,9 @@ SOURCES += main.cpp \
     joystick.cpp \
     settings.cpp \
     qfi_PFD.cpp \
-    newwindow.cpp
+    newwindow.cpp \
+    logging_categories.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     server.h \
@@ -24,7 +27,9 @@ HEADERS += \
     joystick.h \
     settings.h \
     qfi_PFD.h \
-    newwindow.h
+    newwindow.h \
+    logging_categories.h \
+    qcustomplot.h
 
 DEFINES += SFML_STATIC
 
@@ -39,7 +44,7 @@ CONFIG(debug, debug|release): LIBS += -lsfml-window-d
 
 FORMS += \
     mainwindow.ui \
-    reference.ui
+    bluetooth.ui
 
 RESOURCES += \
     qfi.qrc \

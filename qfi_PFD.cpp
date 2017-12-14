@@ -100,9 +100,9 @@ qfi_PFD::qfi_PFD( QWidget * parent ) :
 
     m_adi = new ADI( m_scene );
     m_alt = new ALT( m_scene );
-//    m_asi = new ASI( m_scene );
+    m_asi = new ASI( m_scene );
     m_hsi = new HSI( m_scene );
-//    m_vsi = new VSI( m_scene );
+    m_vsi = new VSI( m_scene );
 
     init();
 }
@@ -166,18 +166,17 @@ void qfi_PFD::init()
 
     m_adi->init( m_scaleX, m_scaleY );
     m_alt->init( m_scaleX, m_scaleY );
-//    m_asi->init( m_scaleX, m_scaleY );
+    m_asi->init( m_scaleX, m_scaleY );
     m_hsi->init( m_scaleX, m_scaleY );
-//    m_vsi->init( m_scaleX, m_scaleY );
+    m_vsi->init( m_scaleX, m_scaleY );
 
-    m_itemBack = new QGraphicsSvgItem( ":/qfi/images/pfd/pfd_back2.svg" );
+    m_itemBack = new QGraphicsSvgItem( ":/qfi/images/pfd/pfd_back.svg" );
     m_itemBack->setCacheMode( QGraphicsItem::NoCache );
     m_itemBack->setZValue( m_backZ );
     m_itemBack->setTransform( QTransform::fromScale( m_scaleX, m_scaleY ), true );
     m_scene->addItem( m_itemBack );
 
-
-    m_itemMask = new QGraphicsSvgItem( ":/qfi/images/pfd/pfd_back.svg" );
+    m_itemMask = new QGraphicsSvgItem( ":/qfi/images/pfd/pfd_mask.svg" );
     m_itemMask->setCacheMode( QGraphicsItem::NoCache );
     m_itemMask->setZValue( m_maskZ );
     m_itemMask->setTransform( QTransform::fromScale( m_scaleX, m_scaleY ), true );
@@ -205,9 +204,9 @@ void qfi_PFD::updateView()
 
     m_adi->update( m_scaleX, m_scaleY );
     m_alt->update( m_scaleX, m_scaleY );
-//    m_asi->update( m_scaleX, m_scaleY );
+    m_asi->update( m_scaleX, m_scaleY );
     m_hsi->update( m_scaleX, m_scaleY );
-//    m_vsi->update( m_scaleX, m_scaleY );
+    m_vsi->update( m_scaleX, m_scaleY );
 
     m_scene->update();
 }
@@ -617,8 +616,8 @@ void qfi_PFD::ADI::reset()
     m_itemScaleH = 0;
     m_itemScaleV = 0;
 
-    m_roll          = 15;//...........................................................................................
-    m_pitch         = 32;//...........................................................................................
+    m_roll          = 0.0f;
+    m_pitch         = 0.0f;
     m_angleOfAttack = 0.0f;
     m_sideslipAngle = 0.0f;
     m_slipSkid      = 0.0f;
@@ -867,12 +866,9 @@ qfi_PFD::ALT::ALT( QGraphicsScene * scene ) :
     m_itemFrame    ( 0 ),
     m_itemAltitude ( 0 ),
     m_itemPressure ( 0 ),
-    m_itemMask ( 0 ),
 
     m_frameTextColor ( 255, 255, 255 ),
-    m_pressTextColorG (   0, 255,   0 ), //Цвет индикатора давления
-    m_pressTextColorO ( 255, 255,   0 ), //Цвет индикатора давления
-    m_pressTextColorR ( 255,   0,   0 ), //Цвет индикатора давления
+    m_pressTextColor (   0, 255,   0 ),
     m_labelsColor    ( 255, 255, 255 ),
 
     m_altitude ( 0.0f ),
@@ -900,16 +896,16 @@ qfi_PFD::ALT::ALT( QGraphicsScene * scene ) :
     m_originalLabel3Y     ( 200.0f ),
 
     m_originalBackPos     ( 231.0f ,   37.5f ),
-    m_originalScale1Pos   ( 231.0f ,  424.5f ),
-    m_originalScale2Pos   ( 231.0f ,  124.5f ),
+    m_originalScale1Pos   ( 231.0f , -174.5f ),
+    m_originalScale2Pos   ( 231.0f , -474.5f ),
     m_originalGroundPos   ( 231.5f ,  124.5f ),
     m_originalFramePos    ( 225.0f ,  110.0f ),
     m_originalAltitudeCtr ( 254.0f ,  126.0f ),
     m_originalPressureCtr ( 254.0f ,  225.0f ),
 
     m_backZ      (  70 ),
-    m_scaleZ     (  80 ),
-    m_labelsZ    (  80 ),
+    m_scaleZ     (  77 ),
+    m_labelsZ    (  78 ),
     m_groundZ    (  79 ),
     m_frameZ     ( 110 ),
     m_frameTextZ ( 120 )
@@ -1026,21 +1022,7 @@ void qfi_PFD::ALT::init( float scaleX, float scaleY )
     m_itemPressure = new QGraphicsTextItem( QString( "  STD  " ) );
     m_itemPressure->setCacheMode( QGraphicsItem::NoCache );
     m_itemPressure->setZValue( m_frameTextZ );
-
-    //Add
-    if (m_pressure==0)
-      {
-          m_itemPressure->setDefaultTextColor( m_pressTextColorG );
-      }
-    if ((0<m_pressure)&&(m_pressure<=200))
-      {
-          m_itemPressure->setDefaultTextColor( m_pressTextColorO );
-      }
-    if (200<m_pressure)
-      {
-          m_itemPressure->setDefaultTextColor( m_pressTextColorR );
-      }
-
+    m_itemPressure->setDefaultTextColor( m_pressTextColor );
     m_itemPressure->setFont( m_frameTextFont );
     m_itemPressure->setTransform( QTransform::fromScale( m_scaleX, m_scaleY ), true );
     m_itemPressure->moveBy( m_scaleX * ( m_originalPressureCtr.x() - m_itemPressure->boundingRect().width()  / 2.0f ),
@@ -1073,7 +1055,7 @@ void qfi_PFD::ALT::setAltitude( float altitude )
 {
     m_altitude = altitude;
 
-    if      ( m_altitude <-99999.0f ) m_altitude =     0.0f;
+    if      ( m_altitude <     0.0f ) m_altitude =     0.0f;
     else if ( m_altitude > 99999.0f ) m_altitude = 99999.0f;
 }
 
@@ -1107,10 +1089,10 @@ void qfi_PFD::ALT::reset()
     m_itemAltitude = 0;
     m_itemPressure = 0;
 
-    m_altitude = -267.0f;//Высота............................................................................................
-    m_pressure = 345.0f;
+    m_altitude = 0.0f;
+    m_pressure = 0.0f;
 
-    m_pressureUnit = 1;//............................................................................................
+    m_pressureUnit = 0;
 
     m_scale1DeltaY_new = 0.0f;
     m_scale1DeltaY_old = 0.0f;
@@ -1126,7 +1108,7 @@ void qfi_PFD::ALT::reset()
 
 void qfi_PFD::ALT::updateAltitude()
 {
-    m_itemAltitude->setPlainText( QString("%1").arg((-1)*m_altitude, 5, 'f', 0, QChar(' ')) );
+    m_itemAltitude->setPlainText( QString("%1").arg(m_altitude, 5, 'f', 0, QChar(' ')) );
 
     updateScale();
     updateScaleLabels();
@@ -1182,7 +1164,7 @@ void qfi_PFD::ALT::updateScale()
 
 void qfi_PFD::ALT::updateScaleLabels()
 {
-    int tmp = floor(m_altitude + 0.5f );
+    int tmp = floor( m_altitude + 0.5f );
     int alt = tmp - ( tmp % 500 );
 
     float alt1 = (float)alt + 500.0f;
@@ -1207,30 +1189,30 @@ void qfi_PFD::ALT::updateScaleLabels()
     m_itemLabel2->moveBy( 0.0f, m_labelsDeltaY_new - m_labelsDeltaY_old );
     m_itemLabel3->moveBy( 0.0f, m_labelsDeltaY_new - m_labelsDeltaY_old );
 
-    if ( alt1 < 0.0f && alt1 >= -100000.0f )
+    if ( alt1 > 0.0f && alt1 <= 100000.0f )
     {
         m_itemLabel1->setVisible( true );
-        m_itemLabel1->setPlainText( QString("%1").arg((-1)*alt1, 5, 'f', 0, QChar(' ')) );
+        m_itemLabel1->setPlainText( QString("%1").arg(alt1, 5, 'f', 0, QChar(' ')) );
     }
     else
     {
         m_itemLabel1->setVisible( false );
     }
 
-    if ( alt2 < 0.0f && alt2 >= -100000.0f )
+    if ( alt2 > 0.0f && alt2 <= 100000.0f )
     {
         m_itemLabel2->setVisible( true );
-        m_itemLabel2->setPlainText( QString("%1").arg((-1)*alt2, 5, 'f', 0, QChar(' ')) );
+        m_itemLabel2->setPlainText( QString("%1").arg(alt2, 5, 'f', 0, QChar(' ')) );
     }
     else
     {
         m_itemLabel2->setVisible( false );
     }
 
-    if ( alt3 < 0.0f && alt3 >= -100000.0f )
+    if ( alt3 > 0.0f && alt3 <= 100000.0f )
     {
         m_itemLabel3->setVisible( true );
-        m_itemLabel3->setPlainText( QString("%1").arg((-1)*alt3, 5, 'f', 0, QChar(' ')) );
+        m_itemLabel3->setPlainText( QString("%1").arg(alt3, 5, 'f', 0, QChar(' ')) );
     }
     else
     {
@@ -1241,7 +1223,7 @@ void qfi_PFD::ALT::updateScaleLabels()
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-/*
+
 qfi_PFD::ASI::ASI( QGraphicsScene * scene ) :
     m_scene ( scene ),
 
@@ -1258,7 +1240,6 @@ qfi_PFD::ASI::ASI( QGraphicsScene * scene ) :
     m_itemFrame    ( 0 ),
     m_itemAirspeed ( 0 ),
     m_itemMachNo   ( 0 ),
-    m_itemMask ( 0 ),
 
     m_frameTextColor ( 255, 255, 255 ),
     m_labelsColor    ( 255, 255, 255 ),
@@ -1509,8 +1490,8 @@ void qfi_PFD::ASI::reset()
     m_itemAirspeed = 0;
     m_itemMachNo   = 0;
 
-    m_airspeed = 12.0f;//...........................................................................................
-    m_machNo   = 13.0f;
+    m_airspeed = 0.0f;
+    m_machNo   = 0.0f;
 
     m_scale1DeltaY_new = 0.0f;
     m_scale1DeltaY_old = 0.0f;
@@ -1686,7 +1667,7 @@ void qfi_PFD::ASI::updateScaleLabels()
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-*/
+
 qfi_PFD::HSI::HSI( QGraphicsScene * scene ) :
     m_scene ( scene ),
 
@@ -1802,7 +1783,7 @@ void qfi_PFD::HSI::reset()
     m_itemMarks     = 0;
     m_itemFrameText = 0;
 
-    m_heading  = 36;//..............................................................
+    m_heading  = 0.0f;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1819,7 +1800,7 @@ void qfi_PFD::HSI::updateHeading()
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-/*
+
 qfi_PFD::VSI::VSI( QGraphicsScene * scene ) :
     m_scene ( scene ),
 
@@ -1905,8 +1886,8 @@ void qfi_PFD::VSI::reset()
 
     m_climbRate = 0.0;
 
-    m_arrowDeltaY_new = 3.0f;//Вариометр (скорость изменения высоты)..............................................................
-    m_arrowDeltaY_old = 5.0f;
+    m_arrowDeltaY_new = 0.0f;
+    m_arrowDeltaY_old = 0.0f;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1935,4 +1916,3 @@ void qfi_PFD::VSI::updateVSI()
 
     m_itemArrow->moveBy( 0.0f, m_arrowDeltaY_old - m_arrowDeltaY_new );
 }
-*/

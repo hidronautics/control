@@ -7,7 +7,6 @@
 #include "server.h"
 #include "joystick.h"
 #include "settings.h"
-//#include "status.h"
 #include "NewWindow.h"
 
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
@@ -33,13 +32,10 @@ public:
     Server *server;
     Joystick *joystick;
     Settings *settings;
-//    Status *status;
-
 
 public slots:
     void info(QString s);
     void serverIsSleeping();
-    void openNewWindow();
 
 private slots:
 
@@ -77,7 +73,31 @@ private slots:
 
     void on_radioButton_XBox_released();
 
-    void on_pushButton_Reference_clicked();
+    void on_comboBox_Parity_currentTextChanged(const QString &arg1);
+
+    void on_comboBox_StopBits_currentTextChanged(const QString &arg1);
+
+    void on_comboBox_FlowControl_currentTextChanged(const QString &arg1);
+
+    void on_spinBox_COM_valueChanged(int arg1);
+
+    void on_comboBox_DataBits_currentTextChanged(const QString &arg1);
+
+    void on_comboBox_BaudRate_currentTextChanged(const QString &arg1);
+
+    void on_checkBox_toggled(bool checked);
+
+    void on_spinBox_PauseAfterSent_valueChanged(int arg1);
+
+    void on_spinBox_PauseAfterReceived_valueChanged(int arg1);
+
+    void on_checkBox_2_toggled(bool checked);
+
+    void on_checkBox_SDepth_toggled(bool checked);
+
+    void on_checkBox_SRoll_toggled(bool checked);
+
+    void on_checkBox_SPitch_toggled(bool checked);
 
 signals:
     void newValues(int* vals);\
@@ -91,11 +111,16 @@ signals:
 
 private:
     Ui::MainWindow *ui;
-    NewWindow *reference_menu;
+    NewWindow *bluetooth_menu;
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];
-    QTableWidgetItem *responseQTableWidgetItems[RESPONSE_TABLE_ROW_COUNT];
+    QTableWidgetItem *requestQTableWidgetItemsBinary[REQUEST_TABLE_ROW_COUNT];
+
+    QTableWidgetItem *responseQTableWidgetItemsHEX[RESPONSE_TABLE_ROW_COUNT];
+    QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
+    QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
+
 };
 
 #endif // MAINWINDOW_H

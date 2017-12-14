@@ -4,199 +4,299 @@
 
 
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    QPixmap pix_back(":images/images/background.png");
-    ui->label_pic->setScaledContents(true);
-    ui->label_pic->setPixmap(pix_back);
+    //this->setStyleSheet("background-color: black;");
 
-    //Motors
-    QPixmap pix_mot(":images/images/Motors.png");
-    ui->label_motors->setScaledContents(true);
-    ui->label_motors->setPixmap(pix_mot);
-
-    //Indicator motor
-    //motor1
-    if (5==5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1->setScaledContents(true);
-        ui->label_indicator1->setPixmap(pix_green);
-        ui->textBrowser->setText("Current");
-        ui->textBrowser->append("Speed");
-        ui->textBrowser->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1->setScaledContents(true);
-       ui->label_indicator1->setPixmap(pix_red);
-       ui->textBrowser->setText("Error");
-    }
-
-    //motor2
-    if (5>5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_2->setScaledContents(true);
-        ui->label_indicator1_2->setPixmap(pix_green);
-        ui->textBrowser_2->setText("Current");
-        ui->textBrowser_2->append("Speed");
-        ui->textBrowser_2->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_2->setScaledContents(true);
-       ui->label_indicator1_2->setPixmap(pix_red);
-       ui->textBrowser_2->setText("Error");
-    }
-
-    //motor3
-    if (5>5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_3->setScaledContents(true);
-        ui->label_indicator1_3->setPixmap(pix_green);
-        ui->textBrowser_3->setText("Current");
-        ui->textBrowser_3->append("Speed");
-        ui->textBrowser_3->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_3->setScaledContents(true);
-       ui->label_indicator1_3->setPixmap(pix_red);
-       ui->textBrowser_3->setText("Error");
-    }
-
-    //motor4
-    if (5==5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_4->setScaledContents(true);
-        ui->label_indicator1_4->setPixmap(pix_green);
-        ui->textBrowser_4->setText("Current");
-        ui->textBrowser_4->append("Speed");
-        ui->textBrowser_4->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_4->setScaledContents(true);
-       ui->label_indicator1_4->setPixmap(pix_red);
-       ui->textBrowser_4->setText("Error");
-    }
-
-    //motor5
-    if (5==5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_5->setScaledContents(true);
-        ui->label_indicator1_5->setPixmap(pix_green);
-        ui->textBrowser_5->setText("Current");
-        ui->textBrowser_5->append("Speed");
-        ui->textBrowser_5->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_5->setScaledContents(true);
-       ui->label_indicator1_5->setPixmap(pix_red);
-       ui->textBrowser_5->setText("Error");
-    }
-
-    //motor6
-    if (5==5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_6->setScaledContents(true);
-        ui->label_indicator1_6->setPixmap(pix_green);
-        ui->textBrowser_6->setText("Current");
-        ui->textBrowser_6->append("Speed");
-        ui->textBrowser_6->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_6->setScaledContents(true);
-       ui->label_indicator1_6->setPixmap(pix_red);
-       ui->textBrowser_6->setText("Error");
-    }
-
-    //motor7
-    if (5>5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_7->setScaledContents(true);
-        ui->label_indicator1_7->setPixmap(pix_green);
-        ui->textBrowser_7->setText("Current");
-        ui->textBrowser_7->append("Speed");
-        ui->textBrowser_7->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_7->setScaledContents(true);
-       ui->label_indicator1_7->setPixmap(pix_red);
-       ui->textBrowser_7->setText("Error");
-    }
-
-    //motor8
-    if (5==5)
-    {
-        QPixmap pix_green(":images/images/LEDgreen");
-        ui->label_indicator1_8->setScaledContents(true);
-        ui->label_indicator1_8->setPixmap(pix_green);
-        ui->textBrowser_8->setText("Current");
-        ui->textBrowser_8->append("Speed");
-        ui->textBrowser_8->append("Something");
-    }
-    else //error
-    {
-       QPixmap pix_red(":images/images/LEDred");
-       ui->label_indicator1_8->setScaledContents(true);
-       ui->label_indicator1_8->setPixmap(pix_red);
-       ui->textBrowser_8->setText("Error");
-    }
-
-
-    //Indicator bluetooth
-    QPixmap pix_bt(":images/images/BT.png");
-    ui->label->setScaledContents(true);
-    ui->label->setPixmap(pix_bt);
-    ui->textBrowser_Bluetooth->setText("Message");
-
-
-    if (5==5) //No bluetooth signal
-    {
-        QPixmap pix_redB(":images/images/LED2");
-        ui->label_indicator2->setScaledContents(true);
-        ui->label_indicator2->setPixmap(pix_redB);
-    }
-    else
-    {
-       QPixmap pix_greenB(":images/images/LED3");
-       ui->label_indicator2->setScaledContents(true);
-       ui->label_indicator2->setPixmap(pix_greenB);
-    }
-
-    connect(ui->pushButton_Reference, SIGNAL(click()), this, SLOT(openNewWindow()));
-
-
-    ui->tableWidgetRequest->setColumnCount(2);
+    ui->tableWidgetRequest->setColumnCount(3);
     ui->tableWidgetRequest->setRowCount(REQUEST_TABLE_ROW_COUNT);
 
     QAbstractItemModel *model_request = ui->tableWidgetRequest->model();
     QAbstractItemModel *model_response = ui->tableWidgetResponse->model();
     QStringList labels_request, labels_response;
     QStringList headerLabels;
-    headerLabels << QString("Values");
+    headerLabels << QString("HEX") << QString("DEX") << QString("Binary");
+
+    //ADD
+    //ui->plot_window_pitch = new QCustomPlot();
+    ui->plot_window_pitch->xAxis->setLabel("T(c)");
+    ui->plot_window_pitch->yAxis->setLabel("PITCH");
+
+
+    ui->plot_window_pitch->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
+    ui->plot_window_pitch->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
+    ui->plot_window_pitch->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    ui->plot_window_pitch->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+
+
+    //server->plot_pitch = ui->plot_window_pitch->addGraph();
+    //server->plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+
+    QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
+    timeTicker->setTimeFormat("%h:%m:%s");
+    ui->plot_window_pitch->xAxis->setTicker(timeTicker);
+    ui->plot_window_pitch->axisRect()->setupFullAxesBox();
+    ui->plot_window_pitch->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_pitch->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_pitch->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch->yAxis2, SLOT(setRange(QCPRange)));
+
+    ui->plot_window_roll->xAxis->setLabel("T(c)");
+    ui->plot_window_roll->yAxis->setLabel("ROLL");
+
+
+    ui->plot_window_roll->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
+    ui->plot_window_roll->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
+    ui->plot_window_roll->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    ui->plot_window_roll->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+
+
+    //server->plot_pitch = ui->plot_window_pitch->addGraph();
+    //server->plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+
+
+    ui->plot_window_roll->xAxis->setTicker(timeTicker);
+    ui->plot_window_roll->axisRect()->setupFullAxesBox();
+    ui->plot_window_roll->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_roll->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_roll->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll->yAxis2, SLOT(setRange(QCPRange)));
+
+    ui->plot_window_pitch_speed->xAxis->setLabel("T(c)");
+    ui->plot_window_pitch_speed->yAxis->setLabel("PITCH_SPEED");
+
+
+    ui->plot_window_pitch_speed->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
+    ui->plot_window_pitch_speed->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
+    ui->plot_window_pitch_speed->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    ui->plot_window_pitch_speed->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+
+
+    //server->plot_pitch = ui->plot_window_pitch->addGraph();
+    //server->plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+
+    ui->plot_window_pitch_speed->xAxis->setTicker(timeTicker);
+    ui->plot_window_pitch_speed->axisRect()->setupFullAxesBox();
+    ui->plot_window_pitch_speed->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_pitch_speed->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch_speed->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_pitch_speed->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch_speed->yAxis2, SLOT(setRange(QCPRange)));
+
+    ui->plot_window_roll_speed->xAxis->setLabel("T(c)");
+    ui->plot_window_roll_speed->yAxis->setLabel("ROLL_SPEED");
+
+
+    ui->plot_window_roll_speed->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
+    ui->plot_window_roll_speed->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
+    ui->plot_window_roll_speed->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    ui->plot_window_roll_speed->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+
+
+    //server->plot_pitch = ui->plot_window_pitch->addGraph();
+    //server->plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+
+
+    ui->plot_window_roll_speed->xAxis->setTicker(timeTicker);
+    ui->plot_window_roll_speed->axisRect()->setupFullAxesBox();
+    ui->plot_window_roll_speed->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_roll_speed->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll_speed->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_roll_speed->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll_speed->yAxis2, SLOT(setRange(QCPRange)));
+
+    //______________________________________________________________
+
+    /*labels_response <<   "0:roll"<<
+                        "1:"<<
+                        "2:pitch"<<
+                        "3:"<<
+                        "4:yaw"<<
+                        "5:"<<
+                        "6:roll_speed"<<
+                        "7:"<<
+                        "8:pitch_speed"<<
+                        "9:"<<
+                        "10:yaw_speed"<<
+                        "11:"<<
+                        "12:pressure"<<
+                        "13:"<<
+                        "14:Bluetooth"<<
+                        "15:"<<
+                        "16:"<<
+                        "17:"<<
+                        "18:"<<
+                        "19:"<<
+                        "20:"<<
+                        "21:"<<
+                        "22:current_HLB"<<
+                        "23:"<<
+                        "24:current_HLF"<<
+                        "25:"<<
+                        "26:current_HRB"<<
+                        "27:"<<
+                        "28:current_HRF"<<
+                        "29:"<<
+                        "30:current_VB"<<
+                        "31:"<<
+                        "32:current_VF"<<
+                        "33:"<<
+                        "34:current_VL"<<
+                        "35:"<<
+                        "36:current_VR"<<
+                        "37:"<<
+                        "38:velocity_HLB"<<
+                        "39:velocity_HLF"<<
+                        "40:velocity_HRB"<<
+                        "41:velocity_HRF"<<
+                        "42:velocity_VB"<<
+                        "43:velocity_VF"<<
+                        "44:velocity_VL"<<
+                        "45:velocity_VR"<<
+                        "46:current_light"<<
+                        "47:"<<
+                        "48:current_bottom_light"<<
+                        "49:"<<
+                        "50:current_arar"<<
+                        "51:"<<
+                        "52:current_grab"<<
+                        "53:"<<
+                        "54:current_grab_rotate"<<
+                        "55:"<<
+                        "56:current_tilt"<<
+                        "57:"<<
+                        "58:"<<
+                        "59:"<<
+                        "60:"<<
+                        "61:checksum"<<
+                        "62:";
+
+    labels_request << "0:code"<<
+                      "1:"<<
+                      "2:march"<<
+                      "3:"<<
+                      "4:lag"<<
+                      "5:"<<
+                      "6:depth"<<
+                      "7:"<<
+                      "8:roll"<<
+                      "9:"<<
+                      "10:pitch"<<
+                      "11:"<<
+                      "12:yaw"<<
+                      "13:"<<
+                      "14:light"<<
+                      "15:grab"<<
+                      "16:tilt"<<
+                      "17:rotate"<<
+                      "18:bt"<<
+                      "19:bottom_light"<<
+                      "20:stabilize_depth"<<
+                      "21:stabilize_roll"<<
+                      "22:stabilize_pitch"<<
+                      "23:stabilize_yaw"<<
+                      "24:reset_IMU"<<
+                      "25:checksum"<<
+                      "26:";*/
+
+    labels_response <<  "0:roll"<<
+                        "1:"<<
+                        "2:pitch"<<
+                        "3:"<<
+                        "4:yaw"<<
+                        "5:"<<
+                        "6:roll_speed"<<
+                        "7:"<<
+                        "8:pitch_speed"<<
+                        "9:"<<
+                        "10:yaw_speed"<<
+                        "11:"<<
+                        "12:pressure"<<
+                        "13:"<<
+                        "14:Bluetooth"<<
+                        "15:"<<
+                        "16:"<<
+                        "17:"<<
+                        "18:"<<
+                        "19:"<<
+                        "20:"<<
+                        "21:"<<
+                        "22:current_HLB"<<
+                        "23:"<<
+                        "24:current_HLF"<<
+                        "25:"<<
+                        "26:current_HRB"<<
+                        "27:"<<
+                        "28:current_HRF"<<
+                        "29:"<<
+                        "30:current_VB"<<
+                        "31:"<<
+                        "32:current_VF"<<
+                        "33:"<<
+                        "34:current_VL"<<
+                        "35:"<<
+                        "36:current_VR"<<
+                        "37:"<<
+                        "38:velocity_HLB"<<
+                        "39:velocity_HLF"<<
+                        "40:velocity_HRB"<<
+                        "41:velocity_HRF"<<
+                        "42:velocity_VB"<<
+                        "43:velocity_VF"<<
+                        "44:velocity_VL"<<
+                        "45:velocity_VR"<<
+                        "46:current_light"<<
+                        "47:"<<
+                        "48:current_bottom_light"<<
+                        "49:"<<
+                        "50:current_arar"<<
+                        "51:"<<
+                        "52:current_grab"<<
+                        "53:"<<
+                        "54:current_grab_rotate"<<
+                        "55:"<<
+                        "56:current_tilt"<<
+                        "57:"<<
+                        "58:"<<
+                        "59:"<<
+                        "60:"<<
+                        "61:checksum"<<
+                        "62:";
+
+        labels_request << "0:code"<<
+                          "1:"<<
+                          "2:march"<<
+                          "3:"<<
+                          "4:lag"<<
+                          "5:"<<
+                          "6:depth"<<
+                          "7:"<<
+                          "8:roll"<<
+                          "9:"<<
+                          "10:pitch"<<
+                          "11:"<<
+                          "12:yaw"<<
+                          "13:"<<
+                          "14:light"<<
+                          "15:grab"<<
+                          "16:tilt"<<
+                          "17:rotate"<<
+                          "18:bt"<<
+                          "19:bottom_light"<<
+                          "20:stabilize_depth"<<
+                          "21:stabilize_roll"<<
+                          "22:stabilize_pitch"<<
+                          "23:stabilize_yaw"<<
+                          "24:reset_IMU"<<
+                          "25:checksum"<<
+                          "26:";
+
 
     for (int i = 0; i < REQUEST_TABLE_ROW_COUNT; ++i) {
         requestQTableWidgetItemsHEX[i] = new QTableWidgetItem(tr("no msg yet"));
@@ -204,32 +304,49 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->tableWidgetRequest->setItem(i, 0, requestQTableWidgetItemsHEX[i]);
 
         QVariant data = model_request->headerData(i, Qt::Vertical);
-        labels_request << QString("%1").arg(data.toInt() - 1);
-
 
         requestQTableWidgetItemsDEC[i] = new QTableWidgetItem(tr("no msg yet"));
         requestQTableWidgetItemsDEC[i]->setTextAlignment(Qt::AlignVCenter);
         ui->tableWidgetRequest->setItem(i, 1, requestQTableWidgetItemsDEC[i]);
+
+        requestQTableWidgetItemsBinary[i] = new QTableWidgetItem(tr("no msg yet"));
+        requestQTableWidgetItemsBinary[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetRequest->setItem(i, 2, requestQTableWidgetItemsBinary[i]);
     }
 
     ui->tableWidgetRequest->setVerticalHeaderLabels(labels_request);
     ui->tableWidgetRequest->setHorizontalHeaderLabels(headerLabels);
+    ui->tableWidgetRequest->setColumnWidth(0,35);
+    ui->tableWidgetRequest->setColumnWidth(1,35);
+    ui->tableWidgetRequest->setColumnWidth(2,80);
 
-
-    ui->tableWidgetResponse->setColumnCount(1);
+    ui->tableWidgetResponse->setColumnCount(3);
     ui->tableWidgetResponse->setRowCount(RESPONSE_TABLE_ROW_COUNT);
+    ui->tableWidgetResponse->setColumnWidth(0,35);
+    ui->tableWidgetResponse->setColumnWidth(1,35);
+    ui->tableWidgetResponse->setColumnWidth(2,80);
+
 
     for (int i = 0; i < RESPONSE_TABLE_ROW_COUNT; ++i) {
-        responseQTableWidgetItems[i] = new QTableWidgetItem(tr("no msg yet"));
-        responseQTableWidgetItems[i]->setTextAlignment(Qt::AlignVCenter);
-        ui->tableWidgetResponse->setItem(i, 0, responseQTableWidgetItems[i]);
+        responseQTableWidgetItemsHEX[i] = new QTableWidgetItem(tr("no msg yet"));
+        responseQTableWidgetItemsHEX[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetResponse->setItem(i, 0, responseQTableWidgetItemsHEX[i]);
 
         QVariant data = model_response->headerData(i, Qt::Vertical);
-        labels_response << QString("%1").arg(data.toInt() - 1);
+        //labels_response << QString("%1").arg(data.toInt() - 1); ЧИСЛА ВМЕСТО НАЗВАНИЙ ПЕРЕМЕННЫХ
+
+        responseQTableWidgetItemsDEC[i] = new QTableWidgetItem(tr("no msg yet"));
+        responseQTableWidgetItemsDEC[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetResponse->setItem(i, 1, responseQTableWidgetItemsDEC[i]);
+
+        responseQTableWidgetItemsBinary[i] = new QTableWidgetItem(tr("no msg yet"));
+        responseQTableWidgetItemsBinary[i]->setTextAlignment(Qt::AlignVCenter);
+        ui->tableWidgetResponse->setItem(i, 2, responseQTableWidgetItemsBinary[i]);
     }
 
-    ui->tableWidgetResponse->setVerticalHeaderLabels(labels_request);
+    ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
+
 }
 
 
@@ -253,22 +370,84 @@ void MainWindow::serverIsSleeping() {
     default:
         std::cout << "Unknown current message code!" << std::endl;
     }
+
+
     for (int i = 0; i < request_length; ++i) {
         //requestQTableWidgetItems[i]->setText(QString("%1").arg(server->msg_to_send[i]));
         requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
         requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send[i], 10));
+        requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
     }
 
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
-        requestQTableWidgetItemsHEX[i]->setText(QString("not presented"));
-        requestQTableWidgetItemsDEC[i]->setText(QString("not presented"));
+        requestQTableWidgetItemsHEX[i]->setText(QString("NO"));
+        requestQTableWidgetItemsDEC[i]->setText(QString("NO"));
+        requestQTableWidgetItemsBinary[i]->setText(QString("NO"));
     }
 
     for (int i = 0; i < RESPONSE_LENGTH; ++i) {
-        responseQTableWidgetItems[i]->setText(QString::number(server->msg_in[i], 16));
+        responseQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_in[i], 16));
+        responseQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_in[i], 10));
+        responseQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_in[i], 2));
     }
 
-   // ui->doubleSpinBoxTemperature->setValue(server->temperature);
+    for (int i = RESPONSE_LENGTH; i < RESPONSE_TABLE_ROW_COUNT; ++i) {
+        responseQTableWidgetItemsHEX[i]->setText(QString("NO"));
+        responseQTableWidgetItemsDEC[i]->setText(QString("NO"));
+        responseQTableWidgetItemsBinary[i]->setText(QString("NO"));
+    }
+
+    ui->lcdNumber_current_HLB->display(QString::number(server->current_HLB));
+    ui->lcdNumber_current_HLF->display(QString::number(server->current_HLF));
+    ui->lcdNumber_current_HRB->display(QString::number(server->current_HRB));
+    ui->lcdNumber_current_HRF->display(QString::number(server->current_HRF));
+
+    ui->lcdNumber_current_VB->display(QString::number(server->current_VB));
+    ui->lcdNumber_current_VF->display(QString::number(server->current_VF));
+    ui->lcdNumber_current_VL->display(QString::number(server->current_VL));
+    ui->lcdNumber_current_VR->display(QString::number(server->current_VR));
+
+
+    ui->lcdNumber_velocity_HLB->display(QString::number(server->velocity_HLB));
+    ui->lcdNumber_velocity_HLF->display(QString::number(server->velocity_HLF));
+    ui->lcdNumber_velocity_HRB->display(QString::number(server->velocity_HRB));
+    ui->lcdNumber_velocity_HRF->display(QString::number(server->velocity_HRF));
+
+    ui->lcdNumber_velocity_VB->display(QString::number(server->velocity_VB));
+    ui->lcdNumber_velocity_VF->display(QString::number(server->velocity_VF));
+    ui->lcdNumber_velocity_VL->display(QString::number(server->velocity_VL));
+    ui->lcdNumber_velocity_VR->display(QString::number(server->velocity_VR));
+
+    ui->label_BT->setText(server->bt_data);
+
+    ui->lcdNumber_velocity_Light->display(QString::number(server->current_light));
+    ui->lcdNumber_velocity_bottomLight->display(QString::number(server->current_bottom_light));
+    ui->lcdNumber_velocity_Agar->display(QString::number(server->current_agar));
+    ui->lcdNumber_velocity_Grab->display(QString::number(server->current_grab));
+    ui->lcdNumber_velocity_Rotate->display(QString::number(server->current_grab_rotate));
+    ui->lcdNumber_velocity_Tilt->display(QString::number(server->current_tilt));
+
+    ui->lcdNumber_Lost->display(server->msg_lost_counter);
+    ui->lcdNumber_Received->display(server->msg_received_counter);
+    ui->lcdNumber_Percent->display(server->msg_lost_percent);
+
+    ui->checkBox_SDepth->setChecked(joystick->stabilize_depth);
+    ui->checkBox_SRoll->setChecked(joystick->stabilize_roll);
+    ui->checkBox_SPitch->setChecked(joystick->stabilize_pitch);
+
+    std::cout << "STABILIZE DEPTH = " << joystick->stabilize_depth << std::endl;
+    std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
+    std::cout << "STABILIZE PITCH = " << joystick->stabilize_pitch << std::endl;
+
+    ui->graphicsPFD_2->setRoll(server->imu_roll);
+    ui->graphicsPFD_2->setPitch(server->imu_pitch);
+    ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
+    ui->graphicsPFD_2->setHeading(server->imu_yaw);
+    ui->graphicsPFD_2->setAltitude(server->imu_depth);
+
+
+
+    ui->graphicsPFD_2->update();
 }
 
 void MainWindow::info(QString s) {
@@ -278,10 +457,11 @@ void MainWindow::info(QString s) {
 
 void MainWindow::init() {
     on_spinBox_Motor_Slot_valueChanged(0);
-    on_pushButton_load_config_released();
+    on_pushButton_load_config_released(); // Зло во плоти (в коде)
+
+    //settings->connection->num = ui->spinBox_COM->value();
+    //settings->connection->baudRate = settings->connection->getBaudRate(ui->comboBox_BaudRate->currentText().toInt());
 }
-
-
 
 MainWindow::~MainWindow()
 {
@@ -307,7 +487,6 @@ void MainWindow::on_pushButton_Connect_released()
 {
     emit tryConnect();
 }
-
 
 
 void MainWindow::on_pushButton_Stop_Test_released()
@@ -374,6 +553,18 @@ void MainWindow::on_pushButton_load_config_released()
         ui->doubleSpinBox_yaw_gain->setValue(settings->yaw.gain);
         ui->checkBox_const_time_yaw->setChecked(settings->yaw.const_time);
 
+        ui->spinBox_COM->setValue(settings->connection->num);
+        std::cout << QString::number(settings->connection->setBaudRate(settings->connection->baudRate)).toStdString() << std::endl;
+        std::cout << QString::number(settings->connection->setDataBits(settings->connection->dataBits)).toStdString() << std::endl;
+        ui->comboBox_BaudRate->setCurrentText(QString::number(settings->connection->setBaudRate(settings->connection->baudRate)));
+        ui->comboBox_DataBits->setCurrentText(QString::number(settings->connection->setDataBits(settings->connection->dataBits)));
+        ui->comboBox_Parity->setCurrentText(settings->connection->setParity(settings->connection->parity));
+        ui->comboBox_StopBits->setCurrentText(settings->connection->setStopBits(settings->connection->stopBits));
+        ui->comboBox_FlowControl->setCurrentText(settings->connection->setFlowControl(settings->connection->flowControl));
+
+        ui->spinBox_PauseAfterSent->setValue(settings->connection->pause_after_sent);
+        ui->spinBox_PauseAfterReceived->setValue(settings->connection->pause_after_received);
+
         ui->statusbar->showMessage("Settings successfully loaded", 5000);
     } else {
         ui->statusbar->showMessage("Cannot load settings. Invalid file or file does not exist.", 5000);
@@ -426,6 +617,9 @@ void MainWindow::on_pushButton_save_config_released()
     settings->yaw.start = ui->doubleSpinBox_yaw_start->value();
     settings->yaw.const_time = ui->checkBox_const_time_yaw->isChecked();
 
+    settings->connection->pause_after_sent = ui->spinBox_PauseAfterSent->value();
+    settings->connection->pause_after_received = ui->spinBox_PauseAfterReceived->value();
+
     settings->saveToJSONFIle();
 }
 
@@ -467,19 +661,68 @@ void MainWindow::on_radioButton_XBox_released()
     ui->radioButton_XBox->setChecked(true);
 }
 
-void MainWindow::openNewWindow()
+void MainWindow::on_comboBox_Parity_currentTextChanged(const QString &arg1)
 {
-    reference_menu = new NewWindow();
+    settings->connection->parity = settings->connection->getParity(arg1);
+}
 
-    reference_menu->show();
+void MainWindow::on_comboBox_StopBits_currentTextChanged(const QString &arg1)
+{
+    settings->connection->stopBits = settings->connection->getStopBits(arg1);
+}
 
+void MainWindow::on_comboBox_FlowControl_currentTextChanged(const QString &arg1)
+{
+    settings->connection->flowControl = settings->connection->getFlowControl(arg1);
+}
+
+void MainWindow::on_spinBox_COM_valueChanged(int arg1)
+{
+    settings->connection->num = arg1;
+}
+
+void MainWindow::on_comboBox_DataBits_currentTextChanged(const QString &arg1)
+{
+    settings->connection->dataBits = settings->connection->getDataBits(arg1.toInt());
+}
+
+void MainWindow::on_comboBox_BaudRate_currentTextChanged(const QString &arg1)
+{
+    settings->connection->baudRate = settings->connection->getBaudRate(arg1.toInt());
 }
 
 
-void MainWindow::on_pushButton_Reference_clicked()
+void MainWindow::on_checkBox_toggled(bool checked)
 {
-  openNewWindow();
+    server->emulation_mode = checked;
 }
 
+void MainWindow::on_spinBox_PauseAfterSent_valueChanged(int arg1)
+{
+    settings->connection->pause_after_sent = arg1;
+}
 
+void MainWindow::on_spinBox_PauseAfterReceived_valueChanged(int arg1)
+{
+    settings->connection->pause_after_received = arg1;
+}
 
+void MainWindow::on_checkBox_2_toggled(bool checked)
+{
+    joystick->inverseDepth = checked;
+}
+
+void MainWindow::on_checkBox_SDepth_toggled(bool checked)
+{
+    joystick->stabilize_depth = checked;
+}
+
+void MainWindow::on_checkBox_SRoll_toggled(bool checked)
+{
+    joystick->stabilize_roll = checked;
+}
+
+void MainWindow::on_checkBox_SPitch_toggled(bool checked)
+{
+    joystick->stabilize_pitch = checked;
+}

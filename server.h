@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QTest>
+#include <QDebug>
 #include <qtimer.h>
 #include <stdint.h>
 #include <messages.h>
@@ -11,11 +12,10 @@
 #include <math.h>
 #include <string>
 #include <cstdlib>
+#include "qcustomplot.h"
 
 #include "joystick.h"
 #include "settings.h"
-//#include "status.h"
-
 
 
 #define REQUEST_DELAY					25
@@ -42,26 +42,76 @@ public:
 
     QTimer *sendTimer;
 
+    QFile file_csv_response;
+    QFile file_csv_request;
+
+    QTextStream stream_response;
+    QTextStream stream_request;
+
     Settings* settings;
 
-    int16_t pitch_sens       = 0;     //[-32767,32767]
-    int16_t roll_sens        = 0;     //[-32767,32767]
-    int16_t yaw_sens         = 0;     //[-32767,32767]
-
-    int16_t pitch_speed_sens = 0;     //[-32767,32767]
-    int16_t roll_speed_sens  = 0;     //[-32767,32767]
-    int16_t yaw_speed_sens   = 0;     //[-32767,32767]
-
-    int16_t pressure         = 0;     //[-32767,32767]
-
-    char bt_s[8];
-
-//    Status* status;
-
     float temperature = 0;
+    int16_t imu_roll;
+    int16_t imu_pitch;
+    int16_t imu_yaw;
+
+    int16_t imu_roll_speed;
+    int16_t imu_pitch_speed;
+    int16_t imu_yaw_speed;
+
+    int16_t imu_depth;
+
+    uint16_t current_HLB;
+    uint16_t current_HLF;
+    uint16_t current_HRB;
+    uint16_t current_HRF;
+    uint16_t current_VB;
+    uint16_t current_VF;
+    uint16_t current_VL;
+    uint16_t current_VR;
+
+    int16_t velocity_HLB;
+    int16_t velocity_HLF;
+    int16_t velocity_HRB;
+    int16_t velocity_HRF;
+    int16_t velocity_VB;
+    int16_t velocity_VF;
+    int16_t velocity_VL;
+    int16_t velocity_VR;
+
+    uint16_t current_light;
+    uint16_t current_bottom_light;
+    uint16_t current_agar;
+    uint16_t current_grab;
+    uint16_t current_grab_rotate;
+    uint16_t current_tilt;
+
+    uint16_t err_vma;
+    uint16_t err_dev;
+
+    uint16_t msg_received_counter;
+    uint16_t msg_lost_counter;
+    float msg_lost_percent;
+
+    QString bt_data;
+    QString path_csv_request;
+    QString path_csv_response;
+
+    bool emulation_mode = false;
+
+    QCustomPlot *plot_window_pitch; // Объявляем графическое полотно
+    QCustomPlot *plot_window_pitch_speed;
+    QCustomPlot *plot_window_roll;
+    QCustomPlot *plot_window_roll_speed;
+
+    QCPGraph *plot_pitch;          // Объявляем графики
+    QCPGraph *plot_pitch_speed;
+    QCPGraph *plot_roll;
+    QCPGraph *plot_roll_speed;
 
 private:
     QSerialPort *newPort;
+    const QString log_folder_path = "C:\\logs\\";
 
     bool COMconnect(int com_name);
 
@@ -76,7 +126,9 @@ private:
     void addFloat(uint8_t * msg, int position, float val);
     void addSNP(uint8_t * msg);
 
-    float encodeTemperature(uint8_t MS, uint8_t LS);
+    //float encodeTemperature(uint8_t MS, uint8_t LS);
+
+    void writeCSV(QTextStream* stream, uint8_t * msg, uint16_t length);
 
 
 

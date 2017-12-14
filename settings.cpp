@@ -3,8 +3,8 @@
 Settings::Settings(QObject *parent) : QObject(parent)
 {
     motors = new Motor[8];
+    connection = new Connection();
     initialize();
-    //loadFromJSONFile();
 }
 
 void Settings::initialize() {
@@ -18,6 +18,15 @@ void Settings::initialize() {
         motors[i].k_backward = 1.;
         motors[i].k_forward = 1.;
     }
+
+    connection->num = 1;
+    connection->baudRate = QSerialPort::BaudRate::Baud57600;
+    connection->dataBits = QSerialPort::DataBits::Data8;
+    connection->parity = QSerialPort::Parity::NoParity;
+    connection->stopBits = QSerialPort::StopBits::OneStop;
+    connection->flowControl = QSerialPort::FlowControl::NoFlowControl;
+    connection->pause_after_sent = 50;
+    connection->pause_after_received = 50;
 }
 
 
@@ -79,6 +88,38 @@ void Settings::read(const QJsonObject &json)
     yaw.gain       = yaw_json["gain"].toDouble();
     yaw.const_time = yaw_json["const_time"].toBool();
 
+    QJsonObject connection_json = json["connection"].toObject();
+
+    int n;
+    QString s;
+
+    n = connection_json["comNumber"].toInt();
+    if (n != 0) connection->num = n;
+    std::cout << "COM number: " << connection->num << std::endl;
+
+    n = connection_json["baudRate"].toInt();
+    if (n != 0) connection->baudRate = connection->getBaudRate(n);
+    std::cout << "baudRate: " << connection->baudRate << std::endl;
+
+    n = connection_json["dataBits"].toInt();
+    if (n != 0) connection->dataBits = connection->getDataBits(n);
+    std::cout << "dataBits: " << connection->dataBits << std::endl;
+
+    s = connection_json["parity"].toString();
+    if (s.compare("")) connection->parity = connection->getParity(s);
+    std::cout << "parity: " << connection->parity << std::endl;
+
+    s = connection_json["stopBits"].toString();
+    if (s.compare("")) connection->stopBits = connection->getStopBits(s);
+    std::cout << "stopBits: " << connection->stopBits << std::endl;
+
+    s = connection_json["flowControl"].toString();
+    if (s.compare("")) connection->flowControl = connection->getFlowControl(s);
+    std::cout << "flowControl: " << connection->flowControl << std::endl;
+
+    connection->pause_after_sent = connection_json["pauseAfterSent"].toInt();
+    connection->pause_after_received = connection_json["pauseAfterReceived"].toInt();
+
 }
 
 void Settings::write(QJsonObject &json) const
@@ -138,6 +179,23 @@ void Settings::write(QJsonObject &json) const
     stabilization_json["yaw"]   = yaw_json;
 
     json["stabilization"] = stabilization_json;
+
+    QJsonObject connection_json;
+
+    std::cout << "!!!" << connection->baudRate << std::endl;
+    std::cout << "!!!" << connection->dataBits << std::endl;
+
+    connection_json["comNumber"] = connection->num;
+    connection_json["baudRate"] = connection->setBaudRate(connection->baudRate);
+    connection_json["dataBits"] = connection->setDataBits(connection->dataBits);
+    connection_json["parity"] = connection->setParity(connection->parity);
+    connection_json["stopBits"] = connection->setStopBits(connection->stopBits);
+    connection_json["flowControl"] = connection->setFlowControl(connection->flowControl);
+
+    connection_json["pauseAfterSent"] = connection->pause_after_sent;
+    connection_json["pauseAfterReceived"] = connection->pause_after_received;
+
+    json["connection"] = connection_json;
 }
 
 

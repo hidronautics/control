@@ -12,6 +12,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 
+#include <QSerialPort>
+
 struct Stabilization {
     float k1;
     float k2;
@@ -21,6 +23,7 @@ struct Stabilization {
 };
 
 class Motor;
+class Connection;
 
 class Settings : public QObject
 {
@@ -29,7 +32,9 @@ public:
     explicit Settings(QObject *parent = 0);
 
     Motor* motors;
+    Connection* connection;
     Stabilization depth, roll, pitch, yaw;
+
 
     bool loadFromJSONFile();
     bool saveToJSONFIle() const;
@@ -40,14 +45,6 @@ private:
     void read(const QJsonObject &json);
     void write(QJsonObject &json) const;
 
-    /*
-    void readMotors(const QJsonObject &json);
-    void writeMotors(QJsonObject &json);
-
-    void readStabilization(const QJsonObject &json);
-    void writeStabilization(QJsonObject &json);
-    */
-
 signals:
 
 public slots:
@@ -56,12 +53,164 @@ public slots:
 
 
 
+class Connection
+{
+public:
+   ConnectionSettings() {}
 
+   int num;
+   QSerialPort::BaudRate baudRate;
+   QSerialPort::DataBits dataBits;
+   QSerialPort::Parity parity;
+   QSerialPort::StopBits stopBits;
+   QSerialPort::FlowControl flowControl;
+   int pause_after_sent;
+   int pause_after_received;
 
+   QSerialPort::BaudRate getBaudRate(int num) {
+       switch (num) {
+       case 1200:
+           return QSerialPort::BaudRate::Baud1200;
+           break;
+       case 2400:
+           return QSerialPort::BaudRate::Baud2400;
+           break;
+       case 4800:
+           return QSerialPort::BaudRate::Baud4800;
+           break;
+       case 9600:
+           return QSerialPort::BaudRate::Baud9600;
+           break;
+       case 19200:
+           return QSerialPort::BaudRate::Baud19200;
+           break;
+       case 38400:
+           return QSerialPort::BaudRate::Baud38400;
+           break;
+       case 57600:
+           return QSerialPort::BaudRate::Baud57600;
+           break;
+       case 115200:
+           return QSerialPort::BaudRate::Baud115200;
+           break;
+       default:
+           return QSerialPort::BaudRate::UnknownBaud;
+       }
+   }
 
+   int setBaudRate(QSerialPort::BaudRate baudRate) {
+       return baudRate;
+   }
 
+   QSerialPort::DataBits getDataBits(int num) {
+       switch (num) {
+       case 5:
+           return QSerialPort::DataBits::Data5;
+           break;
+       case 6:
+           return QSerialPort::DataBits::Data6;
+           break;
+       case 7:
+           return QSerialPort::DataBits::Data7;
+           break;
+       case 8:
+           return QSerialPort::DataBits::Data8;
+           break;
+       default:
+           return QSerialPort::DataBits::UnknownDataBits;
+       }
+   }
 
+   int setDataBits(QSerialPort::DataBits dataBits) {
+       return dataBits;
+   }
 
+   QSerialPort::Parity getParity(QString str) {
+       QString lower = str.toLower();
+
+       if (!lower.compare("no"))
+           return QSerialPort::Parity::NoParity;
+       else if (!lower.compare("even"))
+           return QSerialPort::Parity::EvenParity;
+       else if (!lower.compare("odd"))
+           return QSerialPort::Parity::OddParity;
+       else if (!lower.compare("space"))
+           return QSerialPort::Parity::SpaceParity;
+       else if (!lower.compare("mark"))
+           return QSerialPort::Parity::MarkParity;
+       else
+           return QSerialPort::Parity::UnknownParity;
+   }
+
+   QString setParity(QSerialPort::Parity parity) {
+       switch(parity) {
+       case QSerialPort::Parity::NoParity:
+           return "no";
+       case QSerialPort::Parity::EvenParity:
+           return "even";
+       case QSerialPort::Parity::OddParity:
+           return "odd";
+       case QSerialPort::Parity::SpaceParity:
+           return "space";
+       case QSerialPort::Parity::MarkParity:
+           return "mark";
+       default:
+           return "unknown";
+       }
+   }
+
+   QSerialPort::StopBits getStopBits(QString str) {
+       QString lower = str.toLower();
+
+       if (!lower.compare("one"))
+           return QSerialPort::StopBits::OneStop;
+       else if (!lower.compare("oneandhalf"))
+           return QSerialPort::StopBits::OneAndHalfStop;
+       else if (!lower.compare("two"))
+           return QSerialPort::StopBits::TwoStop;
+       else
+           return QSerialPort::StopBits::UnknownStopBits;
+   }
+
+   QString setStopBits(QSerialPort::StopBits stopBits) {
+       switch(stopBits) {
+       case QSerialPort::StopBits::OneStop:
+           return "one";
+       case QSerialPort::StopBits::OneAndHalfStop:
+           return "oneandhalf";
+       case QSerialPort::StopBits::TwoStop:
+           return "two";
+       default:
+           return "unknown";
+       }
+   }
+
+   QSerialPort::FlowControl getFlowControl(QString str) {
+       QString lower = str.toLower();
+
+       if (!lower.compare("no"))
+           return QSerialPort::FlowControl::NoFlowControl;
+       else if (!lower.compare("hardware"))
+           return QSerialPort::FlowControl::HardwareControl;
+       else if (!lower.compare("software"))
+           return QSerialPort::FlowControl::SoftwareControl;
+       else
+           return QSerialPort::FlowControl::UnknownFlowControl;
+   }
+
+   QString setFlowControl(QSerialPort::FlowControl flowControl) {
+       switch(flowControl) {
+       case QSerialPort::FlowControl::NoFlowControl:
+           return "no";
+       case QSerialPort::FlowControl::HardwareControl:
+           return "hardware";
+       case QSerialPort::FlowControl::SoftwareControl:
+           return "software";
+       default:
+           return "unknown";
+       }
+   }
+};
 
 
 
@@ -104,6 +253,7 @@ public:
         case VR:
             return "VR";
         }
+        return NULL;
     }
 
     void setCode(QString code) {
