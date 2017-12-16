@@ -33,6 +33,8 @@ public:
     Joystick *joystick;
     Settings *settings;
 
+    //double key1;
+
 public slots:
     void info(QString s);
     void serverIsSleeping();
@@ -120,6 +122,11 @@ private:
     QTableWidgetItem *responseQTableWidgetItemsHEX[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
+
+    int imu_pitch_max = 0;
+    int imu_roll_max = 0;
+    int imu_pitch_speed_max = 0;
+    int imu_roll_speed_max = 0;
 
 };
 

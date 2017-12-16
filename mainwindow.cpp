@@ -22,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent) :
     headerLabels << QString("HEX") << QString("DEX") << QString("Binary");
 
     //ADD
+
+    imu_pitch_max = 0;
+    imu_roll_max = 0;
+    imu_pitch_speed_max = 0;
+    imu_roll_speed_max = 0;
+
     //ui->plot_window_pitch = new QCustomPlot();
     ui->plot_window_pitch->xAxis->setLabel("T(c)");
     ui->plot_window_pitch->yAxis->setLabel("PITCH");
@@ -37,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //server->plot_pitch->setPen(QPen(QColor(40, 110, 255)));
 
     QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
-    timeTicker->setTimeFormat("%h:%m:%s");
+    timeTicker->setTimeFormat("%h:%m:%s:%ms");
     ui->plot_window_pitch->xAxis->setTicker(timeTicker);
     ui->plot_window_pitch->axisRect()->setupFullAxesBox();
     ui->plot_window_pitch->yAxis->setRange(-10, 10);
@@ -111,6 +117,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->plot_window_roll_speed->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll_speed->xAxis2, SLOT(setRange(QCPRange)));
     connect(ui->plot_window_roll_speed->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll_speed->yAxis2, SLOT(setRange(QCPRange)));
 
+
+    ui->plot_window_pitch->addGraph();
+    ui->plot_window_pitch->graph(0)->setPen(QPen(QColor(40, 110, 255)));
+    ui->plot_window_roll->addGraph();
+    ui->plot_window_roll->graph(0)->setPen(QPen(QColor(180, 110, 255)));
+    ui->plot_window_roll_speed->addGraph();
+    ui->plot_window_roll_speed->graph(0)->setPen(QPen(QColor(180, 1, 1)));
+    ui->plot_window_pitch_speed->addGraph();
+    ui->plot_window_pitch_speed->graph(0)->setPen(QPen(QColor(228, 110, 50)));
     //______________________________________________________________
 
     /*labels_response <<   "0:roll"<<
@@ -379,6 +394,7 @@ void MainWindow::serverIsSleeping() {
         requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
     }
 
+
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
         requestQTableWidgetItemsHEX[i]->setText(QString("NO"));
         requestQTableWidgetItemsDEC[i]->setText(QString("NO"));
@@ -439,15 +455,75 @@ void MainWindow::serverIsSleeping() {
     std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
     std::cout << "STABILIZE PITCH = " << joystick->stabilize_pitch << std::endl;
 
+
+
+
+    //plot_pitch = plot_window_pitch->addGraph();
+    //plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+
+
+
     ui->graphicsPFD_2->setRoll(server->imu_roll);
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
     ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
     ui->graphicsPFD_2->setHeading(server->imu_yaw);
     ui->graphicsPFD_2->setAltitude(server->imu_depth);
 
+    //static QTime time(QTime::currentTime());
+    //key1 =time.elapsed()/1000.0;
 
+    static double time_d = 0;
+    if ((server->key1 - time_d) > 0.002)
+    {
+    ui->plot_window_pitch->graph(0)->addData(server->key1, server->imu_pitch_d); // Устанавливаем данные
+    ui->plot_window_pitch->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+    if (abs(server->imu_pitch_d)>imu_pitch_max)
+    {
+        imu_pitch_max = abs(server->imu_pitch_d);
+        std::cout << "imu_pitch_max = " << imu_pitch_max << std::endl;
+        ui->plot_window_pitch->yAxis->setRange(-imu_pitch_max,imu_pitch_max);
+        ui->plot_window_pitch->replot();           // Отрисовываем график
+        ui->plot_window_pitch->graph(0)->rescaleValueAxis(true);
+    }
+
+    ui->plot_window_roll->graph(0)->addData(server->key1, server->imu_roll_d); // Устанавливаем данные
+    ui->plot_window_roll->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+    if (abs(server->imu_roll_d)>imu_roll_max)
+    {
+        imu_roll_max = abs(server->imu_roll_d);
+        std::cout << "imu_roll_max = " << imu_roll_max << std::endl;
+        ui->plot_window_roll->yAxis->setRange(-imu_roll_max,imu_roll_max);
+        ui->plot_window_roll->replot();           // Отрисовываем график
+        ui->plot_window_roll->graph(0)->rescaleValueAxis(true);
+    }
+
+    ui->plot_window_roll_speed->graph(0)->addData(server->key1, server->imu_roll_speed_d); // Устанавливаем данные
+    ui->plot_window_roll_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+    if (abs(server->imu_roll_speed_d)>imu_roll_speed_max)
+    {
+        imu_roll_speed_max = abs(server->imu_roll_speed_d);
+        std::cout << "imu_roll_speed_max = " << imu_roll_speed_max << std::endl;
+        ui->plot_window_roll->yAxis->setRange(-imu_roll_speed_max,imu_roll_speed_max);
+        ui->plot_window_roll_speed->replot();           // Отрисовываем график
+        ui->plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
+    }
+
+    ui->plot_window_pitch_speed->graph(0)->addData(server->key1, server->imu_pitch_speed_d); // Устанавливаем данные
+    ui->plot_window_pitch_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+    if (abs(server->imu_pitch_speed_d)>imu_pitch_speed_max)
+    {
+          imu_pitch_speed_max = abs(server->imu_pitch_speed_d);
+          std::cout << "imu_pitch_speed_max = " << imu_pitch_speed_max << std::endl;
+          ui->plot_window_pitch_speed->yAxis->setRange(-imu_pitch_speed_max,imu_pitch_speed_max);
+          ui->plot_window_pitch_speed->replot();           // Отрисовываем график
+          ui->plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
+    }
+    time_d = server->key1;
+    }
 
     ui->graphicsPFD_2->update();
+
+
 }
 
 void MainWindow::info(QString s) {

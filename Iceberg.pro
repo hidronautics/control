@@ -48,4 +48,7 @@ FORMS += \
 
 RESOURCES += \
     qfi.qrc \
-    pictures.qrc
+    pictures.qrc \
+    logs.qrc
+
+DISTFILES +=

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/logs">
+        <file>logs/REQUEST.csv</file>
+        <file>logs/RESPONSE.csv</file>
+    </qresource>
+</RCC>

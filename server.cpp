@@ -55,6 +55,7 @@ bool Server::COMconnect(int com_num)
 void Server::sendMessage() {
     if (currentMessageType != nextMessageType)
         currentMessageType = nextMessageType;
+
     switch (currentMessageType) {
     case REQUEST_NORMAL_CODE:
         sendMessageNormal();
@@ -394,54 +395,20 @@ void Server::receiveMessage() {
         }
         msg_in = newPort->readAll();
 
-        //Add plots
-
-        double key1 = QTime::currentTime().msec()*1000;
-        static double lastPointKey = 0;
-        if (lastPointKey = 0)
-        {
-            plot_window_pitch->addGraph();
-            plot_window_pitch->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
-            plot_window_roll->addGraph();
-            plot_window_roll->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
-            plot_window_roll_speed->addGraph();
-            plot_window_roll_speed->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
-            plot_window_pitch_speed->addGraph();
-            plot_window_pitch_speed->graph(0)->setPen(QPen(QColor(40, 110, 255))); // blue line
 
 
-            //plot_pitch = plot_window_pitch->addGraph();
-            //plot_pitch->setPen(QPen(QColor(40, 110, 255)));
-        }
-
-        lastPointKey = 0.01;
-
-        if (key1-lastPointKey > 0.5)
-        {
-        plot_window_pitch->graph(0)->addData(key1, imu_pitch); // Устанавливаем данные
-        plot_window_pitch->xAxis->setRange(key1, 8, Qt::AlignRight);
-        plot_window_pitch->replot();           // Отрисовываем график
-        plot_window_pitch->graph(0)->rescaleValueAxis(true);
-
-        plot_window_roll->graph(0)->addData(key1, imu_roll); // Устанавливаем данные
-        plot_window_roll->xAxis->setRange(key1, 8, Qt::AlignRight);
-        plot_window_roll->replot();           // Отрисовываем график
-        plot_window_roll->graph(0)->rescaleValueAxis(true);
-
-        plot_window_roll_speed->graph(0)->addData(key1, imu_roll_speed); // Устанавливаем данные
-        plot_window_roll_speed->xAxis->setRange(key1, 8, Qt::AlignRight);
-        plot_window_roll_speed->replot();           // Отрисовываем график
-        plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
-
-        plot_window_pitch_speed->graph(0)->addData(key1, imu_pitch_speed); // Устанавливаем данные
-        plot_window_pitch_speed->xAxis->setRange(key1, 8, Qt::AlignRight);
-        plot_window_pitch_speed->replot();           // Отрисовываем график
-        plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
+        //key1 = QTime::currentTime()/1000;
+        static QTime time(QTime::currentTime());
+        key1 = time.elapsed()/1000.0;
 
 
-        lastPointKey = key1;
-        }
-        //____________________________________________________
+        imu_roll_d = imu_roll;
+        imu_pitch_d = imu_pitch;
+        imu_yaw_d = imu_yaw_d;
+
+        imu_roll_speed_d = imu_roll_speed;
+        imu_pitch_speed_d = imu_pitch_speed;
+        imu_yaw_speed_d = imu_yaw_speed;
 
 
         //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
@@ -542,7 +509,7 @@ void Server::receiveMessage() {
         */
     }
     //QTest::qSleep (settings->connection->pause_after_received);
-    msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter+ (float)msg_lost_counter);
+    msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter + (float)msg_lost_counter);
     msg_lost_percent *= 100;
 
     std::cout << "RECEIVED = " << msg_received_counter << std::endl;

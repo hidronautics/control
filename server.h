@@ -59,6 +59,15 @@ public:
     int16_t imu_pitch_speed;
     int16_t imu_yaw_speed;
 
+    int16_t imu_roll_d;
+    int16_t imu_pitch_d;
+    int16_t imu_yaw_d;
+
+    int16_t imu_roll_speed_d;
+    int16_t imu_pitch_speed_d;
+    int16_t imu_yaw_speed_d;
+
+
     int16_t imu_depth;
 
     uint16_t current_HLB;
@@ -99,20 +108,22 @@ public:
 
     bool emulation_mode = false;
 
-    QCustomPlot *plot_window_pitch; // Объявляем графическое полотно
-    QCustomPlot *plot_window_pitch_speed;
-    QCustomPlot *plot_window_roll;
-    QCustomPlot *plot_window_roll_speed;
+    //QCustomPlot *plot_window_pitch; // Объявляем графическое полотно
+    //QCustomPlot *plot_window_pitch_speed;
+    //QCustomPlot *plot_window_roll;
+    //QCustomPlot *plot_window_roll_speed;
 
-    QCPGraph *plot_pitch;          // Объявляем графики
-    QCPGraph *plot_pitch_speed;
-    QCPGraph *plot_roll;
-    QCPGraph *plot_roll_speed;
+    //QCPGraph *plot_pitch;          // Объявляем графики
+    //QCPGraph *plot_pitch_speed;
+    //QCPGraph *plot_roll;
+    //QCPGraph *plot_roll_speed;
+    double key1;
 
 private:
     QSerialPort *newPort;
-    const QString log_folder_path = "C:\\logs\\";
-
+    //const QString log_folder_path = "C:\\logs\\";
+    //const QString log_folder_path = ":/logs/logs/";
+    const QString log_folder_path = "D:\\Gidronavtika\\control\\control\\logs\\";
     bool COMconnect(int com_name);
 
     void addCheckSumm16b(uint8_t * msg, uint16_t length);
