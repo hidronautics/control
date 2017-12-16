@@ -123,10 +123,15 @@ private:
     QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
 
-    int imu_pitch_max = 0;
-    int imu_roll_max = 0;
-    int imu_pitch_speed_max = 0;
-    int imu_roll_speed_max = 0;
+    int imu_pitch_max;
+    int imu_roll_max;
+    int imu_pitch_speed_max;
+    int imu_roll_speed_max;
+
+    int imu_pitch_min;
+    int imu_roll_min;
+    int imu_pitch_speed_min;
+    int imu_roll_speed_min;
 
 };
 

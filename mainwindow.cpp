@@ -23,10 +23,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //ADD
 
-    imu_pitch_max = 0;
-    imu_roll_max = 0;
-    imu_pitch_speed_max = 0;
-    imu_roll_speed_max = 0;
+    imu_pitch_max = -500;
+    imu_roll_max = -500;
+    imu_pitch_speed_max = -500;
+    imu_roll_speed_max = -500;
+
+    imu_pitch_min = 500;
+    imu_roll_min = 500;
+    imu_pitch_speed_min = 500;
+    imu_roll_speed_min = 500;
 
     //ui->plot_window_pitch = new QCustomPlot();
     ui->plot_window_pitch->xAxis->setLabel("T(c)");
@@ -35,15 +40,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plot_window_pitch->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
     ui->plot_window_pitch->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
-    ui->plot_window_pitch->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-    ui->plot_window_pitch->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+    //ui->plot_window_pitch->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    //ui->plot_window_pitch->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
 
 
     //server->plot_pitch = ui->plot_window_pitch->addGraph();
     //server->plot_pitch->setPen(QPen(QColor(40, 110, 255)));
 
     QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
-    timeTicker->setTimeFormat("%h:%m:%s:%ms");
+    timeTicker->setTimeFormat("%h:%m:%s");
     ui->plot_window_pitch->xAxis->setTicker(timeTicker);
     ui->plot_window_pitch->axisRect()->setupFullAxesBox();
     ui->plot_window_pitch->yAxis->setRange(-10, 10);
@@ -58,8 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plot_window_roll->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
     ui->plot_window_roll->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
-    ui->plot_window_roll->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-    ui->plot_window_roll->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+    //ui->plot_window_roll->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    //ui->plot_window_roll->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
 
 
     //server->plot_pitch = ui->plot_window_pitch->addGraph();
@@ -80,8 +85,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plot_window_pitch_speed->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
     ui->plot_window_pitch_speed->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
-    ui->plot_window_pitch_speed->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-    ui->plot_window_pitch_speed->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+    //ui->plot_window_pitch_speed->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    //ui->plot_window_pitch_speed->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
 
 
     //server->plot_pitch = ui->plot_window_pitch->addGraph();
@@ -101,8 +106,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->plot_window_roll_speed->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
     ui->plot_window_roll_speed->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
-    ui->plot_window_roll_speed->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-    ui->plot_window_roll_speed->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+    //ui->plot_window_roll_speed->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+    //ui->plot_window_roll_speed->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
 
 
     //server->plot_pitch = ui->plot_window_pitch->addGraph();
@@ -473,51 +478,74 @@ void MainWindow::serverIsSleeping() {
     //key1 =time.elapsed()/1000.0;
 
     static double time_d = 0;
-    if ((server->key1 - time_d) > 0.002)
+    if ((server->key1 - time_d) > 0.001)
     {
     ui->plot_window_pitch->graph(0)->addData(server->key1, server->imu_pitch_d); // Устанавливаем данные
     ui->plot_window_pitch->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if (abs(server->imu_pitch_d)>imu_pitch_max)
+    if ((server->imu_pitch_d)>imu_pitch_max)
     {
-        imu_pitch_max = abs(server->imu_pitch_d);
+        imu_pitch_max = server->imu_pitch_d;
         std::cout << "imu_pitch_max = " << imu_pitch_max << std::endl;
-        ui->plot_window_pitch->yAxis->setRange(-imu_pitch_max,imu_pitch_max);
-        ui->plot_window_pitch->replot();           // Отрисовываем график
-        ui->plot_window_pitch->graph(0)->rescaleValueAxis(true);
     }
+    if ((server->imu_pitch_d)<imu_pitch_min)
+    {
+        imu_pitch_min = server->imu_pitch_d;
+        std::cout << "imu_pitch_min = " << imu_pitch_min << std::endl;
+    }
+    ui->plot_window_pitch->yAxis->setRange(imu_pitch_min-2,imu_pitch_max+2);
+    ui->plot_window_pitch->replot();           // Отрисовываем график
+    ui->plot_window_pitch->graph(0)->rescaleValueAxis(true);
+
 
     ui->plot_window_roll->graph(0)->addData(server->key1, server->imu_roll_d); // Устанавливаем данные
     ui->plot_window_roll->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if (abs(server->imu_roll_d)>imu_roll_max)
+    if ((server->imu_roll_d)>imu_roll_max)
     {
-        imu_roll_max = abs(server->imu_roll_d);
+        imu_roll_max = server->imu_roll_d;
         std::cout << "imu_roll_max = " << imu_roll_max << std::endl;
-        ui->plot_window_roll->yAxis->setRange(-imu_roll_max,imu_roll_max);
-        ui->plot_window_roll->replot();           // Отрисовываем график
-        ui->plot_window_roll->graph(0)->rescaleValueAxis(true);
     }
+    if ((server->imu_roll_d)<imu_roll_min)
+    {
+        imu_roll_min = server->imu_roll_d;
+        std::cout << "imu_roll_min = " << imu_roll_min << std::endl;
+    }
+    ui->plot_window_roll->yAxis->setRange(imu_roll_min-2,imu_roll_max+2);
+    ui->plot_window_roll->replot();           // Отрисовываем график
+    ui->plot_window_roll->graph(0)->rescaleValueAxis(true);
+
 
     ui->plot_window_roll_speed->graph(0)->addData(server->key1, server->imu_roll_speed_d); // Устанавливаем данные
     ui->plot_window_roll_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if (abs(server->imu_roll_speed_d)>imu_roll_speed_max)
+    if ((server->imu_roll_speed_d)>imu_roll_speed_max)
     {
-        imu_roll_speed_max = abs(server->imu_roll_speed_d);
+        imu_roll_speed_max = server->imu_roll_speed_d;
         std::cout << "imu_roll_speed_max = " << imu_roll_speed_max << std::endl;
-        ui->plot_window_roll->yAxis->setRange(-imu_roll_speed_max,imu_roll_speed_max);
-        ui->plot_window_roll_speed->replot();           // Отрисовываем график
-        ui->plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
     }
+    if ((server->imu_roll_speed_d)<imu_roll_speed_min)
+    {
+        imu_roll_speed_min = server->imu_roll_speed_d;
+        std::cout << "imu_roll_speed_min = " << imu_roll_speed_min << std::endl;
+    }
+    ui->plot_window_roll->yAxis->setRange(imu_roll_speed_min-2,imu_roll_speed_max+2);
+    ui->plot_window_roll_speed->replot();           // Отрисовываем график
+    ui->plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
+
 
     ui->plot_window_pitch_speed->graph(0)->addData(server->key1, server->imu_pitch_speed_d); // Устанавливаем данные
     ui->plot_window_pitch_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
     if (abs(server->imu_pitch_speed_d)>imu_pitch_speed_max)
     {
-          imu_pitch_speed_max = abs(server->imu_pitch_speed_d);
-          std::cout << "imu_pitch_speed_max = " << imu_pitch_speed_max << std::endl;
-          ui->plot_window_pitch_speed->yAxis->setRange(-imu_pitch_speed_max,imu_pitch_speed_max);
-          ui->plot_window_pitch_speed->replot();           // Отрисовываем график
-          ui->plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
+        imu_pitch_speed_max = abs(server->imu_pitch_speed_d);
+        std::cout << "imu_pitch_speed_max = " << imu_pitch_speed_max << std::endl;
     }
+    if ((server->imu_pitch_speed_d)<imu_pitch_speed_min)
+    {
+        imu_pitch_speed_min = server->imu_pitch_speed_d;
+        std::cout << "imu_pitch_speed_min = " << imu_pitch_speed_min << std::endl;
+    }
+    ui->plot_window_pitch_speed->yAxis->setRange(imu_pitch_speed_min-2,imu_pitch_speed_max+2);
+    ui->plot_window_pitch_speed->replot();           // Отрисовываем график
+    ui->plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
     time_d = server->key1;
     }
 
