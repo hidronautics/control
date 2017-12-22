@@ -405,7 +405,7 @@ void Server::receiveMessage() {
 
         imu_roll_d = imu_roll;
         imu_pitch_d = imu_pitch;
-        imu_yaw_d = imu_yaw_d;
+        imu_yaw_d = imu_yaw;
 
         imu_roll_speed_d = imu_roll_speed;
         imu_pitch_speed_d = imu_pitch_speed;
