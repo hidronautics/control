@@ -109,7 +109,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -2286,8 +2286,8 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
-        <width>500</width>
+        <y>20</y>
+        <width>341</width>
         <height>315</height>
        </rect>
       </property>
@@ -2297,7 +2297,7 @@
        <rect>
         <x>10</x>
         <y>350</y>
-        <width>500</width>
+        <width>341</width>
         <height>315</height>
        </rect>
       </property>
@@ -2305,9 +2305,9 @@
      <widget class="QCustomPlot" name="plot_window_pitch" native="true">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>10</y>
-        <width>500</width>
+        <x>350</x>
+        <y>20</y>
+        <width>341</width>
         <height>315</height>
        </rect>
       </property>
@@ -2315,9 +2315,29 @@
      <widget class="QCustomPlot" name="plot_window_pitch_speed" native="true">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>350</x>
         <y>350</y>
-        <width>500</width>
+        <width>341</width>
+        <height>315</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QCustomPlot" name="plot_window_yaw" native="true">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>20</y>
+        <width>341</width>
+        <height>315</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QCustomPlot" name="plot_window_yaw_speed" native="true">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>350</y>
+        <width>341</width>
         <height>315</height>
        </rect>
       </property>

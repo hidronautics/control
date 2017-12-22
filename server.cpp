@@ -396,6 +396,7 @@ void Server::receiveMessage() {
         msg_in = newPort->readAll();
 
 
+        // For PLOTS  __________________________________________________________________
 
         //key1 = QTime::currentTime()/1000;
         static QTime time(QTime::currentTime());
@@ -409,6 +410,7 @@ void Server::receiveMessage() {
         imu_roll_speed_d = imu_roll_speed;
         imu_pitch_speed_d = imu_pitch_speed;
         imu_yaw_speed_d = imu_yaw_speed;
+        //______________________________________________________________________________
 
 
         //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
