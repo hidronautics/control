@@ -141,28 +141,15 @@
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="label_pic">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>0</y>
-        <width>1071</width>
-        <height>731</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
      <widget class="qfi_PFD" name="graphicsPFD_2">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>0</x>
         <y>0</y>
-        <width>791</width>
+        <width>1021</width>
         <height>721</height>
        </rect>
       </property>
@@ -171,6 +158,421 @@
         <width>671</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Light">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>72</red>
+            <green>96</green>
+            <blue>108</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Midlight">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>60</red>
+            <green>80</green>
+            <blue>90</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Dark">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Mid">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>42</green>
+            <blue>48</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="BrightText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Shadow">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="AlternateBase">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ToolTipBase">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>220</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ToolTipText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Light">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>72</red>
+            <green>96</green>
+            <blue>108</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Midlight">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>60</red>
+            <green>80</green>
+            <blue>90</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Dark">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Mid">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>42</green>
+            <blue>48</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="BrightText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Shadow">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="AlternateBase">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ToolTipBase">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>220</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ToolTipText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="WindowText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Light">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>72</red>
+            <green>96</green>
+            <blue>108</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Midlight">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>60</red>
+            <green>80</green>
+            <blue>90</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Dark">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Mid">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>42</green>
+            <blue>48</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Text">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="BrightText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>24</red>
+            <green>32</green>
+            <blue>36</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Shadow">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="AlternateBase">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>48</red>
+            <green>64</green>
+            <blue>72</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ToolTipBase">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>255</green>
+            <blue>220</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ToolTipText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -197,8 +599,8 @@
      <widget class="QLabel" name="label_28">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>640</y>
+        <x>20</x>
+        <y>670</y>
         <width>61</width>
         <height>16</height>
        </rect>
@@ -210,8 +612,8 @@
      <widget class="QLabel" name="label_BT">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>640</y>
+        <x>80</x>
+        <y>670</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -223,50 +625,50 @@
      <widget class="QLCDNumber" name="lcdNumber_current_VF">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>40</y>
-        <width>51</width>
-        <height>23</height>
+        <x>67</x>
+        <y>35</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_current_HRF">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>100</y>
-        <width>51</width>
-        <height>23</height>
+        <x>189</x>
+        <y>92</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_current_VR">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>160</y>
-        <width>51</width>
-        <height>23</height>
+        <x>162</x>
+        <y>182</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_current_HRB">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>230</y>
-        <width>51</width>
-        <height>23</height>
+        <x>189</x>
+        <y>268</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_current_VB">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>290</y>
-        <width>51</width>
-        <height>23</height>
+        <x>67</x>
+        <y>349</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -282,40 +684,40 @@
      <widget class="QLCDNumber" name="lcdNumber_current_HLB">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>230</y>
-        <width>51</width>
-        <height>23</height>
+        <x>43</x>
+        <y>268</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_current_VL">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>160</y>
-        <width>51</width>
-        <height>23</height>
+        <x>67</x>
+        <y>182</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_current_HLF">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>100</y>
-        <width>51</width>
-        <height>23</height>
+        <x>43</x>
+        <y>92</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_VF">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>70</y>
-        <width>51</width>
-        <height>23</height>
+        <x>162</x>
+        <y>35</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -337,104 +739,78 @@
      <widget class="QLCDNumber" name="lcdNumber_velocity_HRF">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>130</y>
-        <width>51</width>
-        <height>23</height>
+        <x>189</x>
+        <y>134</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_VR">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>190</y>
-        <width>51</width>
-        <height>23</height>
+        <x>162</x>
+        <y>223</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_HRB">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>260</y>
-        <width>51</width>
-        <height>23</height>
+        <x>189</x>
+        <y>308</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_VB">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>320</y>
-        <width>51</width>
-        <height>23</height>
+        <x>162</x>
+        <y>349</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_HLB">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>260</y>
-        <width>51</width>
-        <height>23</height>
+        <x>43</x>
+        <y>308</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_VL">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>190</y>
-        <width>51</width>
-        <height>23</height>
+        <x>67</x>
+        <y>223</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_HLF">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>130</y>
-        <width>51</width>
-        <height>23</height>
+        <x>43</x>
+        <y>134</y>
+        <width>50</width>
+        <height>30</height>
        </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_light">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>380</y>
-        <width>47</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Light</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_bottomLight">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>380</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Bottom light</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_agar">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>380</y>
+        <x>30</x>
+        <y>620</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -443,70 +819,31 @@
        <string>Agar</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_Grab">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>440</y>
-        <width>47</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Grab</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_Rotate">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>440</y>
-        <width>47</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Rotate</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_Tilt">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>440</y>
-        <width>47</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Tilt</string>
-      </property>
-     </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_Light">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>400</y>
-        <width>51</width>
-        <height>23</height>
+        <x>883</x>
+        <y>85</y>
+        <width>62</width>
+        <height>35</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_bottomLight">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>400</y>
-        <width>51</width>
-        <height>23</height>
+        <x>883</x>
+        <y>170</y>
+        <width>62</width>
+        <height>35</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_Agar">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>400</y>
+        <x>30</x>
+        <y>640</y>
         <width>51</width>
         <height>23</height>
        </rect>
@@ -515,38 +852,38 @@
      <widget class="QLCDNumber" name="lcdNumber_velocity_Grab">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>460</y>
-        <width>51</width>
-        <height>23</height>
+        <x>883</x>
+        <y>254</y>
+        <width>62</width>
+        <height>35</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_Rotate">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>460</y>
-        <width>51</width>
-        <height>23</height>
+        <x>883</x>
+        <y>339</y>
+        <width>62</width>
+        <height>35</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_velocity_Tilt">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>460</y>
-        <width>51</width>
-        <height>23</height>
+        <x>883</x>
+        <y>424</y>
+        <width>62</width>
+        <height>35</height>
        </rect>
       </property>
      </widget>
      <widget class="QLCDNumber" name="lcdNumber_Received">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>510</y>
+        <x>30</x>
+        <y>570</y>
         <width>51</width>
         <height>31</height>
        </rect>
@@ -555,10 +892,10 @@
      <widget class="QLabel" name="label_Grab_2">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>490</y>
-        <width>47</width>
-        <height>13</height>
+        <x>30</x>
+        <y>550</y>
+        <width>51</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="text">
@@ -568,8 +905,8 @@
      <widget class="QLabel" name="label_Grab_3">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>490</y>
+        <x>100</x>
+        <y>550</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -581,8 +918,8 @@
      <widget class="QLCDNumber" name="lcdNumber_Lost">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>510</y>
+        <x>100</x>
+        <y>570</y>
         <width>51</width>
         <height>31</height>
        </rect>
@@ -591,9 +928,9 @@
      <widget class="QLabel" name="label_Grab_4">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>490</y>
-        <width>61</width>
+        <x>170</x>
+        <y>550</y>
+        <width>81</width>
         <height>16</height>
        </rect>
       </property>
@@ -604,8 +941,8 @@
      <widget class="QLCDNumber" name="lcdNumber_Percent">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>510</y>
+        <x>170</x>
+        <y>570</y>
         <width>51</width>
         <height>31</height>
        </rect>
@@ -614,9 +951,9 @@
      <widget class="QCheckBox" name="checkBox_2">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>620</y>
-        <width>131</width>
+        <x>30</x>
+        <y>495</y>
+        <width>111</width>
         <height>17</height>
        </rect>
       </property>
@@ -627,8 +964,8 @@
      <widget class="QCheckBox" name="checkBox_SDepth">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>560</y>
+        <x>30</x>
+        <y>426</y>
         <width>101</width>
         <height>17</height>
        </rect>
@@ -640,8 +977,8 @@
      <widget class="QCheckBox" name="checkBox_SRoll">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>580</y>
+        <x>30</x>
+        <y>449</y>
         <width>111</width>
         <height>17</height>
        </rect>
@@ -653,9 +990,9 @@
      <widget class="QCheckBox" name="checkBox_SPitch">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>600</y>
-        <width>91</width>
+        <x>30</x>
+        <y>472</y>
+        <width>111</width>
         <height>17</height>
        </rect>
       </property>
@@ -663,10 +1000,9 @@
        <string>Stabilize Pitch</string>
       </property>
      </widget>
-     <zorder>label_pic</zorder>
+     <zorder>graphicsPFD_2</zorder>
      <zorder>label_indicator2</zorder>
      <zorder>label</zorder>
-     <zorder>graphicsPFD_2</zorder>
      <zorder>label_28</zorder>
      <zorder>label_BT</zorder>
      <zorder>lcdNumber_current_VF</zorder>
@@ -685,12 +1021,7 @@
      <zorder>lcdNumber_velocity_HLB</zorder>
      <zorder>lcdNumber_velocity_VL</zorder>
      <zorder>lcdNumber_velocity_HLF</zorder>
-     <zorder>label_light</zorder>
-     <zorder>label_bottomLight</zorder>
      <zorder>label_agar</zorder>
-     <zorder>label_Grab</zorder>
-     <zorder>label_Rotate</zorder>
-     <zorder>label_Tilt</zorder>
      <zorder>lcdNumber_velocity_Light</zorder>
      <zorder>lcdNumber_velocity_bottomLight</zorder>
      <zorder>lcdNumber_velocity_Agar</zorder>
@@ -2291,7 +2622,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
