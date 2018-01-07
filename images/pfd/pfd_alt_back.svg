@@ -1,73 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="40"
-   height="175"
-   id="svg2"
-   version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="pfd_alt_back.svg">
-  <defs
-     id="defs4" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1.9999999"
-     inkscape:cx="206.47307"
-     inkscape:cy="166.9"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1005"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:snap-object-midpoints="false"
-     inkscape:snap-smooth-nodes="false"
-     inkscape:object-paths="false"
-     inkscape:snap-midpoints="true"
-     inkscape:snap-intersection-paths="true"
-     inkscape:object-nodes="true"
-     inkscape:snap-center="false"
-     inkscape:snap-nodes="true"
-     showguides="true"
-     inkscape:guide-bbox="true" />
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-877.3622)">
-    <rect
-       style="fill:#4d4d4d;fill-opacity:1;stroke:none"
-       id="rect3611-2-7-3-5"
-       width="40"
-       height="175"
-       x="0"
-       y="877.36218" />
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg2" xmlns:cc="http://creativecommons.org/ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dc="http://purl.org/dc/elements/1.1/" sodipodi:docname="pfd_alt_back.svg" inkscape:version="0.48.4 r9939"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 175"
+	 enable-background="new 0 0 40 175" xml:space="preserve">
+<sodipodi:namedview  borderopacity="1.0" inkscape:cy="166.9" bordercolor="#666666" inkscape:cx="206.47307" showguides="true" inkscape:zoom="1.9999999" id="base" pagecolor="#ffffff" showgrid="false" inkscape:window-x="-9" inkscape:current-layer="layer1" inkscape:pageopacity="0.0" inkscape:window-y="-9" inkscape:snap-smooth-nodes="false" inkscape:window-maximized="1" inkscape:object-nodes="true" inkscape:pageshadow="2" inkscape:document-units="px" inkscape:window-height="1005" inkscape:snap-object-midpoints="false" inkscape:guide-bbox="true" inkscape:snap-nodes="true" inkscape:snap-midpoints="true" inkscape:snap-center="false" inkscape:window-width="1920" inkscape:object-paths="false" inkscape:snap-intersection-paths="true">
+	</sodipodi:namedview>
+<g id="layer1" transform="translate(0,-877.3622)" inkscape:label="Layer 1" inkscape:groupmode="layer">
+	<rect id="rect3611-2-7-3-5" y="877.4" fill="#79FFFF" width="40" height="175"/>
+</g>
 </svg>

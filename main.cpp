@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
     QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
 
-    mainWindow->show();
+    mainWindow->showFullScreen();
 
     return a.exec();
 }
