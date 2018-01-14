@@ -216,7 +216,7 @@ void Settings::write(QJsonObject &json) const
 
 
 bool Settings::loadFromJSONFile() {
-    QFile loadFile("configv3.json");
+    QFile loadFile("config.json");
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");
