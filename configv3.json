@@ -1,0 +1,116 @@
+{
+    "connection": {
+        "baudRate": 57600,
+        "comNumber": 1,
+        "dataBits": 8,
+        "flowControl": "no",
+        "parity": "no",
+        "pauseAfterReceived": 0,
+        "pauseAfterSent": 50,
+        "stopBits": "one"
+    },
+    "motors": [
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1.2,
+            "k_forward": 1,
+            "slot": 0
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 1
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 2
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 3
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 4
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 5
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 6
+        },
+        {
+            "code": "VF",
+            "enabled": true,
+            "inverse": false,
+            "k_backward": 1,
+            "k_forward": 1,
+            "slot": 7
+        }
+    ],
+    "stabilization": {
+        "depth": {
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
+        },
+        "pitch": {
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
+        },
+        "roll": {
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
+        },
+        "yaw": {
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
+        }
+    }
+}

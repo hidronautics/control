@@ -64,29 +64,37 @@ void Settings::read(const QJsonObject &json)
     QJsonObject pitch_json  = stabilization_json["pitch"].toObject();
     QJsonObject yaw_json    = stabilization_json["yaw"].toObject();
 
+    depth.iborders       = depth_json["iborders"].toDouble();
+    depth.igain       = depth_json["igain"].toDouble();
     depth.k1         = depth_json["k1"].toDouble();
     depth.k2         = depth_json["k2"].toDouble();
-    depth.start      = depth_json["start"].toDouble();
-    depth.gain       = depth_json["gain"].toDouble();
-    depth.const_time = depth_json["const_time"].toBool();
+    depth.k3         = depth_json["k3"].toDouble();
+    depth.k4         = depth_json["k4"].toDouble();
+    depth.pgain       = depth_json["pgain"].toDouble();
 
+    roll.iborders       = roll_json["iborders"].toDouble();
+    roll.igain       = roll_json["igain"].toDouble();
     roll.k1         = roll_json["k1"].toDouble();
     roll.k2         = roll_json["k2"].toDouble();
-    roll.start      = roll_json["start"].toDouble();
-    roll.gain       = roll_json["gain"].toDouble();
-    roll.const_time = roll_json["const_time"].toBool();
+    roll.k3         = roll_json["k3"].toDouble();
+    roll.k4         = roll_json["k4"].toDouble();
+    roll.pgain       = roll_json["pgain"].toDouble();
 
+    pitch.iborders       = pitch_json["iborders"].toDouble();
+    pitch.igain       = pitch_json["igain"].toDouble();
     pitch.k1         = pitch_json["k1"].toDouble();
     pitch.k2         = pitch_json["k2"].toDouble();
-    pitch.start      = pitch_json["start"].toDouble();
-    pitch.gain       = pitch_json["gain"].toDouble();
-    pitch.const_time = pitch_json["const_time"].toBool();
+    pitch.k3         = pitch_json["k3"].toDouble();
+    pitch.k4         = pitch_json["k4"].toDouble();
+    pitch.pgain       = pitch_json["pgain"].toDouble();
 
+    yaw.iborders       = yaw_json["iborders"].toDouble();
+    yaw.igain       = yaw_json["igain"].toDouble();
     yaw.k1         = yaw_json["k1"].toDouble();
     yaw.k2         = yaw_json["k2"].toDouble();
-    yaw.start      = yaw_json["start"].toDouble();
-    yaw.gain       = yaw_json["gain"].toDouble();
-    yaw.const_time = yaw_json["const_time"].toBool();
+    yaw.k3         = yaw_json["k3"].toDouble();
+    yaw.k4         = yaw_json["k4"].toDouble();
+    yaw.pgain       = yaw_json["pgain"].toDouble();
 
     QJsonObject connection_json = json["connection"].toObject();
 
@@ -147,29 +155,37 @@ void Settings::write(QJsonObject &json) const
     QJsonObject yaw_json;
 
 
+    depth_json["iborders"]     = depth.iborders;
+    depth_json["igain"]      = depth.igain;
     depth_json["k1"]        = depth.k1;
     depth_json["k2"]        = depth.k2;
-    depth_json["start"]     = depth.start;
-    depth_json["gain"]      = depth.gain;
-    depth_json["const_time"] = depth.const_time;
+    depth_json["k3"]        = depth.k3;
+    depth_json["k4"]        = depth.k4;
+    depth_json["pgain"]      = depth.pgain;
 
-    roll_json["k1"]         = roll.k1;
-    roll_json["k2"]         = roll.k2;
-    roll_json["start"]      = roll.start;
-    roll_json["gain"]       = roll.gain;
-    roll_json["const_time"] = roll.const_time;
-
+    pitch_json["iborders"]     = pitch.iborders;
+    pitch_json["igain"]      = pitch.igain;
     pitch_json["k1"]        = pitch.k1;
     pitch_json["k2"]        = pitch.k2;
-    pitch_json["start"]     = pitch.start;
-    pitch_json["gain"]      = pitch.gain;
-    pitch_json["const_time"] = pitch.const_time;
+    pitch_json["k3"]        = pitch.k3;
+    pitch_json["k4"]        = pitch.k4;
+    pitch_json["pgain"]      = pitch.pgain;
 
-    yaw_json["k1"]          = yaw.k1;
-    yaw_json["k2"]          = yaw.k2;
-    yaw_json["start"]       = yaw.start;
-    yaw_json["gain"]        = yaw.gain;
-    yaw_json["const_time"]  = yaw.const_time;
+    roll_json["iborders"]     = roll.iborders;
+    roll_json["igain"]      = roll.igain;
+    roll_json["k1"]        = roll.k1;
+    roll_json["k2"]        = roll.k2;
+    roll_json["k3"]        = roll.k3;
+    roll_json["k4"]        = roll.k4;
+    roll_json["pgain"]      = roll.pgain;
+
+    yaw_json["iborders"]     = yaw.iborders;
+    yaw_json["igain"]      = yaw.igain;
+    yaw_json["k1"]        = yaw.k1;
+    yaw_json["k2"]        = yaw.k2;
+    yaw_json["k3"]        = yaw.k3;
+    yaw_json["k4"]        = yaw.k4;
+    yaw_json["pgain"]      = yaw.pgain;
 
     QJsonObject stabilization_json;
 
@@ -200,7 +216,7 @@ void Settings::write(QJsonObject &json) const
 
 
 bool Settings::loadFromJSONFile() {
-    QFile loadFile("config.json");
+    QFile loadFile("configv3.json");
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");

@@ -185,29 +185,38 @@ void Server::sendMessageConfig() {
     msg_to_send[0] = 0xFF;
     msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_DEPTH]    = settings->depth.const_time;
+    msg_to_send[REQUEST_CONFIG_IBORDERS_DEPTH]      = settings->depth.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_DEPTH]         = settings->depth.igain;
     msg_to_send[REQUEST_CONFIG_K1_DEPTH]            = settings->depth.k1;
     msg_to_send[REQUEST_CONFIG_K2_DEPTH]            = settings->depth.k2;
-    msg_to_send[REQUEST_CONFIG_START_DEPTH]         = settings->depth.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_DEPTH]          = settings->depth.gain;
+    msg_to_send[REQUEST_CONFIG_K3_DEPTH]            = settings->depth.k3;
+    msg_to_send[REQUEST_CONFIG_K4_DEPTH]            = settings->depth.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_DEPTH]         = settings->depth.pgain;
 
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_ROLL]     = settings->roll.const_time;
-    msg_to_send[REQUEST_CONFIG_K1_ROLL]             = settings->roll.k1;
-    msg_to_send[REQUEST_CONFIG_K2_ROLL]             = settings->roll.k2;
-    msg_to_send[REQUEST_CONFIG_START_ROLL]          = settings->roll.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_ROLL]           = settings->roll.gain;
-
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_PITCH]    = settings->pitch.const_time;
+    msg_to_send[REQUEST_CONFIG_IBORDERS_PITCH]      = settings->pitch.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_PITCH]         = settings->pitch.igain;
     msg_to_send[REQUEST_CONFIG_K1_PITCH]            = settings->pitch.k1;
     msg_to_send[REQUEST_CONFIG_K2_PITCH]            = settings->pitch.k2;
-    msg_to_send[REQUEST_CONFIG_START_PITCH]         = settings->pitch.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_PITCH]          = settings->pitch.gain;
+    msg_to_send[REQUEST_CONFIG_K3_PITCH]            = settings->pitch.k3;
+    msg_to_send[REQUEST_CONFIG_K4_PITCH]            = settings->pitch.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_PITCH]         = settings->pitch.pgain;
 
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_YAW]      = settings->yaw.const_time;
-    msg_to_send[REQUEST_CONFIG_K1_YAW]              = settings->yaw.k1;
-    msg_to_send[REQUEST_CONFIG_K2_YAW]              = settings->yaw.k2;
-    msg_to_send[REQUEST_CONFIG_START_YAW]           = settings->yaw.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_YAW]            = settings->yaw.gain;
+    msg_to_send[REQUEST_CONFIG_IBORDERS_ROLL]      = settings->roll.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_ROLL]         = settings->roll.igain;
+    msg_to_send[REQUEST_CONFIG_K1_ROLL]            = settings->roll.k1;
+    msg_to_send[REQUEST_CONFIG_K2_ROLL]            = settings->roll.k2;
+    msg_to_send[REQUEST_CONFIG_K3_ROLL]            = settings->roll.k3;
+    msg_to_send[REQUEST_CONFIG_K4_ROLL]            = settings->roll.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_ROLL]         = settings->roll.pgain;
+
+    msg_to_send[REQUEST_CONFIG_IBORDERS_YAW]      = settings->yaw.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_YAW]         = settings->yaw.igain;
+    msg_to_send[REQUEST_CONFIG_K1_YAW]            = settings->yaw.k1;
+    msg_to_send[REQUEST_CONFIG_K2_YAW]            = settings->yaw.k2;
+    msg_to_send[REQUEST_CONFIG_K3_YAW]            = settings->yaw.k3;
+    msg_to_send[REQUEST_CONFIG_K4_YAW]            = settings->yaw.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_YAW]         = settings->yaw.pgain;
+
 
     settings->motors;
 

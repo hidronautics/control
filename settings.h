@@ -15,11 +15,13 @@
 #include <QSerialPort>
 
 struct Stabilization {
+    float iborders;
+    float igain;
     float k1;
     float k2;
-    float start;
-    float gain;
-    bool const_time;
+    float k3;
+    float k4;
+    float pgain;
 };
 
 class Motor;

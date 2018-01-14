@@ -437,29 +437,37 @@ void MainWindow::on_pushButton_Disconnect_released()
 void MainWindow::on_pushButton_load_config_released()
 {
     if (settings->loadFromJSONFile()) {
+        ui->doubleSpinBox_depth_iborders->setValue(settings->depth.iborders);
+        ui->doubleSpinBox_depth_igain->setValue(settings->depth.igain);
         ui->doubleSpinBox_depth_k1->setValue(settings->depth.k1);
         ui->doubleSpinBox_depth_k2->setValue(settings->depth.k2);
-        ui->doubleSpinBox_depth_start->setValue(settings->depth.start);
-        ui->doubleSpinBox_depth_gain->setValue(settings->depth.gain);
-        ui->checkBox_const_time_depth->setChecked(settings->depth.const_time);
+        ui->doubleSpinBox_depth_k3->setValue(settings->depth.k3);
+        ui->doubleSpinBox_depth_k4->setValue(settings->depth.k4);
+        ui->doubleSpinBox_depth_pgain->setValue(settings->depth.pgain);
 
-        ui->doubleSpinBox_roll_k1->setValue(settings->roll.k1);
-        ui->doubleSpinBox_roll_k2->setValue(settings->roll.k2);
-        ui->doubleSpinBox_roll_start->setValue(settings->roll.start);
-        ui->doubleSpinBox_roll_gain->setValue(settings->roll.gain);
-        ui->checkBox_const_time_roll->setChecked(settings->roll.const_time);
-
+        ui->doubleSpinBox_pitch_iborders->setValue(settings->pitch.iborders);
+        ui->doubleSpinBox_pitch_igain->setValue(settings->pitch.igain);
         ui->doubleSpinBox_pitch_k1->setValue(settings->pitch.k1);
         ui->doubleSpinBox_pitch_k2->setValue(settings->pitch.k2);
-        ui->doubleSpinBox_pitch_start->setValue(settings->pitch.start);
-        ui->doubleSpinBox_pitch_gain->setValue(settings->pitch.gain);
-        ui->checkBox_const_time_pitch->setChecked(settings->pitch.const_time);
+        ui->doubleSpinBox_pitch_k3->setValue(settings->pitch.k3);
+        ui->doubleSpinBox_pitch_k4->setValue(settings->pitch.k4);
+        ui->doubleSpinBox_pitch_pgain->setValue(settings->pitch.pgain);
 
+        ui->doubleSpinBox_roll_iborders->setValue(settings->roll.iborders);
+        ui->doubleSpinBox_roll_igain->setValue(settings->roll.igain);
+        ui->doubleSpinBox_roll_k1->setValue(settings->roll.k1);
+        ui->doubleSpinBox_roll_k2->setValue(settings->roll.k2);
+        ui->doubleSpinBox_roll_k3->setValue(settings->roll.k3);
+        ui->doubleSpinBox_roll_k4->setValue(settings->roll.k4);
+        ui->doubleSpinBox_roll_pgain->setValue(settings->roll.pgain);
+
+        ui->doubleSpinBox_yaw_iborders->setValue(settings->yaw.iborders);
+        ui->doubleSpinBox_yaw_igain->setValue(settings->yaw.igain);
         ui->doubleSpinBox_yaw_k1->setValue(settings->yaw.k1);
         ui->doubleSpinBox_yaw_k2->setValue(settings->yaw.k2);
-        ui->doubleSpinBox_yaw_start->setValue(settings->yaw.start);
-        ui->doubleSpinBox_yaw_gain->setValue(settings->yaw.gain);
-        ui->checkBox_const_time_yaw->setChecked(settings->yaw.const_time);
+        ui->doubleSpinBox_yaw_k3->setValue(settings->yaw.k3);
+        ui->doubleSpinBox_yaw_k4->setValue(settings->yaw.k4);
+        ui->doubleSpinBox_yaw_pgain->setValue(settings->yaw.pgain);
 
         ui->spinBox_COM->setValue(settings->connection->num);
         std::cout << QString::number(settings->connection->setBaudRate(settings->connection->baudRate)).toStdString() << std::endl;
@@ -501,29 +509,38 @@ void MainWindow::on_pushButton_3_released()
 
 void MainWindow::on_pushButton_save_config_released()
 {
+    settings->depth.iborders = ui->doubleSpinBox_depth_iborders->value();
+    settings->depth.igain = ui->doubleSpinBox_depth_igain->value();
     settings->depth.k1 = ui->doubleSpinBox_depth_k1->value();
     settings->depth.k2 = ui->doubleSpinBox_depth_k2->value();
-    settings->depth.gain = ui->doubleSpinBox_depth_gain->value();
-    settings->depth.start = ui->doubleSpinBox_depth_start->value();
-    settings->depth.const_time = ui->checkBox_const_time_depth->isChecked();
+    settings->depth.k3 = ui->doubleSpinBox_depth_k3->value();
+    settings->depth.k4 = ui->doubleSpinBox_depth_k4->value();
+    settings->depth.pgain = ui->doubleSpinBox_depth_pgain->value();
 
-    settings->roll.k1 = ui->doubleSpinBox_roll_k1->value();
-    settings->roll.k2 = ui->doubleSpinBox_roll_k2->value();
-    settings->roll.gain = ui->doubleSpinBox_roll_gain->value();
-    settings->roll.start = ui->doubleSpinBox_roll_start->value();
-    settings->roll.const_time = ui->checkBox_const_time_roll->isChecked();
-
+    settings->pitch.iborders = ui->doubleSpinBox_pitch_iborders->value();
+    settings->pitch.igain = ui->doubleSpinBox_pitch_igain->value();
     settings->pitch.k1 = ui->doubleSpinBox_pitch_k1->value();
     settings->pitch.k2 = ui->doubleSpinBox_pitch_k2->value();
-    settings->pitch.gain = ui->doubleSpinBox_pitch_gain->value();
-    settings->pitch.start = ui->doubleSpinBox_pitch_start->value();
-    settings->pitch.const_time = ui->checkBox_const_time_pitch->isChecked();
+    settings->pitch.k3 = ui->doubleSpinBox_pitch_k3->value();
+    settings->pitch.k4 = ui->doubleSpinBox_pitch_k4->value();
+    settings->pitch.pgain = ui->doubleSpinBox_pitch_pgain->value();
 
+    settings->roll.iborders = ui->doubleSpinBox_roll_iborders->value();
+    settings->roll.igain = ui->doubleSpinBox_roll_igain->value();
+    settings->roll.k1 = ui->doubleSpinBox_roll_k1->value();
+    settings->roll.k2 = ui->doubleSpinBox_roll_k2->value();
+    settings->roll.k3 = ui->doubleSpinBox_roll_k3->value();
+    settings->roll.k4 = ui->doubleSpinBox_roll_k4->value();
+    settings->roll.pgain = ui->doubleSpinBox_roll_pgain->value();
+
+    settings->yaw.iborders = ui->doubleSpinBox_yaw_iborders->value();
+    settings->yaw.igain = ui->doubleSpinBox_yaw_igain->value();
     settings->yaw.k1 = ui->doubleSpinBox_yaw_k1->value();
     settings->yaw.k2 = ui->doubleSpinBox_yaw_k2->value();
-    settings->yaw.gain = ui->doubleSpinBox_yaw_gain->value();
-    settings->yaw.start = ui->doubleSpinBox_yaw_start->value();
-    settings->yaw.const_time = ui->checkBox_const_time_yaw->isChecked();
+    settings->yaw.k3 = ui->doubleSpinBox_yaw_k3->value();
+    settings->yaw.k4 = ui->doubleSpinBox_yaw_k4->value();
+    settings->yaw.pgain = ui->doubleSpinBox_yaw_pgain->value();
+
 
     settings->connection->pause_after_sent = ui->spinBox_PauseAfterSent->value();
     settings->connection->pause_after_received = ui->spinBox_PauseAfterReceived->value();
