@@ -403,6 +403,22 @@ void Server::receiveMessage() {
         }
         msg_in = newPort->readAll();
 
+        // For PLOTS  __________________________________________________________________
+
+        //key1 = QTime::currentTime()/1000;
+        static QTime time(QTime::currentTime());
+        key1 = time.elapsed()/1000.0;
+
+
+        imu_roll_d = imu_roll;
+        imu_pitch_d = imu_pitch;
+        imu_yaw_d = imu_yaw;
+
+        imu_roll_speed_d = imu_roll_speed;
+        imu_pitch_speed_d = imu_pitch_speed;
+        imu_yaw_speed_d = imu_yaw_speed;
+        //______________________________________________________________________________
+
         //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
         path_csv_response = log_folder_path + "RESPONSE.csv";
         QFile file_csv_response(path_csv_response);
