@@ -48,7 +48,7 @@
 // В разработке
 #define REQUEST_CONFIG_CODE             0x55
 
-#define REQUEST_CONFIG_LENGTH           151
+#define REQUEST_CONFIG_LENGTH           195
 
 #define REQUEST_CONFIG_TYPE             0
 
