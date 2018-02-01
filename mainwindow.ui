@@ -109,7 +109,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -2982,6 +2982,49 @@
       <string>Debug</string>
      </attribute>
     </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Plots</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1001</width>
+        <height>681</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QCustomPlot" name="plot_window_roll" native="true"/>
+         </item>
+         <item>
+          <widget class="QCustomPlot" name="plot_window_pitch" native="true"/>
+         </item>
+         <item>
+          <widget class="QCustomPlot" name="plot_window_yaw" native="true"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QCustomPlot" name="plot_window_roll_speed" native="true"/>
+         </item>
+         <item>
+          <widget class="QCustomPlot" name="plot_window_pitch_speed" native="true"/>
+         </item>
+         <item>
+          <widget class="QCustomPlot" name="plot_window_yaw_speed" native="true"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -3001,6 +3044,12 @@
    <class>qfi_PFD</class>
    <extends>QGraphicsView</extends>
    <header>qfi_PFD.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

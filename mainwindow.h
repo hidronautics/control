@@ -8,6 +8,7 @@
 #include "joystick.h"
 #include "settings.h"
 #include "NewWindow.h"
+#include "qmainwindow.h"
 
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
 #define RESPONSE_TABLE_ROW_COUNT        RESPONSE_LENGTH
@@ -120,6 +121,20 @@ private:
     QTableWidgetItem *responseQTableWidgetItemsHEX[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
+
+    int imu_pitch_max;
+    int imu_roll_max;
+    int imu_pitch_speed_max;
+    int imu_roll_speed_max;
+    int imu_yaw_max;
+    int imu_yaw_speed_max;
+
+    int imu_pitch_min;
+    int imu_roll_min;
+    int imu_pitch_speed_min;
+    int imu_roll_speed_min;
+    int imu_yaw_min;
+    int imu_yaw_speed_min;
 
 };
 

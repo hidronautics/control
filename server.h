@@ -12,6 +12,7 @@
 #include <math.h>
 #include <string>
 #include <cstdlib>
+#include "qcustomplot.h"
 
 #include "joystick.h"
 #include "settings.h"
@@ -57,6 +58,19 @@ public:
     int16_t imu_roll_speed;
     int16_t imu_pitch_speed;
     int16_t imu_yaw_speed;
+
+    // For plots
+    int16_t imu_roll_d;
+    int16_t imu_pitch_d;
+    int16_t imu_yaw_d;
+
+    int16_t imu_roll_speed_d;
+    int16_t imu_pitch_speed_d;
+    int16_t imu_yaw_speed_d;
+
+    double key1;
+
+    // _______________________________
 
     int16_t imu_depth;
 
