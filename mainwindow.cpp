@@ -503,128 +503,128 @@ void MainWindow::serverIsSleeping() {
     ui->graphicsPFD_2->setAltitude(server->imu_depth);
 
     //PLOTS_____________________________________________________________________________________________________
-
+    std::cout << "Drawing plots..." << std::endl;
 
     //static QTime time(QTime::currentTime());
     //key1 =time.elapsed()/1000.0;
 
     static double time_d = 0;
-    if ((server->key1 - time_d) > 0.001)
-    {
-    //PITCH___________________________________
+    if ((server->key1 - time_d) > 0.001) {
+        //PITCH___________________________________
+        ui->plot_window_pitch->graph(0)->addData(server->key1, server->imu_pitch_d); // SET DATA
+        ui->plot_window_pitch->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_pitch_d)>imu_pitch_max)
+        {
+            imu_pitch_max = server->imu_pitch_d;
+            //std::cout << "imu_pitch_max = " << imu_pitch_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_pitch_d)<imu_pitch_min)
+        {
+            imu_pitch_min = server->imu_pitch_d;
+            //std::cout << "imu_pitch_min = " << imu_pitch_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_pitch->yAxis->setRange(imu_pitch_min-2,imu_pitch_max+2);
+        ui->plot_window_pitch->replot();           // drawing
+        ui->plot_window_pitch->graph(0)->rescaleValueAxis(true);
 
-    ui->plot_window_pitch->graph(0)->addData(server->key1, server->imu_pitch_d); // SET DATA
-    ui->plot_window_pitch->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if ((server->imu_pitch_d)>imu_pitch_max)
-    {
-        imu_pitch_max = server->imu_pitch_d;
-        //std::cout << "imu_pitch_max = " << imu_pitch_max << std::endl;  // can be added for checking
+        //ROLL____________________________________
+
+        ui->plot_window_roll->graph(0)->addData(server->key1, server->imu_roll_d); // SET DATA
+        ui->plot_window_roll->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_roll_d)>imu_roll_max)
+        {
+            imu_roll_max = server->imu_roll_d;
+            //std::cout << "imu_roll_max = " << imu_roll_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_roll_d)<imu_roll_min)
+        {
+            imu_roll_min = server->imu_roll_d;
+            //std::cout << "imu_roll_min = " << imu_roll_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_roll->yAxis->setRange(imu_roll_min-2,imu_roll_max+2);
+        ui->plot_window_roll->replot();           // drawing
+        ui->plot_window_roll->graph(0)->rescaleValueAxis(true);
+
+        //YAW____________________________________
+
+        ui->plot_window_yaw->graph(0)->addData(server->key1, server->imu_yaw_d); // SET DATA
+        ui->plot_window_yaw->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_yaw_d)>imu_yaw_max)
+        {
+            imu_yaw_max = server->imu_yaw_d;
+            //std::cout << "imu_roll_max = " << imu_yaw_max << std::endl; // can be added for checking
+        }
+        if ((server->imu_yaw_d)<imu_yaw_min)
+        {
+            imu_yaw_min = server->imu_yaw_d;
+            //std::cout << "imu_roll_min = " << imu_yaw_min << std::endl; // can be added for checking
+        }
+        ui->plot_window_yaw->yAxis->setRange(imu_yaw_min-2,imu_yaw_max+2);
+        ui->plot_window_yaw->replot();           // drawing
+        ui->plot_window_yaw->graph(0)->rescaleValueAxis(true);
+
+
+
+        //PITCH_SPEED_________________________________
+
+        ui->plot_window_pitch_speed->graph(0)->addData(server->key1, server->imu_pitch_speed_d); // SET DATA
+        ui->plot_window_pitch_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if (abs(server->imu_pitch_speed_d)>imu_pitch_speed_max)
+        {
+            imu_pitch_speed_max = abs(server->imu_pitch_speed_d);
+            //std::cout << "imu_pitch_speed_max = " << imu_pitch_speed_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_pitch_speed_d)<imu_pitch_speed_min)
+        {
+            imu_pitch_speed_min = server->imu_pitch_speed_d;
+            //std::cout << "imu_pitch_speed_min = " << imu_pitch_speed_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_pitch_speed->yAxis->setRange(imu_pitch_speed_min-2,imu_pitch_speed_max+2);
+        ui->plot_window_pitch_speed->replot();           // drawing
+        ui->plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
+
+        //ROLL_SPEED_________________________________
+
+        ui->plot_window_roll_speed->graph(0)->addData(server->key1, server->imu_roll_speed_d); // SET DATA
+        ui->plot_window_roll_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_roll_speed_d)>imu_roll_speed_max)
+        {
+            imu_roll_speed_max = server->imu_roll_speed_d;
+            //std::cout << "imu_roll_speed_max = " << imu_roll_speed_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_roll_speed_d)<imu_roll_speed_min)
+        {
+            imu_roll_speed_min = server->imu_roll_speed_d;
+            //std::cout << "imu_roll_speed_min = " << imu_roll_speed_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_roll->yAxis->setRange(imu_roll_speed_min-2,imu_roll_speed_max+2);
+        ui->plot_window_roll_speed->replot();           // drawing
+        ui->plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
+
+        //YAW_SPEED_________________________________
+
+        ui->plot_window_yaw_speed->graph(0)->addData(server->key1, server->imu_yaw_speed_d); // SET DATA
+        ui->plot_window_yaw_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_yaw_speed_d)>imu_yaw_speed_max)
+        {
+            imu_yaw_speed_max = server->imu_yaw_speed_d;
+            //std::cout << "imu_yaw_speed_max = " << imu_yaw_speed_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_yaw_speed_d)<imu_yaw_speed_min)
+        {
+            imu_yaw_speed_min = server->imu_yaw_speed_d;
+            //std::cout << "imu_yaw_speed_min = " << imu_yaw_speed_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_yaw->yAxis->setRange(imu_yaw_speed_min-2,imu_yaw_speed_max+2);
+        ui->plot_window_yaw_speed->replot();           // drawing
+        ui->plot_window_yaw_speed->graph(0)->rescaleValueAxis(true);
+
+        time_d = server->key1;
+    } else {
+        std::cout << "Passed due to low dT." << std::endl;
     }
-    if ((server->imu_pitch_d)<imu_pitch_min)
-    {
-        imu_pitch_min = server->imu_pitch_d;
-        //std::cout << "imu_pitch_min = " << imu_pitch_min << std::endl;  // can be added for checking
-    }
-    ui->plot_window_pitch->yAxis->setRange(imu_pitch_min-2,imu_pitch_max+2);
-    ui->plot_window_pitch->replot();           // drawing
-    ui->plot_window_pitch->graph(0)->rescaleValueAxis(true);
-
-    //ROLL____________________________________
-
-    ui->plot_window_roll->graph(0)->addData(server->key1, server->imu_roll_d); // SET DATA
-    ui->plot_window_roll->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if ((server->imu_roll_d)>imu_roll_max)
-    {
-        imu_roll_max = server->imu_roll_d;
-        //std::cout << "imu_roll_max = " << imu_roll_max << std::endl;  // can be added for checking
-    }
-    if ((server->imu_roll_d)<imu_roll_min)
-    {
-        imu_roll_min = server->imu_roll_d;
-        //std::cout << "imu_roll_min = " << imu_roll_min << std::endl;  // can be added for checking
-    }
-    ui->plot_window_roll->yAxis->setRange(imu_roll_min-2,imu_roll_max+2);
-    ui->plot_window_roll->replot();           // drawing
-    ui->plot_window_roll->graph(0)->rescaleValueAxis(true);
-
-    //YAW____________________________________
-
-    ui->plot_window_yaw->graph(0)->addData(server->key1, server->imu_yaw_d); // SET DATA
-    ui->plot_window_yaw->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if ((server->imu_yaw_d)>imu_yaw_max)
-    {
-        imu_yaw_max = server->imu_yaw_d;
-        //std::cout << "imu_roll_max = " << imu_yaw_max << std::endl; // can be added for checking
-    }
-    if ((server->imu_yaw_d)<imu_yaw_min)
-    {
-        imu_yaw_min = server->imu_yaw_d;
-        //std::cout << "imu_roll_min = " << imu_yaw_min << std::endl; // can be added for checking
-    }
-    ui->plot_window_yaw->yAxis->setRange(imu_yaw_min-2,imu_yaw_max+2);
-    ui->plot_window_yaw->replot();           // drawing
-    ui->plot_window_yaw->graph(0)->rescaleValueAxis(true);
-
-
-
-    //PITCH_SPEED_________________________________
-
-    ui->plot_window_pitch_speed->graph(0)->addData(server->key1, server->imu_pitch_speed_d); // SET DATA
-    ui->plot_window_pitch_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if (abs(server->imu_pitch_speed_d)>imu_pitch_speed_max)
-    {
-        imu_pitch_speed_max = abs(server->imu_pitch_speed_d);
-        //std::cout << "imu_pitch_speed_max = " << imu_pitch_speed_max << std::endl;  // can be added for checking
-    }
-    if ((server->imu_pitch_speed_d)<imu_pitch_speed_min)
-    {
-        imu_pitch_speed_min = server->imu_pitch_speed_d;
-        //std::cout << "imu_pitch_speed_min = " << imu_pitch_speed_min << std::endl;  // can be added for checking
-    }
-    ui->plot_window_pitch_speed->yAxis->setRange(imu_pitch_speed_min-2,imu_pitch_speed_max+2);
-    ui->plot_window_pitch_speed->replot();           // drawing
-    ui->plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
-
-    //ROLL_SPEED_________________________________
-
-    ui->plot_window_roll_speed->graph(0)->addData(server->key1, server->imu_roll_speed_d); // SET DATA
-    ui->plot_window_roll_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if ((server->imu_roll_speed_d)>imu_roll_speed_max)
-    {
-        imu_roll_speed_max = server->imu_roll_speed_d;
-        //std::cout << "imu_roll_speed_max = " << imu_roll_speed_max << std::endl;  // can be added for checking
-    }
-    if ((server->imu_roll_speed_d)<imu_roll_speed_min)
-    {
-        imu_roll_speed_min = server->imu_roll_speed_d;
-        //std::cout << "imu_roll_speed_min = " << imu_roll_speed_min << std::endl;  // can be added for checking
-    }
-    ui->plot_window_roll->yAxis->setRange(imu_roll_speed_min-2,imu_roll_speed_max+2);
-    ui->plot_window_roll_speed->replot();           // drawing
-    ui->plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
-
-    //YAW_SPEED_________________________________
-
-    ui->plot_window_yaw_speed->graph(0)->addData(server->key1, server->imu_yaw_speed_d); // SET DATA
-    ui->plot_window_yaw_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
-    if ((server->imu_yaw_speed_d)>imu_yaw_speed_max)
-    {
-        imu_yaw_speed_max = server->imu_yaw_speed_d;
-        //std::cout << "imu_yaw_speed_max = " << imu_yaw_speed_max << std::endl;  // can be added for checking
-    }
-    if ((server->imu_yaw_speed_d)<imu_yaw_speed_min)
-    {
-        imu_yaw_speed_min = server->imu_yaw_speed_d;
-        //std::cout << "imu_yaw_speed_min = " << imu_yaw_speed_min << std::endl;  // can be added for checking
-    }
-    ui->plot_window_yaw->yAxis->setRange(imu_yaw_speed_min-2,imu_yaw_speed_max+2);
-    ui->plot_window_yaw_speed->replot();           // drawing
-    ui->plot_window_yaw_speed->graph(0)->rescaleValueAxis(true);
-
-    time_d = server->key1;
-    }
-
     ui->graphicsPFD_2->update();
+    std::cout << "Drawing done." << std::endl;
 }
 
 void MainWindow::info(QString s) {
@@ -763,6 +763,7 @@ void MainWindow::on_pushButton_send_config_released()
 
 void MainWindow::on_pushButton_released()
 {
+    ui->checkBox->setChecked(true);
     emit connect_fake();
 }
 

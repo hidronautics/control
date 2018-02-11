@@ -53,6 +53,7 @@ bool Server::COMconnect(int com_num)
 
 
 void Server::sendMessage() {
+    std::cout << "Server::sendMessage()" << std::endl;
     if (currentMessageType != nextMessageType)
         currentMessageType = nextMessageType;
     switch (currentMessageType) {
@@ -72,6 +73,7 @@ void Server::sendMessage() {
 
 void Server::sendMessageNormal()
 {
+    std::cout << "Server::sendMessageNormal()" << std::endl;
     for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
@@ -143,11 +145,13 @@ void Server::sendMessageNormal()
 
     emit imSleeping();
 
+    std::cout << "Go sleeping for " << settings->connection->pause_after_sent << " ms" << std::endl;
     QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
 void Server::sendMessageDirect() {
+    std::cout << "Server::sendMessageDirect()" << std::endl;
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
@@ -179,6 +183,7 @@ void Server::sendMessageDirect() {
 }
 
 void Server::sendMessageConfig() {
+    std::cout << "Server::sendMessageConfig()" << std::endl;
     for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
@@ -335,17 +340,17 @@ void Server::sendMessageConfig() {
 
 
 void Server::receiveMessage() {
-    if(!emulation_mode) newPort->waitForReadyRead(25);
-    int buffer_size = newPort->bytesAvailable();
+    std::cout << "Server::receiveMessage()" << std::endl;
+    int buffer_size = 0;
+    if(!emulation_mode) {
+        newPort->waitForReadyRead(25);
+        buffer_size = newPort->bytesAvailable();
+    } else {
+        std::cout << "WARNING: Emulation mode" << std::endl;
+    }
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
 
-
-
-
-
     if (emulation_mode){
-        std::cout << "WARNING: Emulation mode" << std::endl;
-
         imu_roll = imu_roll + j->roll/10000;
         imu_pitch = imu_pitch + j->pitch/10000;
         imu_yaw = imu_yaw + j->yaw/10000;
@@ -421,6 +426,7 @@ void Server::receiveMessage() {
 
         //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
         path_csv_response = log_folder_path + "RESPONSE.csv";
+        std::cout << "Opening log file" << std::endl;
         QFile file_csv_response(path_csv_response);
         if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
             QTextStream stream_response(&file_csv_response);

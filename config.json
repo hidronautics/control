@@ -5,7 +5,7 @@
         "dataBits": 8,
         "flowControl": "no",
         "parity": "no",
-        "pauseAfterReceived": 0,
+        "pauseAfterReceived": 50,
         "pauseAfterSent": 50,
         "stopBits": "one"
     },
