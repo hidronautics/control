@@ -199,7 +199,7 @@ void Server::sendMessageConfig() {
     msg_to_send[0] = 0xFF;
     msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
-    msg_to_send[REQUEST_CONFIG_IBORDERS_DEPTH]      = settings->depth.iborders;
+    /*msg_to_send[REQUEST_CONFIG_IBORDERS_DEPTH]      = settings->depth.iborders;
     msg_to_send[REQUEST_CONFIG_IGAIN_DEPTH]         = settings->depth.igain;
     msg_to_send[REQUEST_CONFIG_K1_DEPTH]            = settings->depth.k1;
     msg_to_send[REQUEST_CONFIG_K2_DEPTH]            = settings->depth.k2;
@@ -229,7 +229,39 @@ void Server::sendMessageConfig() {
     msg_to_send[REQUEST_CONFIG_K2_YAW]            = settings->yaw.k2;
     msg_to_send[REQUEST_CONFIG_K3_YAW]            = settings->yaw.k3;
     msg_to_send[REQUEST_CONFIG_K4_YAW]            = settings->yaw.k4;
-    msg_to_send[REQUEST_CONFIG_PGAIN_YAW]         = settings->yaw.pgain;
+    msg_to_send[REQUEST_CONFIG_PGAIN_YAW]         = settings->yaw.pgain;*/
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_DEPTH, settings->depth.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_DEPTH, settings->depth.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_DEPTH, settings->depth.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_DEPTH, settings->depth.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_DEPTH, settings->depth.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_DEPTH, settings->depth.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_DEPTH, settings->depth.pgain);
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_PITCH, settings->pitch.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_PITCH, settings->pitch.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_PITCH, settings->pitch.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_PITCH, settings->pitch.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_PITCH, settings->pitch.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_PITCH, settings->pitch.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_PITCH, settings->pitch.pgain);
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_ROLL, settings->roll.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_ROLL, settings->roll.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_ROLL, settings->roll.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_ROLL, settings->roll.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_ROLL, settings->roll.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_ROLL, settings->roll.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_ROLL, settings->roll.pgain);
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_YAW, settings->yaw.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_YAW, settings->yaw.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_YAW, settings->yaw.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_YAW, settings->yaw.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_YAW, settings->yaw.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_YAW, settings->yaw.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_YAW, settings->yaw.pgain);
 
 
     settings->motors;
