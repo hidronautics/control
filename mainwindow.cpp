@@ -255,6 +255,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
 
+    // Stopwatch
+    time = new QTime();
+    bufferTimeMain = 0;
+    bufferTimeMission = 0;
+    timer = new QTimer();
+    timer->setInterval(500);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
+    timer->start(500);
+
+    startPauseBtn = ui->StartPauseButton;
+    commonTime = ui->Commontime;
+    currentMissionTime = ui->Missiontime;
+    missionNumber = ui->Mn;
+
 }
 
 
@@ -633,4 +647,57 @@ void MainWindow::on_checkBox_SRoll_toggled(bool checked)
 void MainWindow::on_checkBox_SPitch_toggled(bool checked)
 {
     joystick->stabilize_pitch = checked;
+}
+
+// Stopwatch
+void MainWindow::on_StartPauseButton_clicked()
+{
+    if (startPauseBtn->text() == "Start"){
+        startPauseBtn->setText("Pause");
+        time->start();
+        timer->start(1000);
+    }else {
+        startPauseBtn->setText("Start");
+        bufferTimeMission += time->elapsed();
+        time = new QTime();
+    }
+}
+
+void MainWindow::on_ClearButton_clicked()
+{
+    time = new QTime();
+    bufferTimeMain = 0;
+    bufferTimeMission = 0;
+    startPauseBtn->setText("Start");
+    missionNumber->setText("1");
+}
+
+void MainWindow::on_NextButton_clicked()
+{
+    if(missionNumber->text() == "3"){
+        on_ClearButton_clicked();
+    }else{
+        missionNumber->setText(QString::number(missionNumber->text().toInt()+1));
+        bufferTimeMain += bufferTimeMission + time->elapsed();
+        bufferTimeMission = 0;
+        time = new QTime();
+    }
+    startPauseBtn->setText("Start");
+}
+
+QString MainWindow::getWatchTime(int time){
+    QString result = "";
+    time /= 1000;
+    QString seconds = QString::number(time % 60);
+    QString minutes = QString::number(time / 60);
+    result = (minutes.toInt() > 9 ? minutes : "0" + minutes) + ":" + (seconds.toInt() > 9 ? seconds : "0" + seconds);
+    return result;
+}
+
+void MainWindow::updateTime(){
+    x = time->elapsed();
+    x += bufferTimeMission;
+    currentMissionTime->setText(getWatchTime(x));
+    x += bufferTimeMain;
+    commonTime->setText(getWatchTime(x));
 }

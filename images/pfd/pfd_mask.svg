@@ -2,7 +2,7 @@
 <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1"
-	 id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:cc="http://creativecommons.org/ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" sodipodi:docname="pfd_mask.svg" inkscape:version="0.48.4 r9939"
+	 id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:cc="http://creativecommons.org/ns#" inkscape:version="0.48.4 r9939" sodipodi:docname="pfd_mask.svg"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1031 731"
 	 enable-background="new 0 0 1031 731" xml:space="preserve">
 <polyline points="511.8,493.7 518.1,493.7 522.9,462 507,462 "/>
@@ -100,8 +100,8 @@
 <g opacity="0.85">
 	<circle fill="none" stroke="#CFF4FF" stroke-miterlimit="10" cx="515.5" cy="246.4" r="187.8"/>
 </g>
-<text transform="matrix(1 0 0 1 316.8818 98.7207)" fill="#253034" font-family="'OCRAExtended'" font-size="60">H</text>
-<radialGradient id="SVGID_1_" cx="309.2577" cy="815.8679" r="80.7536" gradientTransform="matrix(0.9999 1.017301e-002 1.166259e-002 -1.1464 597.64 1045.7839)" gradientUnits="userSpaceOnUse">
+<text transform="matrix(1 0 0 1 316.8823 98.7214)" fill="#253034" font-family="'OCRAExtended'" font-size="60">H</text>
+<radialGradient id="SVGID_1_" cx="518.4467" cy="-52.3292" r="80.7536" gradientTransform="matrix(0.9999 1.017301e-002 -1.166259e-002 1.1464 397.3768 168.3352)" gradientUnits="userSpaceOnUse">
 	<stop  offset="0" style="stop-color:#D8FF3F"/>
 	<stop  offset="0.122" style="stop-color:#CAEF40"/>
 	<stop  offset="0.359" style="stop-color:#A6C742"/>
@@ -110,7 +110,7 @@
 </radialGradient>
 <path fill="url(#SVGID_1_)" d="M1015.9,117.8c-0.2,22.2-6,42.8-15.7,60.2l-54.6-48.9l-57-0.6l-57,48.4c-9.6-17.7-15-38.8-14.8-61.2
 	c0.2-23.8,6.8-45.9,17.9-64.1l50.4,45.1l57,0.6l55.3-47C1009.3,69.4,1016.2,92.7,1015.9,117.8z"/>
-<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="303.8813" y1="664.7889" x2="303.8813" y2="618.3536" gradientTransform="matrix(1.5708 0 0 -1.5708 436.3694 1248.473)">
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="702.1179" y1="24.2072" x2="702.1179" y2="102.434" gradientTransform="matrix(0.9324 0 0 0.9324 259.0282 181.6513)">
 	<stop  offset="0" style="stop-color:#D8FF3F"/>
 	<stop  offset="0.3262" style="stop-color:#839E44"/>
 	<stop  offset="0.5527" style="stop-color:#4E6247"/>
@@ -197,7 +197,7 @@
 <rect x="883.1" y="434.7" fill="#FFFFFF" width="61.5" height="34.1"/>
 <rect x="16.7" y="551.2" fill="#253033" width="1000.5" height="157.7"/>
 <rect x="11.7" y="546.2" fill="#FFFFFF" width="242.2" height="157.7"/>
-<rect x="256.9" y="546.2" fill="#FFFFFF" width="755.3" height="157.7"/>
+<rect x="788.3" y="546.2" fill="#FFFFFF" width="222.9" height="157.7"/>
 <path fill="#1C2324" d="M127,148.2c-1,1.4-2.8,1.9-4,1.1l-16.7-11.7c-1.2-0.9-1.4-2.7-0.4-4.2l5.9-8.4c1-1.4,2.8-1.9,4-1.1
 	l16.7,11.7c1.2,0.9,1.4,2.7,0.4,4.2L127,148.2z"/>
 <path fill="#1C2324" d="M103.3,157c-0.4,0.6-1.2,0.7-1.8,0.3l-0.3-0.2c-0.6-0.4-0.7-1.2-0.3-1.8l8.2-11.8c0.4-0.6,1.2-0.7,1.8-0.3
@@ -328,4 +328,11 @@
 	l11.2-5.5C245.6,228.3,245.6,228.4,245.6,228.5z"/>
 <rect x="301.1" y="469" fill="#79FFFF" width="0.3" height="47.1"/>
 <rect x="303.1" y="42.1" fill="#79FFFF" width="0.3" height="409.1"/>
+<rect x="258" y="546.2" fill="#FFFFFF" width="526" height="157.7"/>
+<rect x="800" y="556.2" fill="#222B30" width="207.5" height="142.6"/>
+<rect x="795" y="551.2" fill="#425A62" width="207.5" height="142.6"/>
+<rect x="805.7" y="597" fill="#253033" width="20.6" height="26"/>
+<rect x="802.5" y="594.6" fill="#425A62" width="20.6" height="26"/>
+<rect x="802.5" y="594.1" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" width="20.6" height="26"/>
+<rect x="812.6" y="659.5" fill="#222B30" width="185.3" height="27.3"/>
 </svg>
