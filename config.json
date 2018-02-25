@@ -5,7 +5,7 @@
         "dataBits": 8,
         "flowControl": "no",
         "parity": "no",
-        "pauseAfterReceived": 0,
+        "pauseAfterReceived": 50,
         "pauseAfterSent": 50,
         "stopBits": "one"
     },
@@ -77,32 +77,40 @@
     ],
     "stabilization": {
         "depth": {
-            "const_time": false,
-            "gain": 0,
-            "k1": 0,
-            "k2": 0,
-            "start": 0
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
         },
         "pitch": {
-            "const_time": false,
-            "gain": 0,
-            "k1": 0,
-            "k2": 0,
-            "start": 0
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
         },
         "roll": {
-            "const_time": false,
-            "gain": 0,
-            "k1": 0,
-            "k2": 0,
-            "start": 0
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
         },
         "yaw": {
-            "const_time": false,
-            "gain": 0,
-            "k1": 0,
-            "k2": 0,
-            "start": 0
+            "iborders": 0.0,
+            "igain": 0.0,
+            "k1": 0.0,
+            "k2": 0.0,
+            "k3": 0.0,
+            "k4": 0.0,
+            "pgain": 0.0
         }
     }
 }

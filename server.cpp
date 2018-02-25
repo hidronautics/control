@@ -53,6 +53,7 @@ bool Server::COMconnect(int com_num)
 
 
 void Server::sendMessage() {
+    std::cout << "Server::sendMessage()" << std::endl;
     if (currentMessageType != nextMessageType)
         currentMessageType = nextMessageType;
     switch (currentMessageType) {
@@ -72,6 +73,7 @@ void Server::sendMessage() {
 
 void Server::sendMessageNormal()
 {
+    std::cout << "Server::sendMessageNormal()" << std::endl;
     for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
@@ -119,35 +121,46 @@ void Server::sendMessageNormal()
     /*for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     }*/
-    //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
+
 
 
     //path_csv_request = log_folder_path + "REQUEST_" + QDateTime::currentDateTime().toString() + ".csv";
     path_csv_request = log_folder_path + "REQUEST.csv";
+//    QFile file_csv_request(path_csv_request);
+//    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
+//        QTextStream stream_request(&file_csv_request);
+//        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+//        stream_request << " ;" << j->roll;
+//        stream_request << " ;" << j->pitch;
+//        stream_request << " ;" << j->yaw;
+//        stream_request << " ;" << j->depth;
+//        stream_request << '\n';
+//        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
+//    } else {
+//        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
+//    }
     QFile file_csv_request(path_csv_request);
     if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
         QTextStream stream_request(&file_csv_request);
-        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
-        stream_request << " ;" << j->roll;
-        stream_request << " ;" << j->pitch;
-        stream_request << " ;" << j->yaw;
-        stream_request << " ;" << j->depth;
-        stream_request << '\n';
-        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
-    } else {
-        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
+        //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
+        stream_request << QTime::currentTime().toString();
+        for(int i=0; i < REQUEST_NORMAL_LENGTH; i++){
+            stream_request << ";" << msg_to_send[i];
+        }
+        stream_request << "\n";
     }
-
 
     newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
 
     emit imSleeping();
 
+    std::cout << "Go sleeping for " << settings->connection->pause_after_sent << " ms" << std::endl;
     QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
 
 void Server::sendMessageDirect() {
+    std::cout << "Server::sendMessageDirect()" << std::endl;
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
@@ -179,35 +192,77 @@ void Server::sendMessageDirect() {
 }
 
 void Server::sendMessageConfig() {
+    std::cout << "Server::sendMessageConfig()" << std::endl;
     for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
     msg_to_send[0] = 0xFF;
     msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_DEPTH]    = settings->depth.const_time;
+    /*msg_to_send[REQUEST_CONFIG_IBORDERS_DEPTH]      = settings->depth.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_DEPTH]         = settings->depth.igain;
     msg_to_send[REQUEST_CONFIG_K1_DEPTH]            = settings->depth.k1;
     msg_to_send[REQUEST_CONFIG_K2_DEPTH]            = settings->depth.k2;
-    msg_to_send[REQUEST_CONFIG_START_DEPTH]         = settings->depth.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_DEPTH]          = settings->depth.gain;
+    msg_to_send[REQUEST_CONFIG_K3_DEPTH]            = settings->depth.k3;
+    msg_to_send[REQUEST_CONFIG_K4_DEPTH]            = settings->depth.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_DEPTH]         = settings->depth.pgain;
 
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_ROLL]     = settings->roll.const_time;
-    msg_to_send[REQUEST_CONFIG_K1_ROLL]             = settings->roll.k1;
-    msg_to_send[REQUEST_CONFIG_K2_ROLL]             = settings->roll.k2;
-    msg_to_send[REQUEST_CONFIG_START_ROLL]          = settings->roll.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_ROLL]           = settings->roll.gain;
-
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_PITCH]    = settings->pitch.const_time;
+    msg_to_send[REQUEST_CONFIG_IBORDERS_PITCH]      = settings->pitch.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_PITCH]         = settings->pitch.igain;
     msg_to_send[REQUEST_CONFIG_K1_PITCH]            = settings->pitch.k1;
     msg_to_send[REQUEST_CONFIG_K2_PITCH]            = settings->pitch.k2;
-    msg_to_send[REQUEST_CONFIG_START_PITCH]         = settings->pitch.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_PITCH]          = settings->pitch.gain;
+    msg_to_send[REQUEST_CONFIG_K3_PITCH]            = settings->pitch.k3;
+    msg_to_send[REQUEST_CONFIG_K4_PITCH]            = settings->pitch.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_PITCH]         = settings->pitch.pgain;
 
-    msg_to_send[REQUEST_CONFIG_CONST_TIME_YAW]      = settings->yaw.const_time;
-    msg_to_send[REQUEST_CONFIG_K1_YAW]              = settings->yaw.k1;
-    msg_to_send[REQUEST_CONFIG_K2_YAW]              = settings->yaw.k2;
-    msg_to_send[REQUEST_CONFIG_START_YAW]           = settings->yaw.start;
-    msg_to_send[REQUEST_CONFIG_GAIN_YAW]            = settings->yaw.gain;
+    msg_to_send[REQUEST_CONFIG_IBORDERS_ROLL]      = settings->roll.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_ROLL]         = settings->roll.igain;
+    msg_to_send[REQUEST_CONFIG_K1_ROLL]            = settings->roll.k1;
+    msg_to_send[REQUEST_CONFIG_K2_ROLL]            = settings->roll.k2;
+    msg_to_send[REQUEST_CONFIG_K3_ROLL]            = settings->roll.k3;
+    msg_to_send[REQUEST_CONFIG_K4_ROLL]            = settings->roll.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_ROLL]         = settings->roll.pgain;
+
+    msg_to_send[REQUEST_CONFIG_IBORDERS_YAW]      = settings->yaw.iborders;
+    msg_to_send[REQUEST_CONFIG_IGAIN_YAW]         = settings->yaw.igain;
+    msg_to_send[REQUEST_CONFIG_K1_YAW]            = settings->yaw.k1;
+    msg_to_send[REQUEST_CONFIG_K2_YAW]            = settings->yaw.k2;
+    msg_to_send[REQUEST_CONFIG_K3_YAW]            = settings->yaw.k3;
+    msg_to_send[REQUEST_CONFIG_K4_YAW]            = settings->yaw.k4;
+    msg_to_send[REQUEST_CONFIG_PGAIN_YAW]         = settings->yaw.pgain;*/
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_DEPTH, settings->depth.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_DEPTH, settings->depth.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_DEPTH, settings->depth.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_DEPTH, settings->depth.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_DEPTH, settings->depth.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_DEPTH, settings->depth.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_DEPTH, settings->depth.pgain);
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_PITCH, settings->pitch.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_PITCH, settings->pitch.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_PITCH, settings->pitch.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_PITCH, settings->pitch.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_PITCH, settings->pitch.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_PITCH, settings->pitch.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_PITCH, settings->pitch.pgain);
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_ROLL, settings->roll.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_ROLL, settings->roll.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_ROLL, settings->roll.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_ROLL, settings->roll.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_ROLL, settings->roll.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_ROLL, settings->roll.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_ROLL, settings->roll.pgain);
+
+    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_YAW, settings->yaw.iborders);
+    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_YAW, settings->yaw.igain);
+    addFloat(msg_to_send, REQUEST_CONFIG_K1_YAW, settings->yaw.k1);
+    addFloat(msg_to_send, REQUEST_CONFIG_K2_YAW, settings->yaw.k2);
+    addFloat(msg_to_send, REQUEST_CONFIG_K3_YAW, settings->yaw.k3);
+    addFloat(msg_to_send, REQUEST_CONFIG_K4_YAW, settings->yaw.k4);
+    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_YAW, settings->yaw.pgain);
+
 
     settings->motors;
 
@@ -314,7 +369,16 @@ void Server::sendMessageConfig() {
     //    std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
     //}
 
-
+    QFile file_csv_request(path_csv_request);
+    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QTextStream stream_request(&file_csv_request);
+        //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
+        stream_request << QTime::currentTime().toString();
+        for(int i=0; i < REQUEST_CONFIG_LENGTH; i++){
+            stream_request << ";" << msg_to_send[i];
+        }
+        stream_request << "\n";
+    }
 
     newPort->write((char*)msg_to_send, REQUEST_CONFIG_LENGTH);
 
@@ -326,17 +390,17 @@ void Server::sendMessageConfig() {
 
 
 void Server::receiveMessage() {
-    if(!emulation_mode) newPort->waitForReadyRead(25);
-    int buffer_size = newPort->bytesAvailable();
+    std::cout << "Server::receiveMessage()" << std::endl;
+    int buffer_size = 0;
+    if(!emulation_mode) {
+        newPort->waitForReadyRead(25);
+        buffer_size = newPort->bytesAvailable();
+    } else {
+        std::cout << "WARNING: Emulation mode" << std::endl;
+    }
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
 
-
-
-
-
     if (emulation_mode){
-        std::cout << "WARNING: Emulation mode" << std::endl;
-
         imu_roll = imu_roll + j->roll/10000;
         imu_pitch = imu_pitch + j->pitch/10000;
         imu_yaw = imu_yaw + j->yaw/10000;
@@ -394,19 +458,48 @@ void Server::receiveMessage() {
         }
         msg_in = newPort->readAll();
 
-        //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
-        path_csv_response = log_folder_path + "RESPONSE.csv";
         QFile file_csv_response(path_csv_response);
         if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
             QTextStream stream_response(&file_csv_response);
-            stream_response << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
-            stream_response << " ;" << imu_roll;
-            stream_response << " ;" << imu_pitch;
-            stream_response << " ;" << imu_roll_speed;
-            stream_response << " ;" << imu_pitch_speed;
-            stream_response << '\n';
-            std::cout << "Response file opened at " << path_csv_response.toStdString() << std::endl;
+            stream_response << QTime::currentTime().toString();
+            for(int i=0; i < REQUEST_CONFIG_LENGTH; i++){
+                stream_response << ";" << msg_in[i];
+            }
+            stream_response << "\n";
         }
+
+        // For PLOTS  __________________________________________________________________
+
+        //key1 = QTime::currentTime()/1000;
+        static QTime time(QTime::currentTime());
+        key1 = time.elapsed()/1000.0;
+
+
+        imu_roll_d = imu_roll;
+        imu_pitch_d = imu_pitch;
+        imu_yaw_d = imu_yaw;
+
+        imu_roll_speed_d = imu_roll_speed;
+        imu_pitch_speed_d = imu_pitch_speed;
+        imu_yaw_speed_d = imu_yaw_speed;
+        //______________________________________________________________________________
+
+        //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
+        path_csv_response = log_folder_path + "RESPONSE.csv";
+//        std::cout << "Opening log file" << std::endl;
+//        QFile file_csv_response(path_csv_response);
+//        if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
+//            QTextStream stream_response(&file_csv_response);
+//            stream_response << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+//            stream_response << " ;" << imu_roll;
+//            stream_response << " ;" << imu_pitch;
+//            stream_response << " ;" << imu_roll_speed;
+//            stream_response << " ;" << imu_pitch_speed;
+//            stream_response << '\n';
+//            std::cout << "Response file opened at " << path_csv_response.toStdString() << std::endl;
+//        }
+
+
 
 
         std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;

@@ -145,6 +145,20 @@ private:
     QTimer *timer;
     QString getWatchTime(int time);
 
+    int imu_pitch_max;
+    int imu_roll_max;
+    int imu_pitch_speed_max;
+    int imu_roll_speed_max;
+    int imu_yaw_max;
+    int imu_yaw_speed_max;
+
+    int imu_pitch_min;
+    int imu_roll_min;
+    int imu_pitch_speed_min;
+    int imu_roll_speed_min;
+    int imu_yaw_min;
+    int imu_yaw_speed_min;
+
 };
 
 #endif // MAINWINDOW_H

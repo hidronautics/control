@@ -2,6 +2,8 @@ QT += core serialport testlib
 QT += gui widgets
 QT += svg
 
+greaterThan(QT_MAJOR_VERSION, 4): QT+= widgets printsupport
+
 TARGET = IcebergNOGUI
 CONFIG += console
 CONFIG += c++11
@@ -16,7 +18,8 @@ SOURCES += main.cpp \
     settings.cpp \
     qfi_PFD.cpp \
     newwindow.cpp \
-    logging_categories.cpp
+    logging_categories.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     server.h \
@@ -26,7 +29,8 @@ HEADERS += \
     settings.h \
     qfi_PFD.h \
     newwindow.h \
-    logging_categories.h
+    logging_categories.h \
+    qcustomplot.h
 
 DEFINES += SFML_STATIC
 

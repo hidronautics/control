@@ -20,6 +20,155 @@ MainWindow::MainWindow(QWidget *parent) :
     QStringList headerLabels;
     headerLabels << QString("HEX") << QString("DEX") << QString("Binary");
 
+    //PLOTS_____________________________________________________________________________________________________________________
+
+    //For range adjustment
+    imu_pitch_max = -500;
+    imu_roll_max = -500;
+    imu_pitch_speed_max = -500;
+    imu_roll_speed_max = -500;
+    imu_yaw_max = -500;
+    imu_yaw_speed_max = -500;
+
+    imu_pitch_min = 500;
+    imu_roll_min = 500;
+    imu_pitch_speed_min = 500;
+    imu_roll_speed_min = 500;
+    imu_yaw_min = 500;
+    imu_yaw_speed_min = 500;
+
+    //PITCH_____________________________________________________________________________________________________________________
+
+    //ui->plot_window_pitch = new QCustomPlot();
+    ui->plot_window_pitch->xAxis->setLabel("T(c)");
+    ui->plot_window_pitch->yAxis->setLabel("PITCH");
+
+    ui->plot_window_pitch->setInteraction(QCP::iRangeZoom,true);   // +zoom in and out
+    ui->plot_window_pitch->setInteraction(QCP::iRangeDrag, true);  // +dragging
+    //ui->plot_window_pitch->axisRect()->setRangeDrag(Qt::Horizontal);   // +dragging (only xAxis)
+    //ui->plot_window_pitch->axisRect()->setRangeZoom(Qt::Horizontal);   // +zoom in and out (only xAxis)
+
+    //plot_pitch = plot_window_pitch->addGraph();
+    //plot_pitch->setPen(QPen(QColor(40, 110, 255)));
+
+    QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
+    timeTicker->setTimeFormat("%h:%m:%s");
+    ui->plot_window_pitch->xAxis->setTicker(timeTicker);
+    ui->plot_window_pitch->axisRect()->setupFullAxesBox();
+    ui->plot_window_pitch->yAxis->setRange(-10, 10);
+
+    // making left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_pitch->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_pitch->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch->yAxis2, SLOT(setRange(QCPRange)));
+
+    //ROLL_____________________________________________________________________________________________________________________
+
+    ui->plot_window_roll->xAxis->setLabel("T(c)");
+    ui->plot_window_roll->yAxis->setLabel("ROLL");
+
+
+    ui->plot_window_roll->setInteraction(QCP::iRangeZoom,true);   // +zoom in and out
+    ui->plot_window_roll->setInteraction(QCP::iRangeDrag, true);  // +dragging
+
+
+    ui->plot_window_roll->xAxis->setTicker(timeTicker);
+    ui->plot_window_roll->axisRect()->setupFullAxesBox();
+    ui->plot_window_roll->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_roll->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_roll->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll->yAxis2, SLOT(setRange(QCPRange)));
+
+    //YAW_____________________________________________________________________________________________________________________
+
+    ui->plot_window_yaw->xAxis->setLabel("T(c)");
+    ui->plot_window_yaw->yAxis->setLabel("YAW");
+
+
+    ui->plot_window_yaw->setInteraction(QCP::iRangeZoom,true);   // +zoom in and out
+    ui->plot_window_yaw->setInteraction(QCP::iRangeDrag, true);  // +dragging
+
+
+    ui->plot_window_yaw->xAxis->setTicker(timeTicker);
+    ui->plot_window_yaw->axisRect()->setupFullAxesBox();
+    ui->plot_window_yaw->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_yaw->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_yaw->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_yaw->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_yaw->yAxis2, SLOT(setRange(QCPRange)));
+
+    //PITCH_SPEED_____________________________________________________________________________________________________________________
+
+    ui->plot_window_pitch_speed->xAxis->setLabel("T(c)");
+    ui->plot_window_pitch_speed->yAxis->setLabel("PITCH_SPEED");
+
+
+    ui->plot_window_pitch_speed->setInteraction(QCP::iRangeZoom,true);   // +zoom in and out
+    ui->plot_window_pitch_speed->setInteraction(QCP::iRangeDrag, true);  // +dragging
+
+
+    ui->plot_window_pitch_speed->xAxis->setTicker(timeTicker);
+    ui->plot_window_pitch_speed->axisRect()->setupFullAxesBox();
+    ui->plot_window_pitch_speed->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_pitch_speed->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch_speed->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_pitch_speed->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_pitch_speed->yAxis2, SLOT(setRange(QCPRange)));
+
+    //ROLL_SPEED_____________________________________________________________________________________________________________________
+
+    ui->plot_window_roll_speed->xAxis->setLabel("T(c)");
+    ui->plot_window_roll_speed->yAxis->setLabel("ROLL_SPEED");
+
+
+    ui->plot_window_roll_speed->setInteraction(QCP::iRangeZoom,true);   // +zoom in and out
+    ui->plot_window_roll_speed->setInteraction(QCP::iRangeDrag, true);  // +dragging
+
+
+    ui->plot_window_roll_speed->xAxis->setTicker(timeTicker);
+    ui->plot_window_roll_speed->axisRect()->setupFullAxesBox();
+    ui->plot_window_roll_speed->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_roll_speed->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll_speed->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_roll_speed->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_roll_speed->yAxis2, SLOT(setRange(QCPRange)));
+
+
+    //YAW_SPEED_____________________________________________________________________________________________________________________
+
+    ui->plot_window_yaw_speed->xAxis->setLabel("T(c)");
+    ui->plot_window_yaw_speed->yAxis->setLabel("YAW_SPEED");
+
+
+    ui->plot_window_yaw_speed->setInteraction(QCP::iRangeZoom,true);   // +zoom in and out
+    ui->plot_window_yaw_speed->setInteraction(QCP::iRangeDrag, true);  // +dragging
+
+
+    ui->plot_window_yaw_speed->xAxis->setTicker(timeTicker);
+    ui->plot_window_yaw_speed->axisRect()->setupFullAxesBox();
+    ui->plot_window_yaw_speed->yAxis->setRange(-10, 10);
+
+    // make left and bottom axes transfer their ranges to right and top axes:
+    connect(ui->plot_window_yaw_speed->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_yaw_speed->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->plot_window_yaw_speed->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_window_yaw_speed->yAxis2, SLOT(setRange(QCPRange)));
+
+
+    ui->plot_window_pitch->addGraph();
+    ui->plot_window_pitch->graph(0)->setPen(QPen(QColor(20, 110, 255)));
+    ui->plot_window_pitch_speed->addGraph();
+    ui->plot_window_pitch_speed->graph(0)->setPen(QPen(QColor(20, 110, 255)));
+
+    ui->plot_window_roll->addGraph();
+    ui->plot_window_roll->graph(0)->setPen(QPen(QColor(180, 1, 1)));
+    ui->plot_window_roll_speed->addGraph();
+    ui->plot_window_roll_speed->graph(0)->setPen(QPen(QColor(180, 1, 1)));
+
+    ui->plot_window_yaw->addGraph();
+    ui->plot_window_yaw->graph(0)->setPen(QPen(QColor(228, 110, 50)));
+    ui->plot_window_yaw_speed->addGraph();
+    ui->plot_window_yaw_speed->graph(0)->setPen(QPen(QColor(228, 110, 50)));
+
+    //_________________________________________________________________________________________________________________________________
 
     /*labels_response <<   "0:roll"<<
                         "1:"<<
@@ -367,9 +516,129 @@ void MainWindow::serverIsSleeping() {
     ui->graphicsPFD_2->setHeading(server->imu_yaw);
     ui->graphicsPFD_2->setAltitude(server->imu_depth);
 
+    //PLOTS_____________________________________________________________________________________________________
+    std::cout << "Drawing plots..." << std::endl;
+
+    //static QTime time(QTime::currentTime());
+    //key1 =time.elapsed()/1000.0;
+
+    static double time_d = 0;
+    if ((server->key1 - time_d) > 0.001) {
+        //PITCH___________________________________
+        ui->plot_window_pitch->graph(0)->addData(server->key1, server->imu_pitch_d); // SET DATA
+        ui->plot_window_pitch->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_pitch_d)>imu_pitch_max)
+        {
+            imu_pitch_max = server->imu_pitch_d;
+            //std::cout << "imu_pitch_max = " << imu_pitch_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_pitch_d)<imu_pitch_min)
+        {
+            imu_pitch_min = server->imu_pitch_d;
+            //std::cout << "imu_pitch_min = " << imu_pitch_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_pitch->yAxis->setRange(imu_pitch_min-2,imu_pitch_max+2);
+        ui->plot_window_pitch->replot();           // drawing
+        ui->plot_window_pitch->graph(0)->rescaleValueAxis(true);
+
+        //ROLL____________________________________
+
+        ui->plot_window_roll->graph(0)->addData(server->key1, server->imu_roll_d); // SET DATA
+        ui->plot_window_roll->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_roll_d)>imu_roll_max)
+        {
+            imu_roll_max = server->imu_roll_d;
+            //std::cout << "imu_roll_max = " << imu_roll_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_roll_d)<imu_roll_min)
+        {
+            imu_roll_min = server->imu_roll_d;
+            //std::cout << "imu_roll_min = " << imu_roll_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_roll->yAxis->setRange(imu_roll_min-2,imu_roll_max+2);
+        ui->plot_window_roll->replot();           // drawing
+        ui->plot_window_roll->graph(0)->rescaleValueAxis(true);
+
+        //YAW____________________________________
+
+        ui->plot_window_yaw->graph(0)->addData(server->key1, server->imu_yaw_d); // SET DATA
+        ui->plot_window_yaw->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_yaw_d)>imu_yaw_max)
+        {
+            imu_yaw_max = server->imu_yaw_d;
+            //std::cout << "imu_roll_max = " << imu_yaw_max << std::endl; // can be added for checking
+        }
+        if ((server->imu_yaw_d)<imu_yaw_min)
+        {
+            imu_yaw_min = server->imu_yaw_d;
+            //std::cout << "imu_roll_min = " << imu_yaw_min << std::endl; // can be added for checking
+        }
+        ui->plot_window_yaw->yAxis->setRange(imu_yaw_min-2,imu_yaw_max+2);
+        ui->plot_window_yaw->replot();           // drawing
+        ui->plot_window_yaw->graph(0)->rescaleValueAxis(true);
 
 
+
+        //PITCH_SPEED_________________________________
+
+        ui->plot_window_pitch_speed->graph(0)->addData(server->key1, server->imu_pitch_speed_d); // SET DATA
+        ui->plot_window_pitch_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if (abs(server->imu_pitch_speed_d)>imu_pitch_speed_max)
+        {
+            imu_pitch_speed_max = abs(server->imu_pitch_speed_d);
+            //std::cout << "imu_pitch_speed_max = " << imu_pitch_speed_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_pitch_speed_d)<imu_pitch_speed_min)
+        {
+            imu_pitch_speed_min = server->imu_pitch_speed_d;
+            //std::cout << "imu_pitch_speed_min = " << imu_pitch_speed_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_pitch_speed->yAxis->setRange(imu_pitch_speed_min-2,imu_pitch_speed_max+2);
+        ui->plot_window_pitch_speed->replot();           // drawing
+        ui->plot_window_pitch_speed->graph(0)->rescaleValueAxis(true);
+
+        //ROLL_SPEED_________________________________
+
+        ui->plot_window_roll_speed->graph(0)->addData(server->key1, server->imu_roll_speed_d); // SET DATA
+        ui->plot_window_roll_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_roll_speed_d)>imu_roll_speed_max)
+        {
+            imu_roll_speed_max = server->imu_roll_speed_d;
+            //std::cout << "imu_roll_speed_max = " << imu_roll_speed_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_roll_speed_d)<imu_roll_speed_min)
+        {
+            imu_roll_speed_min = server->imu_roll_speed_d;
+            //std::cout << "imu_roll_speed_min = " << imu_roll_speed_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_roll->yAxis->setRange(imu_roll_speed_min-2,imu_roll_speed_max+2);
+        ui->plot_window_roll_speed->replot();           // drawing
+        ui->plot_window_roll_speed->graph(0)->rescaleValueAxis(true);
+
+        //YAW_SPEED_________________________________
+
+        ui->plot_window_yaw_speed->graph(0)->addData(server->key1, server->imu_yaw_speed_d); // SET DATA
+        ui->plot_window_yaw_speed->xAxis->setRange(server->key1, 8, Qt::AlignRight);
+        if ((server->imu_yaw_speed_d)>imu_yaw_speed_max)
+        {
+            imu_yaw_speed_max = server->imu_yaw_speed_d;
+            //std::cout << "imu_yaw_speed_max = " << imu_yaw_speed_max << std::endl;  // can be added for checking
+        }
+        if ((server->imu_yaw_speed_d)<imu_yaw_speed_min)
+        {
+            imu_yaw_speed_min = server->imu_yaw_speed_d;
+            //std::cout << "imu_yaw_speed_min = " << imu_yaw_speed_min << std::endl;  // can be added for checking
+        }
+        ui->plot_window_yaw->yAxis->setRange(imu_yaw_speed_min-2,imu_yaw_speed_max+2);
+        ui->plot_window_yaw_speed->replot();           // drawing
+        ui->plot_window_yaw_speed->graph(0)->rescaleValueAxis(true);
+
+        time_d = server->key1;
+    } else {
+        std::cout << "Passed due to low dT." << std::endl;
+    }
     ui->graphicsPFD_2->update();
+    std::cout << "Drawing done." << std::endl;
 }
 
 void MainWindow::info(QString s) {
@@ -451,29 +720,37 @@ void MainWindow::on_pushButton_Disconnect_released()
 void MainWindow::on_pushButton_load_config_released()
 {
     if (settings->loadFromJSONFile()) {
+        ui->doubleSpinBox_depth_iborders->setValue(settings->depth.iborders);
+        ui->doubleSpinBox_depth_igain->setValue(settings->depth.igain);
         ui->doubleSpinBox_depth_k1->setValue(settings->depth.k1);
         ui->doubleSpinBox_depth_k2->setValue(settings->depth.k2);
-        ui->doubleSpinBox_depth_start->setValue(settings->depth.start);
-        ui->doubleSpinBox_depth_gain->setValue(settings->depth.gain);
-        ui->checkBox_const_time_depth->setChecked(settings->depth.const_time);
+        ui->doubleSpinBox_depth_k3->setValue(settings->depth.k3);
+        ui->doubleSpinBox_depth_k4->setValue(settings->depth.k4);
+        ui->doubleSpinBox_depth_pgain->setValue(settings->depth.pgain);
 
-        ui->doubleSpinBox_roll_k1->setValue(settings->roll.k1);
-        ui->doubleSpinBox_roll_k2->setValue(settings->roll.k2);
-        ui->doubleSpinBox_roll_start->setValue(settings->roll.start);
-        ui->doubleSpinBox_roll_gain->setValue(settings->roll.gain);
-        ui->checkBox_const_time_roll->setChecked(settings->roll.const_time);
-
+        ui->doubleSpinBox_pitch_iborders->setValue(settings->pitch.iborders);
+        ui->doubleSpinBox_pitch_igain->setValue(settings->pitch.igain);
         ui->doubleSpinBox_pitch_k1->setValue(settings->pitch.k1);
         ui->doubleSpinBox_pitch_k2->setValue(settings->pitch.k2);
-        ui->doubleSpinBox_pitch_start->setValue(settings->pitch.start);
-        ui->doubleSpinBox_pitch_gain->setValue(settings->pitch.gain);
-        ui->checkBox_const_time_pitch->setChecked(settings->pitch.const_time);
+        ui->doubleSpinBox_pitch_k3->setValue(settings->pitch.k3);
+        ui->doubleSpinBox_pitch_k4->setValue(settings->pitch.k4);
+        ui->doubleSpinBox_pitch_pgain->setValue(settings->pitch.pgain);
 
+        ui->doubleSpinBox_roll_iborders->setValue(settings->roll.iborders);
+        ui->doubleSpinBox_roll_igain->setValue(settings->roll.igain);
+        ui->doubleSpinBox_roll_k1->setValue(settings->roll.k1);
+        ui->doubleSpinBox_roll_k2->setValue(settings->roll.k2);
+        ui->doubleSpinBox_roll_k3->setValue(settings->roll.k3);
+        ui->doubleSpinBox_roll_k4->setValue(settings->roll.k4);
+        ui->doubleSpinBox_roll_pgain->setValue(settings->roll.pgain);
+
+        ui->doubleSpinBox_yaw_iborders->setValue(settings->yaw.iborders);
+        ui->doubleSpinBox_yaw_igain->setValue(settings->yaw.igain);
         ui->doubleSpinBox_yaw_k1->setValue(settings->yaw.k1);
         ui->doubleSpinBox_yaw_k2->setValue(settings->yaw.k2);
-        ui->doubleSpinBox_yaw_start->setValue(settings->yaw.start);
-        ui->doubleSpinBox_yaw_gain->setValue(settings->yaw.gain);
-        ui->checkBox_const_time_yaw->setChecked(settings->yaw.const_time);
+        ui->doubleSpinBox_yaw_k3->setValue(settings->yaw.k3);
+        ui->doubleSpinBox_yaw_k4->setValue(settings->yaw.k4);
+        ui->doubleSpinBox_yaw_pgain->setValue(settings->yaw.pgain);
 
         ui->spinBox_COM->setValue(settings->connection->num);
         std::cout << QString::number(settings->connection->setBaudRate(settings->connection->baudRate)).toStdString() << std::endl;
@@ -500,6 +777,7 @@ void MainWindow::on_pushButton_send_config_released()
 
 void MainWindow::on_pushButton_released()
 {
+    ui->checkBox->setChecked(true);
     emit connect_fake();
 }
 
@@ -515,29 +793,38 @@ void MainWindow::on_pushButton_3_released()
 
 void MainWindow::on_pushButton_save_config_released()
 {
+    settings->depth.iborders = ui->doubleSpinBox_depth_iborders->value();
+    settings->depth.igain = ui->doubleSpinBox_depth_igain->value();
     settings->depth.k1 = ui->doubleSpinBox_depth_k1->value();
     settings->depth.k2 = ui->doubleSpinBox_depth_k2->value();
-    settings->depth.gain = ui->doubleSpinBox_depth_gain->value();
-    settings->depth.start = ui->doubleSpinBox_depth_start->value();
-    settings->depth.const_time = ui->checkBox_const_time_depth->isChecked();
+    settings->depth.k3 = ui->doubleSpinBox_depth_k3->value();
+    settings->depth.k4 = ui->doubleSpinBox_depth_k4->value();
+    settings->depth.pgain = ui->doubleSpinBox_depth_pgain->value();
 
-    settings->roll.k1 = ui->doubleSpinBox_roll_k1->value();
-    settings->roll.k2 = ui->doubleSpinBox_roll_k2->value();
-    settings->roll.gain = ui->doubleSpinBox_roll_gain->value();
-    settings->roll.start = ui->doubleSpinBox_roll_start->value();
-    settings->roll.const_time = ui->checkBox_const_time_roll->isChecked();
-
+    settings->pitch.iborders = ui->doubleSpinBox_pitch_iborders->value();
+    settings->pitch.igain = ui->doubleSpinBox_pitch_igain->value();
     settings->pitch.k1 = ui->doubleSpinBox_pitch_k1->value();
     settings->pitch.k2 = ui->doubleSpinBox_pitch_k2->value();
-    settings->pitch.gain = ui->doubleSpinBox_pitch_gain->value();
-    settings->pitch.start = ui->doubleSpinBox_pitch_start->value();
-    settings->pitch.const_time = ui->checkBox_const_time_pitch->isChecked();
+    settings->pitch.k3 = ui->doubleSpinBox_pitch_k3->value();
+    settings->pitch.k4 = ui->doubleSpinBox_pitch_k4->value();
+    settings->pitch.pgain = ui->doubleSpinBox_pitch_pgain->value();
 
+    settings->roll.iborders = ui->doubleSpinBox_roll_iborders->value();
+    settings->roll.igain = ui->doubleSpinBox_roll_igain->value();
+    settings->roll.k1 = ui->doubleSpinBox_roll_k1->value();
+    settings->roll.k2 = ui->doubleSpinBox_roll_k2->value();
+    settings->roll.k3 = ui->doubleSpinBox_roll_k3->value();
+    settings->roll.k4 = ui->doubleSpinBox_roll_k4->value();
+    settings->roll.pgain = ui->doubleSpinBox_roll_pgain->value();
+
+    settings->yaw.iborders = ui->doubleSpinBox_yaw_iborders->value();
+    settings->yaw.igain = ui->doubleSpinBox_yaw_igain->value();
     settings->yaw.k1 = ui->doubleSpinBox_yaw_k1->value();
     settings->yaw.k2 = ui->doubleSpinBox_yaw_k2->value();
-    settings->yaw.gain = ui->doubleSpinBox_yaw_gain->value();
-    settings->yaw.start = ui->doubleSpinBox_yaw_start->value();
-    settings->yaw.const_time = ui->checkBox_const_time_yaw->isChecked();
+    settings->yaw.k3 = ui->doubleSpinBox_yaw_k3->value();
+    settings->yaw.k4 = ui->doubleSpinBox_yaw_k4->value();
+    settings->yaw.pgain = ui->doubleSpinBox_yaw_pgain->value();
+
 
     settings->connection->pause_after_sent = ui->spinBox_PauseAfterSent->value();
     settings->connection->pause_after_received = ui->spinBox_PauseAfterReceived->value();
