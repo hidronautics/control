@@ -4,6 +4,10 @@
 #include <QtWidgets/QMainWindow>
 #include <QTableWidget>
 #include <iostream>
+#include <QTimer>
+#include <QTime>
+#include <QPushButton>
+#include <QLabel>
 #include "server.h"
 #include "joystick.h"
 #include "settings.h"
@@ -100,6 +104,14 @@ private slots:
 
     void on_checkBox_SPitch_toggled(bool checked);
 
+    void on_StartPauseButton_clicked();
+
+    void on_ClearButton_clicked();
+
+    void on_NextButton_clicked();
+
+    void updateTime();
+
 signals:
     void newValues(int* vals);\
 
@@ -121,6 +133,17 @@ private:
     QTableWidgetItem *responseQTableWidgetItemsHEX[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
+
+    QPushButton *startPauseBtn;
+    QLabel *commonTime;
+    QLabel *currentMissionTime;
+    QLabel *missionNumber;
+    QTime *time;
+    int bufferTimeMain;
+    int bufferTimeMission;
+    int x;
+    QTimer *timer;
+    QString getWatchTime(int time);
 
     int imu_pitch_max;
     int imu_roll_max;
