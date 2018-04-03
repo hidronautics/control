@@ -163,16 +163,16 @@ void Joystick::updateJoystick() {
         tilt = 0;
 
     if (btn_agar_forward)
-        agar = 127;
+        dev1 = 127;
     else if (btn_agar_reverse)
-        agar = -127;
+        dev1 = -127;
     else
-        agar = 0;
+        dev1 = 0;
 
     if (btn_bottom_light)
-        bottom_light = -126;
+        dev2 = -126;
     else
-        bottom_light = 0;
+        dev2 = 0;
 
 }
 
@@ -250,15 +250,15 @@ void Joystick::updateKeyboard() {
     else
         tilt = 0;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
-        bt = 127;
-    else
-        bt = 0;
+//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+//        bt = 127;
+//    else
+//        bt = 0;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
-        bottom_light = 127;
+        dev2 = 127;
     else
-        bottom_light = 0;
+        dev2 = 0;
 
 }
 

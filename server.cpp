@@ -103,9 +103,9 @@ void Server::sendMessageNormal()
 
     msg_to_send[REQUEST_NORMAL_LIGHT]      = j->light;
     msg_to_send[REQUEST_NORMAL_GRAB]       = j->grab;
-    msg_to_send[REQUEST_NORMAL_BT]       = j->bt;
-    msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;
-    msg_to_send[REQUEST_NORMAL_BT] = j->agar;
+    //msg_to_send[REQUEST_NORMAL_BT]       = j->bt; //------------------
+    //msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;//------------------
+    //msg_to_send[REQUEST_NORMAL_BT] = j->agar;//------------------
     msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
     msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
 
@@ -114,6 +114,10 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = j->stabilize_pitch;
     msg_to_send[REQUEST_NORMAL_STABILIZE_YAW] = false;
     msg_to_send[REQUEST_NORMAL_RESET_IMU] = false;
+
+    msg_to_send[REQUEST_NORMAL_CAMERA] = j->camera;
+    msg_to_send[REQUEST_NORMAL_PC_RESET] = j->pc_reset;
+
 
     addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
 
@@ -409,7 +413,7 @@ void Server::receiveMessage() {
         imu_pitch_speed = j->pitch/10000;
         imu_yaw_speed = j->yaw/10000;
 
-        imu_depth = imu_depth + j->depth/10000;
+        imu_pressure = imu_pressure + j->depth/10000;
 
         current_HLB = 1;
         current_HLF = 11;
@@ -522,7 +526,29 @@ void Server::receiveMessage() {
         imu_pitch_speed = (int16_t) (msg_in[RESPONSE_PITCH_SPEED]) << 8 | msg_in[RESPONSE_PITCH_SPEED+1];
         imu_yaw_speed = (int16_t) (msg_in[RESPONSE_YAW_SPEED]) << 8 | msg_in[RESPONSE_YAW_SPEED+1];
 
-        imu_depth = msg_in[RESPONSE_PRESSURE]; // Pressure вместо depth
+        imu_pressure = msg_in[RESPONSE_PRESSURE]; // Pressure вместо depth
+
+        wf_data_type = msg_in[RESPONSE_WF_DATA_TYPE];
+        wf_tick_rate = msg_in[RESPONSE_WF_TICK_RATE];
+        wf_voltage = msg_in[RESPONSE_WF_VOLTAGE];
+
+        switch(wf_data_type){
+        case 0:
+            wf_x_angle_float = getFloat(msg_in, RESPONSE_WF_X_ANGLE);
+            wf_y_angle_float = getFloat(msg_in, RESPONSE_WF_Y_ANGLE);
+            break;
+        case 1:
+            wf_x_angle_int32_t = (int32_t) (((msg_in[RESPONSE_WF_X_ANGLE]) << 8 | msg_in[RESPONSE_WF_X_ANGLE+1]) << 8 | msg_in[RESPONSE_WF_X_ANGLE+2])<< 8 | msg_in[RESPONSE_WF_X_ANGLE+3];
+            wf_x_angle_int32_t = (int32_t) (((msg_in[RESPONSE_WF_Y_ANGLE]) << 8 | msg_in[RESPONSE_WF_Y_ANGLE+1]) << 8 | msg_in[RESPONSE_WF_Y_ANGLE+2])<< 8 | msg_in[RESPONSE_WF_Y_ANGLE+3];
+            break;
+        default:
+            std::cout << "Wifi data type ERROR" << std::endl;
+        }
+
+
+        acoustic_state = msg_in[RESPONSE_ACOUSTIC_STATE];
+        leak_sensor = (int16_t) (msg_in[RESPONSE_LEAK_SENSOR]) << 8 | msg_in[RESPONSE_LEAK_SENSOR+1];;
+        in_pressure = (int16_t) (msg_in[RESPONSE_IN_PRESSURE]) << 8 | msg_in[RESPONSE_IN_PRESSURE+1];;
 
         current_HLB = msg_in[RESPONSE_VMA_CURRENT_HLB];
         current_HLF = msg_in[RESPONSE_VMA_CURRENT_HLF];
@@ -552,36 +578,7 @@ void Server::receiveMessage() {
 
         err_vma = msg_in[RESPONSE_VMA_ERRORS];
         err_dev = msg_in[RESPONSE_DEV_ERRORS];
-
-
-        // !!!!! СДВИГИ, ЧТОБЫ ОБРАЗОВАТЬ ПРАВИЛЬНОЕ ЧИСЛО
-
-        char bt[8];  //Важно, чтобы история не затерлась! -> логи, выгружаемые на другое устройство
-        for (int i = 0; i < 8; ++i) {
-            bt[i] = msg_in[RESPONSE_AGAR + i];
-        }
-
-        QString s(bt);
-        bt_data = s;
-
-        //bt_data = QString::fromAscii_helper(bt, 7);
-
-        //temperature = encodeTemperature(temperature_MS, temperature_LS);
-
-        int16_t pressure = msg_in[RESPONSE_PRESSURE];
-
-        uint16_t motor_errors = msg_in[RESPONSE_VMA_ERRORS];
-
-
-
-        /*
-        std::cout << "Received  data:" << std::endl;
-        std::cout << "roll " << imu_roll << "pitch " << imu_pitch << "yaw " << imu_yaw << std::endl;
-        std::cout << "roll_speed" << imu_roll_speed << "pitch_speed" << imu_pitch_speed << "yaw_speed" << imu_yaw_speed << std::endl;
-        std::cout << "temperature=" << temperature << " pressure=" << pressure << std::endl;
-        std::cout << "bluetooth: " << bt << std::endl;
-        std::cout << "motor_errors" << motor_errors << std::endl;
-        */
+        err_pc = msg_in[RESPONSE_PC_ERRORS];
     }
     //QTest::qSleep (settings->connection->pause_after_received);
     msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter+ (float)msg_lost_counter);
@@ -635,6 +632,11 @@ void Server::addFloat(uint8_t * msg, int position, float value) {
     memcpy(msg + position, (unsigned char*) (&value), 4);
 }
 
+float Server::getFloat(QByteArray msg, int position) {
+    float value = 0;
+    //memcpy(&value, &QByteArray.data()+position, 4);
+    return value;
+}
 
 void Server::connect_fake() {
     std::cout << "Warning! Overriding COM port!" << std::endl;
@@ -664,31 +666,6 @@ void Server::addSNP(uint8_t * msg) {
     msg[1] = 'N';
     msg[2] = 'P';
 }
-
-/*float Server::encodeTemperature(uint8_t MS, uint8_t LS) {
-    uint8_t sign_bytes = MS >> 3;
-    int sign = 0;
-    if (sign_bytes == 0) {
-        sign = -1;
-    } else {
-        sign = 1;
-    }
-    int integer_part = ((MS << 5) >> 1) + (LS >> 4);
-    float temperature = 0;
-    uint8_t bit_power_minus_1 = LS & 0b00001000;
-    uint8_t bit_power_minus_2 = LS & 0b00000100;
-    uint8_t bit_power_minus_3 = LS & 0b00000010;
-    uint8_t bit_power_minus_4 = LS & 0b00000001;
-    temperature += integer_part;
-    if (bit_power_minus_1) {
-        temperature += 0.5;
-        std::cout << "1/2 DETECTED!!!11" << std::endl;
-    }
-    if (bit_power_minus_2) temperature += 0.25;
-    if (bit_power_minus_3) temperature += 0.125;
-    if (bit_power_minus_4) temperature += 0.0625;
-    return temperature;
-}*/
 
 void writeCSV(QTextStream stream, uint8_t * msg, uint16_t length) {
     stream << QTime::currentTime().toString();

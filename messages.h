@@ -1,7 +1,7 @@
 //#define REQUEST_NORMAL_CODE             0xFF
 #define REQUEST_NORMAL_CODE             0xA5
 
-#define REQUEST_NORMAL_LENGTH           27
+#define REQUEST_NORMAL_LENGTH           29
 
 #define REQUEST_NORMAL_TYPE             0
 #define REQUEST_NORMAL_FLAGS            1
@@ -16,8 +16,8 @@
 #define REQUEST_NORMAL_GRAB             15
 #define REQUEST_NORMAL_TILT             16
 #define REQUEST_NORMAL_ROTATE           17
-#define REQUEST_NORMAL_BT               18
-#define REQUEST_NORMAL_BOTTOM_LIGHT     19
+#define REQUEST_NORMAL_DEV1             18
+#define REQUEST_NORMAL_DEV2             19
 
 #define REQUEST_NORMAL_STABILIZE_DEPTH  20//ON
 #define REQUEST_NORMAL_STABILIZE_ROLL   21//ON
@@ -25,11 +25,12 @@
 #define REQUEST_NORMAL_STABILIZE_YAW    23
 #define REQUEST_NORMAL_RESET_IMU        24
 
-#define REQUEST_NORMAL_CHECKSUM         25
+#define REQUEST_NORMAL_CAMERA           25
+#define REQUEST_NORMAL_PC_RESET         26
+
+#define REQUEST_NORMAL_CHECKSUM         27
 
 
-
-// Важно оставить в рабочем состоянии!
 #define REQUEST_DIRECT_CODE             0xAA
 
 #define REQUEST_DIRECT_LENGTH           11
@@ -45,7 +46,7 @@
 #define REQUEST_DIRECT_8                8
 #define REQUEST_DIRECT_CHECKSUM         9
 
-// В разработке
+
 #define REQUEST_CONFIG_CODE             0x55
 
 #define REQUEST_CONFIG_LENGTH           195
@@ -124,50 +125,57 @@
 #define REQUEST_CONFIG_CHECKSUM         193
 
 
-
-
-#define RESPONSE_LENGTH                 63
+#define RESPONSE_LENGTH                 72
 
 #define RESPONSE_ROLL                   0
 #define RESPONSE_PITCH                  2
 #define RESPONSE_YAW                    4
-
 #define RESPONSE_ROLL_SPEED             6
 #define RESPONSE_PITCH_SPEED            8
 #define RESPONSE_YAW_SPEED              10
 
 #define RESPONSE_PRESSURE               12
 
-#define RESPONSE_AGAR                   14
+#define RESPONSE_WF_DATA_TYPE           14
+#define RESPONSE_WF_TICK_RATE           15
+#define RESPONSE_WF_VOLTAGE             16
+#define RESPONSE_WF_X_ANGLE             17
+#define RESPONSE_WF_Y_ANGLE             21
 
-#define RESPONSE_VMA_CURRENT_HLB        22
-#define RESPONSE_VMA_CURRENT_HLF        24
-#define RESPONSE_VMA_CURRENT_HRB        26
-#define RESPONSE_VMA_CURRENT_HRF        28
-#define RESPONSE_VMA_CURRENT_VB         30
-#define RESPONSE_VMA_CURRENT_VF         32
-#define RESPONSE_VMA_CURRENT_VL         34
-#define RESPONSE_VMA_CURRENT_VR         36
+#define RESPONSE_ACOUSTIC_STATE         25
+#define RESPONSE_LEAK_SENSOR            26
+#define RESPONSE_IN_PRESSURE            28
+
+#define RESPONSE_VMA_CURRENT_HLB        30
+#define RESPONSE_VMA_CURRENT_HLF        32
+#define RESPONSE_VMA_CURRENT_HRB        34
+#define RESPONSE_VMA_CURRENT_HRF        36
+#define RESPONSE_VMA_CURRENT_VB         38
+#define RESPONSE_VMA_CURRENT_VF         40
+#define RESPONSE_VMA_CURRENT_VL         42
+#define RESPONSE_VMA_CURRENT_VR         44
 
 
-#define RESPONSE_VMA_VELOCITY_HLB       38
-#define RESPONSE_VMA_VELOCITY_HLF       39
-#define RESPONSE_VMA_VELOCITY_HRB       40
-#define RESPONSE_VMA_VELOCITY_HRF       41
-#define RESPONSE_VMA_VELOCITY_VB        42
-#define RESPONSE_VMA_VELOCITY_VF        43
-#define RESPONSE_VMA_VELOCITY_VL        44
-#define RESPONSE_VMA_VELOCITY_VR        45
+#define RESPONSE_VMA_VELOCITY_HLB       46
+#define RESPONSE_VMA_VELOCITY_HLF       47
+#define RESPONSE_VMA_VELOCITY_HRB       48
+#define RESPONSE_VMA_VELOCITY_HRF       49
+#define RESPONSE_VMA_VELOCITY_VB        50
+#define RESPONSE_VMA_VELOCITY_VF        51
+#define RESPONSE_VMA_VELOCITY_VL        52
+#define RESPONSE_VMA_VELOCITY_VR        53
 
-#define RESPONSE_DEV_CURRENT_1          46
-#define RESPONSE_DEV_CURRENT_2          48
-#define RESPONSE_DEV_CURRENT_3          50
-#define RESPONSE_DEV_CURRENT_4          52
-#define RESPONSE_DEV_CURRENT_5          54
-#define RESPONSE_DEV_CURRENT_6          56
+#define RESPONSE_DEV_CURRENT_1          54
+#define RESPONSE_DEV_CURRENT_2          56
+#define RESPONSE_DEV_CURRENT_3          58
+#define RESPONSE_DEV_CURRENT_4          60
+#define RESPONSE_DEV_CURRENT_5          62
+#define RESPONSE_DEV_CURRENT_6          64
 
-#define RESPONSE_VMA_ERRORS             58
+#define RESPONSE_VMA_ERRORS             66
 
-#define RESPONSE_DEV_ERRORS             60
+#define RESPONSE_DEV_ERRORS             68
 
-#define RESPONSE_CHECKSUM               61
+#define RESPONSE_PC_ERRORS              69
+
+#define RESPONSE_CHECKSUM               70

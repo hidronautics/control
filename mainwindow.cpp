@@ -500,7 +500,7 @@ void MainWindow::serverIsSleeping() {
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
     ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
     ui->graphicsPFD_2->setHeading(server->imu_yaw);
-    ui->graphicsPFD_2->setAltitude(server->imu_depth);
+    ui->graphicsPFD_2->setAltitude(server->imu_pressure);
 
     //PLOTS_____________________________________________________________________________________________________
     std::cout << "Drawing plots..." << std::endl;

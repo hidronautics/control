@@ -50,7 +50,7 @@ public:
 
     Settings* settings;
 
-    float temperature = 0;
+    //float temperature = 0;
     int16_t imu_roll;
     int16_t imu_pitch;
     int16_t imu_yaw;
@@ -72,7 +72,20 @@ public:
 
     // _______________________________
 
-    int16_t imu_depth;
+    //int16_t imu_depth;
+    uint16_t imu_pressure;
+
+    uint8_t wf_data_type;
+    uint8_t wf_tick_rate;
+    uint8_t wf_voltage;
+    float wf_x_angle_float;
+    float wf_y_angle_float;
+    int32_t wf_x_angle_int32_t;
+    int32_t wf_y_angle_int32_t;
+
+    uint8_t acoustic_state;
+    int16_t leak_sensor;
+    int16_t in_pressure;
 
     uint16_t current_HLB;
     uint16_t current_HLF;
@@ -83,14 +96,14 @@ public:
     uint16_t current_VL;
     uint16_t current_VR;
 
-    int16_t velocity_HLB;
-    int16_t velocity_HLF;
-    int16_t velocity_HRB;
-    int16_t velocity_HRF;
-    int16_t velocity_VB;
-    int16_t velocity_VF;
-    int16_t velocity_VL;
-    int16_t velocity_VR;
+    int8_t velocity_HLB;
+    int8_t velocity_HLF;
+    int8_t velocity_HRB;
+    int8_t velocity_HRF;
+    int8_t velocity_VB;
+    int8_t velocity_VF;
+    int8_t velocity_VL;
+    int8_t velocity_VR;
 
     uint16_t current_light;
     uint16_t current_bottom_light;
@@ -100,7 +113,8 @@ public:
     uint16_t current_tilt;
 
     uint16_t err_vma;
-    uint16_t err_dev;
+    uint8_t err_dev;
+    uint8_t err_pc;
 
     uint16_t msg_received_counter;
     uint16_t msg_lost_counter;
@@ -127,6 +141,7 @@ private:
     void receiveMessage();
 
     void addFloat(uint8_t * msg, int position, float val);
+    float getFloat(QByteArray msg, int position);
     void addSNP(uint8_t * msg);
 
     //float encodeTemperature(uint8_t MS, uint8_t LS);

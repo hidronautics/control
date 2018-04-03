@@ -26,12 +26,15 @@ public:
     int8_t grab        = 0;      //[-127,127]
     int8_t grab_rotate = 0;      //[-127,127]?
     int8_t tilt        = 0;      //[-127,127]
-    int8_t agar        = 0;
-    int8_t bottom_light= 0;      //[-127, 127]
+    //int8_t agar        = 0;
+    //int8_t bottom_light= 0;      //[-127, 127]
+    int8_t dev1        = 0;
+    int8_t dev2        = 0;
 
-    int8_t bt           =0;     //BOOL
+    //int8_t bt           =0;     //BOOL
 
-
+    uint8_t camera = 0; // 0="1 канал",...,3="4 канал"
+    uint8_t pc_reset = 0; // 1="reset", 2="hard reset"
 
     float sensitivity = 0.0;    //[0.0,1.0]
 
