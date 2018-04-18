@@ -109,11 +109,12 @@ void Server::sendMessageNormal()
     msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
     msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
 
-    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = j->stabilize_depth;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = j->stabilize_roll;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = j->stabilize_pitch;
-    msg_to_send[REQUEST_NORMAL_STABILIZE_YAW] = false;
-    msg_to_send[REQUEST_NORMAL_RESET_IMU] = false;
+    msg_to_send[REQUEST_NORMAL_STABILIZE] = 0;
+//    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = j->stabilize_depth;
+//    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = j->stabilize_roll;
+//    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = j->stabilize_pitch;
+//    msg_to_send[REQUEST_NORMAL_STABILIZE_YAW] = false;
+//    msg_to_send[REQUEST_NORMAL_RESET_IMU] = false;
 
     msg_to_send[REQUEST_NORMAL_CAMERA] = j->camera;
     msg_to_send[REQUEST_NORMAL_PC_RESET] = j->pc_reset;
