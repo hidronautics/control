@@ -58,7 +58,8 @@ public slots:
 class Connection
 {
 public:
-   ConnectionSettings() {}
+   // TODO what is this? that was caused warning
+   //ConnectionSettings() {}
 
    int num;
    QSerialPort::BaudRate baudRate;

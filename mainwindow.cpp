@@ -442,12 +442,11 @@ void MainWindow::serverIsSleeping() {
         std::cout << "Unknown current message code!" << std::endl;
     }
 
-
     for (int i = 0; i < request_length; ++i) {
         //requestQTableWidgetItems[i]->setText(QString("%1").arg(server->msg_to_send[i]));
-        requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send[i], 16));
-        requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send[i], 10));
-        requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send[i], 2));
+        requestQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_to_send.data()[i], 16));
+        requestQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_to_send.data()[i], 10));
+        requestQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_to_send.data()[i], 2));
     }
 
     for (int i = request_length; i < REQUEST_TABLE_ROW_COUNT; ++i) {
@@ -457,9 +456,9 @@ void MainWindow::serverIsSleeping() {
     }
 
     for (int i = 0; i < RESPONSE_LENGTH; ++i) {
-        responseQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_in[i], 16));
-        responseQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_in[i], 10));
-        responseQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_in[i], 2));
+        responseQTableWidgetItemsHEX[i]->setText(QString::number(server->msg_in.data()[i], 16));
+        responseQTableWidgetItemsDEC[i]->setText(QString::number(server->msg_in.data()[i], 10));
+        responseQTableWidgetItemsBinary[i]->setText(QString::number(server->msg_in.data()[i], 2));
     }
 
     for (int i = RESPONSE_LENGTH; i < RESPONSE_TABLE_ROW_COUNT; ++i) {

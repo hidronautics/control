@@ -34,7 +34,7 @@ public:
     ~Server();
     Joystick* j;
 
-    uint8_t msg_to_send[MESSAGES_ARRAY_SIZE];
+    QByteArray msg_to_send;
     QByteArray msg_in;
 
     uint8_t nextMessageType;
@@ -133,6 +133,7 @@ private:
     bool COMconnect(int com_name);
 
     void addCheckSumm16b(uint8_t * msg, uint16_t length);
+    uint16_t getCheckSumm16b(QByteArray * msg, uint16_t length);
     uint8_t isCheckSumm16bCorrect(uint8_t * msg, uint16_t length);
 
     void sendMessageNormal();
