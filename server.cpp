@@ -74,77 +74,75 @@ void Server::sendMessage() {
 void Server::sendMessageNormal()
 {
     std::cout << "Server::sendMessageNormal()" << std::endl;
-    for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
-        msg_to_send[i] = 0x00;
-    }
-    //msg_to_send[0] = 0xFF;
     j->update();
 
-    msg_to_send[REQUEST_NORMAL_TYPE] = REQUEST_NORMAL_CODE;
+    msg_to_send.clear();
+    QDataStream stream(&msg_to_send, QIODevice::Append);
 
-    msg_to_send[REQUEST_NORMAL_MARCH+1] = j->march;
-    msg_to_send[REQUEST_NORMAL_MARCH] = j->march >> 8;
+    // Defining request structure
+    Request_s req;
 
-    msg_to_send[REQUEST_NORMAL_LAG+1] = j->lag;
-    msg_to_send[REQUEST_NORMAL_LAG] = j->lag >> 8;
+    // Filling request structure
+    req.type = REQUEST_NORMAL_CODE;
+    req.flags = 0x00;
 
-    msg_to_send[REQUEST_NORMAL_DEPTH+1] = j->depth;
-    msg_to_send[REQUEST_NORMAL_DEPTH] = j->depth >> 8;
+    req.march = j->march;
+    req.lag = j->lag;
+    req.depth = j->depth;
 
-    msg_to_send[REQUEST_NORMAL_ROLL+1] = j->roll;
-    msg_to_send[REQUEST_NORMAL_ROLL] = j->roll >> 8;
+    req.roll = j->roll;
+    req.pitch = j->pitch;
+    req.yaw = j->yaw;
 
-    msg_to_send[REQUEST_NORMAL_PITCH+1] = j->pitch;
-    msg_to_send[REQUEST_NORMAL_PITCH] = j->pitch >> 8;
+    req.light = j->light;
+    req.grab = j->grab;
+    req.tilt = j->tilt;
+    req.grab_rotate = 1.27*(float)j->grab_rotate;
+    req.dev1 = 0;
+    req.dev2 = 0;
 
-    msg_to_send[REQUEST_NORMAL_YAW+1] = j->yaw;
-    msg_to_send[REQUEST_NORMAL_YAW] = j->yaw >> 8;
+    req.dev_flags = 0;
+    req.stabilize_flags = 0;
+    req.cameras = j->camera;
+    req.pc_reset = j->pc_reset;
 
+    // Moving structure to QByteArray
+    stream << req;
 
-    msg_to_send[REQUEST_NORMAL_LIGHT]      = j->light;
-    msg_to_send[REQUEST_NORMAL_GRAB]       = j->grab;
-    //msg_to_send[REQUEST_NORMAL_BT]       = j->bt; //------------------
-    //msg_to_send[REQUEST_NORMAL_BOTTOM_LIGHT] = j->bottom_light;//------------------
-    //msg_to_send[REQUEST_NORMAL_BT] = j->agar;//------------------
-    msg_to_send[REQUEST_NORMAL_TILT] = j->tilt;
-    msg_to_send[REQUEST_NORMAL_ROTATE] = 1.27*(float)j->grab_rotate;
+    // Calculating checksum
+    uint16_t checksum = getCheckSumm16b(&msg_to_send, REQUEST_NORMAL_LENGTH);
 
-    msg_to_send[REQUEST_NORMAL_STABILIZE] = 0;
-//    msg_to_send[REQUEST_NORMAL_STABILIZE_DEPTH] = j->stabilize_depth;
-//    msg_to_send[REQUEST_NORMAL_STABILIZE_ROLL] = j->stabilize_roll;
-//    msg_to_send[REQUEST_NORMAL_STABILIZE_PITCH] = j->stabilize_pitch;
-//    msg_to_send[REQUEST_NORMAL_STABILIZE_YAW] = false;
-//    msg_to_send[REQUEST_NORMAL_RESET_IMU] = false;
+    // Moving checksum to QByteArray
+    stream << checksum;
 
-    msg_to_send[REQUEST_NORMAL_CAMERA] = j->camera;
-    msg_to_send[REQUEST_NORMAL_PC_RESET] = j->pc_reset;
-
-
-    addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
-
-    //std::cout << "Sending NORMAL message:" << std::endl;
-    /*for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
+    /*
+    std::cout << "Sending NORMAL message:" << std::endl;
+    for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
         std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    }*/
-
-
+    }
+    */
 
     //path_csv_request = log_folder_path + "REQUEST_" + QDateTime::currentDateTime().toString() + ".csv";
+
     path_csv_request = log_folder_path + "REQUEST.csv";
-//    QFile file_csv_request(path_csv_request);
-//    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
-//        QTextStream stream_request(&file_csv_request);
-//        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
-//        stream_request << " ;" << j->roll;
-//        stream_request << " ;" << j->pitch;
-//        stream_request << " ;" << j->yaw;
-//        stream_request << " ;" << j->depth;
-//        stream_request << '\n';
-//        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
-//    } else {
-//        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
-//    }
     QFile file_csv_request(path_csv_request);
+
+    /*
+    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QTextStream stream_request(&file_csv_request);
+        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+        stream_request << " ;" << j->roll;
+        stream_request << " ;" << j->pitch;
+        stream_request << " ;" << j->yaw;
+        stream_request << " ;" << j->depth;
+        stream_request << '\n';
+        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
+    } else {
+        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
+    }
+    */
+
+    //QFile file_csv_request(path_csv_request);
     if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
         QTextStream stream_request(&file_csv_request);
         //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
@@ -155,7 +153,7 @@ void Server::sendMessageNormal()
         stream_request << "\n";
     }
 
-    newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
+    newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
 
     emit imSleeping();
 
@@ -166,6 +164,8 @@ void Server::sendMessageNormal()
 
 void Server::sendMessageDirect() {
     std::cout << "Server::sendMessageDirect()" << std::endl;
+    // TODO this is actually doesn't realised on STM side, will do
+    /*
     for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
         msg_to_send[i] = 0x00;
     }
@@ -194,171 +194,143 @@ void Server::sendMessageDirect() {
     emit imSleeping();
     QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
+    */
 }
 
 void Server::sendMessageConfig() {
     std::cout << "Server::sendMessageConfig()" << std::endl;
-    for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
-        msg_to_send[i] = 0x00;
-    }
-    msg_to_send[0] = 0xFF;
-    msg_to_send[REQUEST_CONFIG_TYPE] = REQUEST_CONFIG_CODE;
 
-    /*msg_to_send[REQUEST_CONFIG_IBORDERS_DEPTH]      = settings->depth.iborders;
-    msg_to_send[REQUEST_CONFIG_IGAIN_DEPTH]         = settings->depth.igain;
-    msg_to_send[REQUEST_CONFIG_K1_DEPTH]            = settings->depth.k1;
-    msg_to_send[REQUEST_CONFIG_K2_DEPTH]            = settings->depth.k2;
-    msg_to_send[REQUEST_CONFIG_K3_DEPTH]            = settings->depth.k3;
-    msg_to_send[REQUEST_CONFIG_K4_DEPTH]            = settings->depth.k4;
-    msg_to_send[REQUEST_CONFIG_PGAIN_DEPTH]         = settings->depth.pgain;
+    QDataStream stream(&msg_to_send, QIODevice::Append);
 
-    msg_to_send[REQUEST_CONFIG_IBORDERS_PITCH]      = settings->pitch.iborders;
-    msg_to_send[REQUEST_CONFIG_IGAIN_PITCH]         = settings->pitch.igain;
-    msg_to_send[REQUEST_CONFIG_K1_PITCH]            = settings->pitch.k1;
-    msg_to_send[REQUEST_CONFIG_K2_PITCH]            = settings->pitch.k2;
-    msg_to_send[REQUEST_CONFIG_K3_PITCH]            = settings->pitch.k3;
-    msg_to_send[REQUEST_CONFIG_K4_PITCH]            = settings->pitch.k4;
-    msg_to_send[REQUEST_CONFIG_PGAIN_PITCH]         = settings->pitch.pgain;
+    // Defining request structure
+    ConfigRequest_s req;
 
-    msg_to_send[REQUEST_CONFIG_IBORDERS_ROLL]      = settings->roll.iborders;
-    msg_to_send[REQUEST_CONFIG_IGAIN_ROLL]         = settings->roll.igain;
-    msg_to_send[REQUEST_CONFIG_K1_ROLL]            = settings->roll.k1;
-    msg_to_send[REQUEST_CONFIG_K2_ROLL]            = settings->roll.k2;
-    msg_to_send[REQUEST_CONFIG_K3_ROLL]            = settings->roll.k3;
-    msg_to_send[REQUEST_CONFIG_K4_ROLL]            = settings->roll.k4;
-    msg_to_send[REQUEST_CONFIG_PGAIN_ROLL]         = settings->roll.pgain;
+    // Filling request structure
+    req.type = REQUEST_CONFIG_CODE;
 
-    msg_to_send[REQUEST_CONFIG_IBORDERS_YAW]      = settings->yaw.iborders;
-    msg_to_send[REQUEST_CONFIG_IGAIN_YAW]         = settings->yaw.igain;
-    msg_to_send[REQUEST_CONFIG_K1_YAW]            = settings->yaw.k1;
-    msg_to_send[REQUEST_CONFIG_K2_YAW]            = settings->yaw.k2;
-    msg_to_send[REQUEST_CONFIG_K3_YAW]            = settings->yaw.k3;
-    msg_to_send[REQUEST_CONFIG_K4_YAW]            = settings->yaw.k4;
-    msg_to_send[REQUEST_CONFIG_PGAIN_YAW]         = settings->yaw.pgain;*/
+    req.depth_k1            = settings->depth.k1;
+    req.depth_k2            = settings->depth.k2;
+    req.depth_k3            = settings->depth.k3;
+    req.depth_k4            = settings->depth.k4;
+    req.depth_iborders      = settings->depth.iborders;
+    req.depth_pgain         = settings->depth.pgain;
+    req.depth_igain         = settings->depth.igain;
 
-    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_DEPTH, settings->depth.iborders);
-    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_DEPTH, settings->depth.igain);
-    addFloat(msg_to_send, REQUEST_CONFIG_K1_DEPTH, settings->depth.k1);
-    addFloat(msg_to_send, REQUEST_CONFIG_K2_DEPTH, settings->depth.k2);
-    addFloat(msg_to_send, REQUEST_CONFIG_K3_DEPTH, settings->depth.k3);
-    addFloat(msg_to_send, REQUEST_CONFIG_K4_DEPTH, settings->depth.k4);
-    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_DEPTH, settings->depth.pgain);
+    req.roll_k1             = settings->roll.k1;
+    req.roll_k2             = settings->roll.k2;
+    req.roll_k3             = settings->roll.k3;
+    req.roll_k4             = settings->roll.k4;
+    req.roll_iborders       = settings->roll.iborders;
+    req.roll_pgain          = settings->roll.pgain;
+    req.roll_igain          = settings->roll.igain;
 
-    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_PITCH, settings->pitch.iborders);
-    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_PITCH, settings->pitch.igain);
-    addFloat(msg_to_send, REQUEST_CONFIG_K1_PITCH, settings->pitch.k1);
-    addFloat(msg_to_send, REQUEST_CONFIG_K2_PITCH, settings->pitch.k2);
-    addFloat(msg_to_send, REQUEST_CONFIG_K3_PITCH, settings->pitch.k3);
-    addFloat(msg_to_send, REQUEST_CONFIG_K4_PITCH, settings->pitch.k4);
-    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_PITCH, settings->pitch.pgain);
+    req.pitch_k1            = settings->pitch.k1;
+    req.pitch_k2            = settings->pitch.k2;
+    req.pitch_k3            = settings->pitch.k3;
+    req.pitch_k4            = settings->pitch.k4;
+    req.pitch_iborders      = settings->pitch.iborders;
+    req.pitch_pgain         = settings->pitch.pgain;
+    req.pitch_igain         = settings->pitch.igain;
 
-    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_ROLL, settings->roll.iborders);
-    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_ROLL, settings->roll.igain);
-    addFloat(msg_to_send, REQUEST_CONFIG_K1_ROLL, settings->roll.k1);
-    addFloat(msg_to_send, REQUEST_CONFIG_K2_ROLL, settings->roll.k2);
-    addFloat(msg_to_send, REQUEST_CONFIG_K3_ROLL, settings->roll.k3);
-    addFloat(msg_to_send, REQUEST_CONFIG_K4_ROLL, settings->roll.k4);
-    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_ROLL, settings->roll.pgain);
+    req.yaw_k1              = settings->yaw.k1;
+    req.yaw_k2              = settings->yaw.k2;
+    req.yaw_k3              = settings->yaw.k3;
+    req.yaw_k4              = settings->yaw.k4;
+    req.yaw_iborders        = settings->yaw.iborders;
+    req.yaw_pgain           = settings->yaw.pgain;
+    req.yaw_igain           = settings->yaw.igain;
 
-    addFloat(msg_to_send, REQUEST_CONFIG_IBORDERS_YAW, settings->yaw.iborders);
-    addFloat(msg_to_send, REQUEST_CONFIG_IGAIN_YAW, settings->yaw.igain);
-    addFloat(msg_to_send, REQUEST_CONFIG_K1_YAW, settings->yaw.k1);
-    addFloat(msg_to_send, REQUEST_CONFIG_K2_YAW, settings->yaw.k2);
-    addFloat(msg_to_send, REQUEST_CONFIG_K3_YAW, settings->yaw.k3);
-    addFloat(msg_to_send, REQUEST_CONFIG_K4_YAW, settings->yaw.k4);
-    addFloat(msg_to_send, REQUEST_CONFIG_PGAIN_YAW, settings->yaw.pgain);
-
-
-    settings->motors;
+    // TODO what was this? warning
+    //settings->motors;
 
     for (int i = 0; i < 8; ++i) {
         switch (settings->motors[i].code) {
         case settings->motors[i].HLB:
-            msg_to_send[REQUEST_CONFIG_POSITION_HLB] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_HLB]  = settings->motors[i].inverse;
+            req.position_hlb = i;
+            req.setting_hlb = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HLB, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HLB,  settings->motors[i].k_forward);
+                req.kbackward_hlb = settings->motors[i].k_backward;
+                req.kforward_hlb = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HLB, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HLB,  0.0);
+                req.kbackward_hlb = 0;
+                req.kforward_hlb = 0;
             }
             break;
         case settings->motors[i].HLF:
-            msg_to_send[REQUEST_CONFIG_POSITION_HLF] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_HLF]  = settings->motors[i].inverse;
+            req.position_hlf = i;
+            req.setting_hlf = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HLF, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HLF,  settings->motors[i].k_forward);
+                req.kbackward_hlf = settings->motors[i].k_backward;
+                req.kforward_hlf = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HLF, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HLF,  0.0);
+                req.kbackward_hlf = 0;
+                req.kforward_hlf = 0;
             }
             break;
         case settings->motors[i].HRB:
-            msg_to_send[REQUEST_CONFIG_POSITION_HRB] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_HRB]  = settings->motors[i].inverse;
+            req.position_hrb = i;
+            req.setting_hrb = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HRB, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HRB,  settings->motors[i].k_forward);
+                req.kbackward_hrb = settings->motors[i].k_backward;
+                req.kforward_hrb = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HRB, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HRB,  0.0);
+                req.kbackward_hrb = 0;
+                req.kforward_hrb = 0;
             }
             break;
         case settings->motors[i].HRF:
-            msg_to_send[REQUEST_CONFIG_POSITION_HRF] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_HRF]  = settings->motors[i].inverse;
+            req.position_hrf = i;
+            req.setting_hrf = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HRF, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HRF,  settings->motors[i].k_forward);
+                req.kbackward_hrf = settings->motors[i].k_backward;
+                req.kforward_hrf = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_HRF, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_HRF,  0.0);
+                req.kbackward_hrf = 0;
+                req.kforward_hrf = 0;
             }
             break;
         case settings->motors[i].VB:
-            msg_to_send[REQUEST_CONFIG_POSITION_VB] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_VB]  = settings->motors[i].inverse;
+            req.position_vb = i;
+            req.setting_vb = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VB, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VB,  settings->motors[i].k_forward);
+                req.kbackward_vb = settings->motors[i].k_backward;
+                req.kforward_vb = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VB, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VB,  0.0);
+                req.kbackward_vb = 0;
+                req.kforward_vb = 0;
             }
             break;
         case settings->motors[i].VF:
-            msg_to_send[REQUEST_CONFIG_POSITION_VF] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_VF]  = settings->motors[i].inverse;
+            req.position_vf = i;
+            req.setting_vf = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VF, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VF,  settings->motors[i].k_forward);
+                req.kbackward_vf = settings->motors[i].k_backward;
+                req.kforward_vf = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VF, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VF,  0.0);
+                req.kbackward_vf = 0;
+                req.kforward_vf = 0;
             }
             break;
         case settings->motors[i].VL:
-            msg_to_send[REQUEST_CONFIG_POSITION_VL] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_VL]  = settings->motors[i].inverse;
+            req.position_vl = i;
+            req.setting_vl = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VL, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VL,  settings->motors[i].k_forward);
+                req.kbackward_vl = settings->motors[i].k_backward;
+                req.kforward_vl = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VL, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VL,  0.0);
+                req.kbackward_vl = 0;
+                req.kforward_vl = 0;
             }
             break;
         case settings->motors[i].VR:
-            msg_to_send[REQUEST_CONFIG_POSITION_VR] = i;
-            msg_to_send[REQUEST_CONFIG_INVERSE_VR]  = settings->motors[i].inverse;
+            req.position_vr = i;
+            req.setting_vr = settings->motors[i].inverse;
             if (settings->motors[i].enabled) {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VR, settings->motors[i].k_backward);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VR,  settings->motors[i].k_forward);
+                req.kbackward_vr = settings->motors[i].k_backward;
+                req.kforward_vr = settings->motors[i].k_forward;
             } else {
-                addFloat(msg_to_send, REQUEST_CONFIG_K_BACKWARD_VR, 0.0);
-                addFloat(msg_to_send, REQUEST_CONFIG_K_FORWARD_VR,  0.0);
+                req.kbackward_vr = 0;
+                req.kforward_vr = 0;
             }
             break;
         default:
@@ -367,12 +339,21 @@ void Server::sendMessageConfig() {
 
     }
 
-    addCheckSumm16b(msg_to_send, REQUEST_CONFIG_LENGTH);
+    // Moving structure to QByteArray
+    stream << req;
 
-    //std::cout << "Sending CONFIG message:" << std::endl;
-    //for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
-    //    std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    //}
+    // Calculating checksum
+    uint16_t checksum = getCheckSumm16b(&msg_to_send, REQUEST_NORMAL_LENGTH);
+
+    // Moving checksum to QByteArray
+    stream << checksum;
+
+    /*
+    std::cout << "Sending CONFIG message:" << std::endl;
+    for (int i = 0; i < REQUEST_CONFIG_LENGTH; ++i) {
+        std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
+    }
+    */
 
     QFile file_csv_request(path_csv_request);
     if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
@@ -385,14 +366,12 @@ void Server::sendMessageConfig() {
         stream_request << "\n";
     }
 
-    newPort->write((char*)msg_to_send, REQUEST_CONFIG_LENGTH);
+    newPort->write(msg_to_send, REQUEST_CONFIG_LENGTH);
 
     emit imSleeping();
     QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
 }
-
-
 
 void Server::receiveMessage() {
     std::cout << "Server::receiveMessage()" << std::endl;
@@ -405,7 +384,7 @@ void Server::receiveMessage() {
     }
     std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
 
-    if (emulation_mode){
+    if (emulation_mode) {
         imu_roll = imu_roll + j->roll/10000;
         imu_pitch = imu_pitch + j->pitch/10000;
         imu_yaw = imu_yaw + j->yaw/10000;
@@ -432,7 +411,7 @@ void Server::receiveMessage() {
         velocity_VB = 76;
         velocity_VF = 88;
         velocity_VL = 99;
-        velocity_VR = 999;
+        velocity_VR = 101; // value 999 was obviously incorrect here
 
         current_light = 5;
         current_bottom_light = 10;
@@ -448,8 +427,6 @@ void Server::receiveMessage() {
         std::cout << "No message to read. Buffer is empty" << std::endl;
         msg_lost_counter++;
     } else {
-
-
         int counter = 0;
         while (true) {
             int bytesAvailible = newPort->bytesAvailable();
@@ -461,7 +438,9 @@ void Server::receiveMessage() {
                 counter++;
             }
         }
+
         msg_in = newPort->readAll();
+        QDataStream stream(&msg_in, QIODevice::ReadOnly);;
 
         QFile file_csv_response(path_csv_response);
         if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
@@ -479,7 +458,6 @@ void Server::receiveMessage() {
         static QTime time(QTime::currentTime());
         key1 = time.elapsed()/1000.0;
 
-
         imu_roll_d = imu_roll;
         imu_pitch_d = imu_pitch;
         imu_yaw_d = imu_yaw;
@@ -490,22 +468,23 @@ void Server::receiveMessage() {
         //______________________________________________________________________________
 
         //path_csv_response = log_folder_path + "RESPONSE_" + QDateTime::currentDateTime().toString() + ".csv";
+
         path_csv_response = log_folder_path + "RESPONSE.csv";
-//        std::cout << "Opening log file" << std::endl;
-//        QFile file_csv_response(path_csv_response);
-//        if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
-//            QTextStream stream_response(&file_csv_response);
-//            stream_response << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
-//            stream_response << " ;" << imu_roll;
-//            stream_response << " ;" << imu_pitch;
-//            stream_response << " ;" << imu_roll_speed;
-//            stream_response << " ;" << imu_pitch_speed;
-//            stream_response << '\n';
-//            std::cout << "Response file opened at " << path_csv_response.toStdString() << std::endl;
-//        }
 
-
-
+        /*
+        std::cout << "Opening log file" << std::endl;
+        QFile file_csv_response(path_csv_response);
+        if(file_csv_response.open(QIODevice::WriteOnly | QIODevice::Append)) {
+            QTextStream stream_response(&file_csv_response);
+            stream_response << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
+            stream_response << " ;" << imu_roll;
+            stream_response << " ;" << imu_pitch;
+            stream_response << " ;" << imu_roll_speed;
+            stream_response << " ;" << imu_pitch_speed;
+            stream_response << '\n';
+            std::cout << "Response file opened at " << path_csv_response.toStdString() << std::endl;
+        }
+        */
 
         std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
         std::cout << "Checksum...";
@@ -519,67 +498,73 @@ void Server::receiveMessage() {
             return;
         }
 
-        imu_roll = (int16_t) (msg_in[RESPONSE_ROLL]) << 8 | msg_in[RESPONSE_ROLL+1];
-        imu_pitch = (int16_t) (msg_in[RESPONSE_PITCH]) << 8 | msg_in[RESPONSE_PITCH+1];
-        imu_yaw = (int16_t) (msg_in[RESPONSE_YAW]) << 8 | msg_in[RESPONSE_YAW+1];
+        // Defining response data structure
+        struct Response_s resp;
 
-        imu_roll_speed = (int16_t) (msg_in[RESPONSE_ROLL_SPEED]) << 8 | msg_in[RESPONSE_ROLL_SPEED+1];
-        imu_pitch_speed = (int16_t) (msg_in[RESPONSE_PITCH_SPEED]) << 8 | msg_in[RESPONSE_PITCH_SPEED+1];
-        imu_yaw_speed = (int16_t) (msg_in[RESPONSE_YAW_SPEED]) << 8 | msg_in[RESPONSE_YAW_SPEED+1];
+        // Moving QByteArray to structure
+        stream >> resp;
 
-        imu_pressure = msg_in[RESPONSE_PRESSURE]; // Pressure вместо depth
+        // Moving data from resp structure to application
+        imu_roll = resp.roll;
+        imu_pitch = resp.pitch;
+        imu_yaw = resp.yaw;
 
-        wf_data_type = msg_in[RESPONSE_WF_DATA_TYPE];
-        wf_tick_rate = msg_in[RESPONSE_WF_TICK_RATE];
-        wf_voltage = msg_in[RESPONSE_WF_VOLTAGE];
+        imu_roll_speed = resp.rollSpeed;
+        imu_pitch_speed = resp.pitchSpeed;
+        imu_yaw_speed = resp.yawSpeed;
+
+        imu_pressure = resp.pressure; // Pressure вместо depth
+
+        wf_data_type = resp.wf_type;
+        wf_tick_rate = resp.wf_tickrate;
+        wf_voltage = resp.wf_voltage;
 
         switch(wf_data_type){
         case 0:
-            wf_x_angle_float = getFloat(msg_in, RESPONSE_WF_X_ANGLE);
-            wf_y_angle_float = getFloat(msg_in, RESPONSE_WF_Y_ANGLE);
+            wf_x_angle_float = resp.wf_x;
+            wf_y_angle_float = resp.wf_y;
             break;
         case 1:
-            wf_x_angle_int32_t = (int32_t) (((msg_in[RESPONSE_WF_X_ANGLE]) << 8 | msg_in[RESPONSE_WF_X_ANGLE+1]) << 8 | msg_in[RESPONSE_WF_X_ANGLE+2])<< 8 | msg_in[RESPONSE_WF_X_ANGLE+3];
-            wf_x_angle_int32_t = (int32_t) (((msg_in[RESPONSE_WF_Y_ANGLE]) << 8 | msg_in[RESPONSE_WF_Y_ANGLE+1]) << 8 | msg_in[RESPONSE_WF_Y_ANGLE+2])<< 8 | msg_in[RESPONSE_WF_Y_ANGLE+3];
+            //wf_x_angle_int32_t = (int32_t) (((msg_in[RESPONSE_WF_X_ANGLE]) << 8 | msg_in[RESPONSE_WF_X_ANGLE+1]) << 8 | msg_in[RESPONSE_WF_X_ANGLE+2])<< 8 | msg_in[RESPONSE_WF_X_ANGLE+3];
+            //wf_x_angle_int32_t = (int32_t) (((msg_in[RESPONSE_WF_Y_ANGLE]) << 8 | msg_in[RESPONSE_WF_Y_ANGLE+1]) << 8 | msg_in[RESPONSE_WF_Y_ANGLE+2])<< 8 | msg_in[RESPONSE_WF_Y_ANGLE+3];
             break;
         default:
             std::cout << "Wifi data type ERROR" << std::endl;
         }
 
+        acoustic_state = resp.dev_state;
+        leak_sensor = resp.leak_data;
+        in_pressure = resp.in_pressure;
 
-        acoustic_state = msg_in[RESPONSE_ACOUSTIC_STATE];
-        leak_sensor = (int16_t) (msg_in[RESPONSE_LEAK_SENSOR]) << 8 | msg_in[RESPONSE_LEAK_SENSOR+1];;
-        in_pressure = (int16_t) (msg_in[RESPONSE_IN_PRESSURE]) << 8 | msg_in[RESPONSE_IN_PRESSURE+1];;
+        current_HLB = resp.vma_current_hlb;
+        current_HLF = resp.vma_current_hlf;
+        current_HRB = resp.vma_current_hrb;
+        current_HRF = resp.vma_current_hrf;
+        current_VB = resp.vma_current_vb;
+        current_VF = resp.vma_current_vf;
+        current_VL = resp.vma_current_vl;
+        current_VR = resp.vma_current_vr;
 
-        current_HLB = msg_in[RESPONSE_VMA_CURRENT_HLB];
-        current_HLF = msg_in[RESPONSE_VMA_CURRENT_HLF];
-        current_HRB = msg_in[RESPONSE_VMA_CURRENT_HRB];
-        current_HRF = msg_in[RESPONSE_VMA_CURRENT_HRF];
-        current_VB = msg_in[RESPONSE_VMA_CURRENT_VB];
-        current_VF = msg_in[RESPONSE_VMA_CURRENT_VF];
-        current_VL = msg_in[RESPONSE_VMA_CURRENT_VL];
-        current_VR = msg_in[RESPONSE_VMA_CURRENT_VR];
+        velocity_HLB = resp.vma_velocity_hlb;
+        velocity_HLF = resp.vma_velocity_hlf;
+        velocity_HRB = resp.vma_velocity_hrb;
+        velocity_HRF = resp.vma_velocity_hrf;
+        velocity_VB = resp.vma_velocity_vb;
+        velocity_VF = resp.vma_velocity_vf;
+        velocity_VL = resp.vma_velocity_vl;
+        velocity_VR = resp.vma_velocity_vr;
 
-        velocity_HLB = msg_in[RESPONSE_VMA_VELOCITY_HLB];
-        velocity_HLF = msg_in[RESPONSE_VMA_VELOCITY_HLF];
-        velocity_HRB = msg_in[RESPONSE_VMA_VELOCITY_HRB];
-        velocity_HRF = msg_in[RESPONSE_VMA_VELOCITY_HRF];
-        velocity_VB = msg_in[RESPONSE_VMA_VELOCITY_VB];
-        velocity_VF = msg_in[RESPONSE_VMA_VELOCITY_VF];
-        velocity_VL = msg_in[RESPONSE_VMA_VELOCITY_VL];
-        velocity_VR = msg_in[RESPONSE_VMA_VELOCITY_VR];
+        current_light = resp.dev_current_light;
+        current_tilt = resp.dev_current_tilt;
+        current_grab = resp.dev_current_grab;
+        current_grab_rotate = resp.dev_current_grab_rotate;
+        // TODO there are no more stuff like that
+        current_bottom_light = resp.dev_current_dev1;
+        current_agar = resp.dev_current_dev2;
 
-        current_light = msg_in[RESPONSE_DEV_CURRENT_1];
-        current_bottom_light = msg_in[RESPONSE_DEV_CURRENT_2];
-        current_agar = msg_in[RESPONSE_DEV_CURRENT_3];
-        current_grab = msg_in[RESPONSE_DEV_CURRENT_4];
-        current_grab_rotate = msg_in[RESPONSE_DEV_CURRENT_5];
-        current_tilt = msg_in[RESPONSE_DEV_CURRENT_6];
-
-
-        err_vma = msg_in[RESPONSE_VMA_ERRORS];
-        err_dev = msg_in[RESPONSE_DEV_ERRORS];
-        err_pc = msg_in[RESPONSE_PC_ERRORS];
+        err_vma = resp.vma_errors;
+        err_dev = resp.dev_errors;
+        err_pc = resp.pc_errors;
     }
     //QTest::qSleep (settings->connection->pause_after_received);
     msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter+ (float)msg_lost_counter);
@@ -629,13 +614,29 @@ void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)//i теперь н�
     msg[length-1] = (uint8_t) crc;
 }
 
+uint16_t Server::getCheckSumm16b(QByteArray * msg, uint16_t length)
+{
+    uint16_t crc = 0;
+    int i = 0;
+
+    for(i=0; i < length - 2; i++){
+        crc = (uint8_t)(crc >> 8) | (crc << 8);
+        crc ^= ((uint8_t*) msg->data())[i];
+        crc ^= (uint8_t)(crc & 0xff) >> 4;
+        crc ^= (crc << 8) << 4;
+        crc ^= ((crc & 0xff) << 4) << 1;
+    }
+
+    return crc;
+}
+
 void Server::addFloat(uint8_t * msg, int position, float value) {
     memcpy(msg + position, (unsigned char*) (&value), 4);
 }
 
 float Server::getFloat(QByteArray msg, int position) {
     float value = 0;
-    //memcpy(&value, &QByteArray.data()+position, 4);
+    memcpy(&value, msg.data()+position, 4);
     return value;
 }
 

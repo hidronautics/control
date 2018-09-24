@@ -1,42 +1,85 @@
-//#define REQUEST_NORMAL_CODE             0xFF
+/* Shore send requests and STM send responses */
+
+/* Request values and data structures */
+
+/* Normal mode */
 #define REQUEST_NORMAL_CODE             0xA5
+#define REQUEST_NORMAL_LENGTH           26
 
-#define REQUEST_NORMAL_LENGTH           25
+struct Request_s
+{
+    uint8_t type;
+    uint8_t flags;
+    int16_t march;
+    int16_t lag;
+    int16_t depth;
+    int16_t roll;
+    int16_t pitch;
+    int16_t yaw;
+    int8_t light;
+    int8_t grab;
+    int8_t tilt;
+    int8_t grab_rotate;
+    int8_t dev1;
+    int8_t dev2;
+    uint8_t dev_flags;
+    uint8_t stabilize_flags;
+    uint8_t cameras;
+    uint8_t pc_reset;
+    uint16_t checksum;
 
-#define REQUEST_NORMAL_TYPE             0
-#define REQUEST_NORMAL_FLAGS            1
-#define REQUEST_NORMAL_MARCH            2
-#define REQUEST_NORMAL_LAG              4
-#define REQUEST_NORMAL_DEPTH            6
-#define REQUEST_NORMAL_ROLL             8
-#define REQUEST_NORMAL_PITCH            10
-#define REQUEST_NORMAL_YAW              12
+    friend QDataStream& operator<<(QDataStream &ds, const Request_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds << req.type;
+        ds << req.flags;
+        ds << req.march;
+        ds << req.lag;
+        ds << req.depth;
+        ds << req.roll;
+        ds << req.pitch;
+        ds << req.yaw;
+        ds << req.light;
+        ds << req.grab;
+        ds << req.tilt;
+        ds << req.grab_rotate;
+        ds << req.dev1;
+        ds << req.dev2;
+        ds << req.dev_flags;
+        ds << req.stabilize_flags;
+        ds << req.cameras;
+        ds << req.pc_reset;
+        return ds;
+    }
 
-#define REQUEST_NORMAL_LIGHT            14
-#define REQUEST_NORMAL_GRAB             15
-#define REQUEST_NORMAL_TILT             16
-#define REQUEST_NORMAL_ROTATE           17
-#define REQUEST_NORMAL_DEV1             18
-#define REQUEST_NORMAL_DEV2             19
-#define REQUEST_NORMAL_DEV_FLAGS        20
+    friend QDataStream& operator>>(QDataStream &ds, Request_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds >> req.type;
+        ds >> req.flags;
+        ds >> req.march;
+        ds >> req.lag;
+        ds >> req.depth;
+        ds >> req.roll;
+        ds >> req.pitch;
+        ds >> req.yaw;
+        ds >> req.light;
+        ds >> req.grab;
+        ds >> req.tilt;
+        ds >> req.grab_rotate;
+        ds >> req.dev1;
+        ds >> req.dev2;
+        ds >> req.dev_flags;
+        ds >> req.stabilize_flags;
+        ds >> req.cameras;
+        ds >> req.pc_reset;
+        ds >> req.checksum;
+        return ds;
+    }
+};
 
-
-#define REQUEST_NORMAL_STABILIZE        21
-
-//#define REQUEST_NORMAL_STABILIZE_DEPTH  20//ON
-//#define REQUEST_NORMAL_STABILIZE_ROLL   21//ON
-//#define REQUEST_NORMAL_STABILIZE_PITCH  22//ON
-//#define REQUEST_NORMAL_STABILIZE_YAW    23
-//#define REQUEST_NORMAL_RESET_IMU        24
-
-#define REQUEST_NORMAL_CAMERA           22
-#define REQUEST_NORMAL_PC_RESET         23
-
-#define REQUEST_NORMAL_CHECKSUM         24
-
-
+/* Direct mode */
 #define REQUEST_DIRECT_CODE             0xAA
-
 #define REQUEST_DIRECT_LENGTH           11
 
 #define REQUEST_DIRECT_TYPE             0
@@ -50,136 +93,400 @@
 #define REQUEST_DIRECT_8                8
 #define REQUEST_DIRECT_CHECKSUM         9
 
-
+/* Config mode */
 #define REQUEST_CONFIG_CODE             0x55
-
 #define REQUEST_CONFIG_LENGTH           195
 
-#define REQUEST_CONFIG_TYPE             0
+struct ConfigRequest_s
+{
+    uint8_t type;
 
-#define REQUEST_CONFIG_K1_DEPTH         1
-#define REQUEST_CONFIG_K2_DEPTH         5
-#define REQUEST_CONFIG_K3_DEPTH         9
-#define REQUEST_CONFIG_K4_DEPTH         13
-#define REQUEST_CONFIG_IBORDERS_DEPTH   17
-#define REQUEST_CONFIG_PGAIN_DEPTH      21
-#define REQUEST_CONFIG_IGAIN_DEPTH      25
+    float depth_k1;
+    float depth_k2;
+    float depth_k3;
+    float depth_k4;
+    float depth_iborders;
+    float depth_pgain;
+    float depth_igain;
 
-#define REQUEST_CONFIG_K1_ROLL          29
-#define REQUEST_CONFIG_K2_ROLL          33
-#define REQUEST_CONFIG_K3_ROLL          37
-#define REQUEST_CONFIG_K4_ROLL          41
-#define REQUEST_CONFIG_IBORDERS_ROLL    45
-#define REQUEST_CONFIG_PGAIN_ROLL       49
-#define REQUEST_CONFIG_IGAIN_ROLL       53
+    float roll_k1;
+    float roll_k2;
+    float roll_k3;
+    float roll_k4;
+    float roll_iborders;
+    float roll_pgain;
+    float roll_igain;
 
-#define REQUEST_CONFIG_K1_PITCH         57
-#define REQUEST_CONFIG_K2_PITCH         61
-#define REQUEST_CONFIG_K3_PITCH         65
-#define REQUEST_CONFIG_K4_PITCH         69
-#define REQUEST_CONFIG_IBORDERS_PITCH   73
-#define REQUEST_CONFIG_PGAIN_PITCH      77
-#define REQUEST_CONFIG_IGAIN_PITCH      81
+    float pitch_k1;
+    float pitch_k2;
+    float pitch_k3;
+    float pitch_k4;
+    float pitch_iborders;
+    float pitch_pgain;
+    float pitch_igain;
 
-#define REQUEST_CONFIG_K1_YAW           85
-#define REQUEST_CONFIG_K2_YAW           89
-#define REQUEST_CONFIG_K3_YAW           93
-#define REQUEST_CONFIG_K4_YAW           97
-#define REQUEST_CONFIG_IBORDERS_YAW     101
-#define REQUEST_CONFIG_PGAIN_YAW        105
-#define REQUEST_CONFIG_IGAIN_YAW        109
+    float yaw_k1;
+    float yaw_k2;
+    float yaw_k3;
+    float yaw_k4;
+    float yaw_iborders;
+    float yaw_pgain;
+    float yaw_igain;
 
+    uint8_t position_hlb;
+    uint8_t position_hlf;
+    uint8_t position_hrb;
+    uint8_t position_hrf;
+    uint8_t position_vb;
+    uint8_t position_vf;
+    uint8_t position_vl;
+    uint8_t position_vr;
 
-#define REQUEST_CONFIG_POSITION_HLB     113
-#define REQUEST_CONFIG_POSITION_HLF     114
-#define REQUEST_CONFIG_POSITION_HRB     115
-#define REQUEST_CONFIG_POSITION_HRF     116
-#define REQUEST_CONFIG_POSITION_VB      117
-#define REQUEST_CONFIG_POSITION_VF      118
-#define REQUEST_CONFIG_POSITION_VL      119
-#define REQUEST_CONFIG_POSITION_VR      120
+    uint8_t setting_hlb;
+    uint8_t setting_hlf;
+    uint8_t setting_hrb;
+    uint8_t setting_hrf;
+    uint8_t setting_vb;
+    uint8_t setting_vf;
+    uint8_t setting_vl;
+    uint8_t setting_vr;
 
-#define REQUEST_CONFIG_INVERSE_HLB      121
-#define REQUEST_CONFIG_INVERSE_HLF      122
-#define REQUEST_CONFIG_INVERSE_HRB      123
-#define REQUEST_CONFIG_INVERSE_HRF      124
-#define REQUEST_CONFIG_INVERSE_VB       125
-#define REQUEST_CONFIG_INVERSE_VF       126
-#define REQUEST_CONFIG_INVERSE_VL       127
-#define REQUEST_CONFIG_INVERSE_VR       128
+    uint8_t kforward_hlb;
+    uint8_t kforward_hlf;
+    uint8_t kforward_hrb;
+    uint8_t kforward_hrf;
+    uint8_t kforward_vb;
+    uint8_t kforward_vf;
+    uint8_t kforward_vl;
+    uint8_t kforward_vr;
 
-#define REQUEST_CONFIG_K_FORWARD_HLB    129
-#define REQUEST_CONFIG_K_FORWARD_HLF    133
-#define REQUEST_CONFIG_K_FORWARD_HRB    137
-#define REQUEST_CONFIG_K_FORWARD_HRF    141
-#define REQUEST_CONFIG_K_FORWARD_VB     145
-#define REQUEST_CONFIG_K_FORWARD_VF     149
-#define REQUEST_CONFIG_K_FORWARD_VL     153
-#define REQUEST_CONFIG_K_FORWARD_VR     157
+    uint8_t kbackward_hlb;
+    uint8_t kbackward_hlf;
+    uint8_t kbackward_hrb;
+    uint8_t kbackward_hrf;
+    uint8_t kbackward_vb;
+    uint8_t kbackward_vf;
+    uint8_t kbackward_vl;
+    uint8_t kbackward_vr;
 
-#define REQUEST_CONFIG_K_BACKWARD_HLB   161
-#define REQUEST_CONFIG_K_BACKWARD_HLF   165
-#define REQUEST_CONFIG_K_BACKWARD_HRB   169
-#define REQUEST_CONFIG_K_BACKWARD_HRF   173
-#define REQUEST_CONFIG_K_BACKWARD_VB    177
-#define REQUEST_CONFIG_K_BACKWARD_VF    181
-#define REQUEST_CONFIG_K_BACKWARD_VL    185
-#define REQUEST_CONFIG_K_BACKWARD_VR    189
+    uint16_t checksum;
 
-#define REQUEST_CONFIG_CHECKSUM         193
+    friend QDataStream& operator<<(QDataStream &ds, const ConfigRequest_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds << req.type;
 
+        ds << req.depth_k1;
+        ds << req.depth_k2;
+        ds << req.depth_k3;
+        ds << req.depth_k4;
+        ds << req.depth_iborders;
+        ds << req.depth_pgain;
+        ds << req.depth_igain;
 
+        ds << req.roll_k1;
+        ds << req.roll_k2;
+        ds << req.roll_k3;
+        ds << req.roll_k4;
+        ds << req.roll_iborders;
+        ds << req.roll_pgain;
+        ds << req.roll_igain;
+
+        ds << req.pitch_k1;
+        ds << req.pitch_k2;
+        ds << req.pitch_k3;
+        ds << req.pitch_k4;
+        ds << req.pitch_iborders;
+        ds << req.pitch_pgain;
+        ds << req.pitch_igain;
+
+        ds << req.yaw_k1;
+        ds << req.yaw_k2;
+        ds << req.yaw_k3;
+        ds << req.yaw_k4;
+        ds << req.yaw_iborders;
+        ds << req.yaw_pgain;
+        ds << req.yaw_igain;
+
+        ds << req.position_hlb;
+        ds << req.position_hlf;
+        ds << req.position_hrb;
+        ds << req.position_hrf;
+        ds << req.position_vb;
+        ds << req.position_vf;
+        ds << req.position_vl;
+        ds << req.position_vr;
+
+        ds << req.setting_hlb;
+        ds << req.setting_hlf;
+        ds << req.setting_hrb;
+        ds << req.setting_hrf;
+        ds << req.setting_vb;
+        ds << req.setting_vf;
+        ds << req.setting_vl;
+        ds << req.setting_vr;
+
+        ds << req.kforward_hlb;
+        ds << req.kforward_hlf;
+        ds << req.kforward_hrb;
+        ds << req.kforward_hrf;
+        ds << req.kforward_vb;
+        ds << req.kforward_vf;
+        ds << req.kforward_vl;
+        ds << req.kforward_vr;
+
+        ds << req.kbackward_hlb;
+        ds << req.kbackward_hlf;
+        ds << req.kbackward_hrb;
+        ds << req.kbackward_hrf;
+        ds << req.kbackward_vb;
+        ds << req.kbackward_vf;
+        ds << req.kbackward_vl;
+        ds << req.kbackward_vr;
+        return ds;
+    }
+
+    friend QDataStream& operator>>(QDataStream &ds, ConfigRequest_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds >> req.type;
+
+        ds >> req.depth_k1;
+        ds >> req.depth_k2;
+        ds >> req.depth_k3;
+        ds >> req.depth_k4;
+        ds >> req.depth_iborders;
+        ds >> req.depth_pgain;
+        ds >> req.depth_igain;
+
+        ds >> req.roll_k1;
+        ds >> req.roll_k2;
+        ds >> req.roll_k3;
+        ds >> req.roll_k4;
+        ds >> req.roll_iborders;
+        ds >> req.roll_pgain;
+        ds >> req.roll_igain;
+
+        ds >> req.pitch_k1;
+        ds >> req.pitch_k2;
+        ds >> req.pitch_k3;
+        ds >> req.pitch_k4;
+        ds >> req.pitch_iborders;
+        ds >> req.pitch_pgain;
+        ds >> req.pitch_igain;
+
+        ds >> req.yaw_k1;
+        ds >> req.yaw_k2;
+        ds >> req.yaw_k3;
+        ds >> req.yaw_k4;
+        ds >> req.yaw_iborders;
+        ds >> req.yaw_pgain;
+        ds >> req.yaw_igain;
+
+        ds >> req.position_hlb;
+        ds >> req.position_hlf;
+        ds >> req.position_hrb;
+        ds >> req.position_hrf;
+        ds >> req.position_vb;
+        ds >> req.position_vf;
+        ds >> req.position_vl;
+        ds >> req.position_vr;
+
+        ds >> req.setting_hlb;
+        ds >> req.setting_hlf;
+        ds >> req.setting_hrb;
+        ds >> req.setting_hrf;
+        ds >> req.setting_vb;
+        ds >> req.setting_vf;
+        ds >> req.setting_vl;
+        ds >> req.setting_vr;
+
+        ds >> req.kforward_hlb;
+        ds >> req.kforward_hlf;
+        ds >> req.kforward_hrb;
+        ds >> req.kforward_hrf;
+        ds >> req.kforward_vb;
+        ds >> req.kforward_vf;
+        ds >> req.kforward_vl;
+        ds >> req.kforward_vr;
+
+        ds >> req.kbackward_hlb;
+        ds >> req.kbackward_hlf;
+        ds >> req.kbackward_hrb;
+        ds >> req.kbackward_hrf;
+        ds >> req.kbackward_vb;
+        ds >> req.kbackward_vf;
+        ds >> req.kbackward_vl;
+        ds >> req.kbackward_vr;
+
+        ds >> req.checksum;
+        return ds;
+    }
+};
+
+/* Response values and data structures */
 #define RESPONSE_LENGTH                 72
 
-#define RESPONSE_ROLL                   0
-#define RESPONSE_PITCH                  2
-#define RESPONSE_YAW                    4
-#define RESPONSE_ROLL_SPEED             6
-#define RESPONSE_PITCH_SPEED            8
-#define RESPONSE_YAW_SPEED              10
+struct Response_s
+{
+    int16_t roll;
+    int16_t pitch;
+    int16_t yaw;
 
-#define RESPONSE_PRESSURE               12
+    int16_t rollSpeed;
+    int16_t pitchSpeed;
+    int16_t yawSpeed;
 
-#define RESPONSE_WF_DATA_TYPE           14
-#define RESPONSE_WF_TICK_RATE           15
-#define RESPONSE_WF_VOLTAGE             16
-#define RESPONSE_WF_X_ANGLE             17
-#define RESPONSE_WF_Y_ANGLE             21
+    uint16_t pressure;
 
-#define RESPONSE_ACOUSTIC_STATE         25
-#define RESPONSE_LEAK_SENSOR            26
-#define RESPONSE_IN_PRESSURE            28
+    uint8_t wf_type;
+    uint8_t wf_tickrate;
+    uint8_t wf_voltage;
+    float wf_x;
+    float wf_y;
 
-#define RESPONSE_VMA_CURRENT_HLB        30
-#define RESPONSE_VMA_CURRENT_HLF        32
-#define RESPONSE_VMA_CURRENT_HRB        34
-#define RESPONSE_VMA_CURRENT_HRF        36
-#define RESPONSE_VMA_CURRENT_VB         38
-#define RESPONSE_VMA_CURRENT_VF         40
-#define RESPONSE_VMA_CURRENT_VL         42
-#define RESPONSE_VMA_CURRENT_VR         44
+    uint8_t dev_state;
+    int16_t leak_data;
+    int16_t in_pressure;
 
+    uint16_t vma_current_hlb;
+    uint16_t vma_current_hlf;
+    uint16_t vma_current_hrb;
+    uint16_t vma_current_hrf;
+    uint16_t vma_current_vb;
+    uint16_t vma_current_vf;
+    uint16_t vma_current_vl;
+    uint16_t vma_current_vr;
 
-#define RESPONSE_VMA_VELOCITY_HLB       46
-#define RESPONSE_VMA_VELOCITY_HLF       47
-#define RESPONSE_VMA_VELOCITY_HRB       48
-#define RESPONSE_VMA_VELOCITY_HRF       49
-#define RESPONSE_VMA_VELOCITY_VB        50
-#define RESPONSE_VMA_VELOCITY_VF        51
-#define RESPONSE_VMA_VELOCITY_VL        52
-#define RESPONSE_VMA_VELOCITY_VR        53
+    int8_t vma_velocity_hlb;
+    int8_t vma_velocity_hlf;
+    int8_t vma_velocity_hrb;
+    int8_t vma_velocity_hrf;
+    int8_t vma_velocity_vb;
+    int8_t vma_velocity_vf;
+    int8_t vma_velocity_vl;
+    int8_t vma_velocity_vr;
 
-#define RESPONSE_DEV_CURRENT_1          54
-#define RESPONSE_DEV_CURRENT_2          56
-#define RESPONSE_DEV_CURRENT_3          58
-#define RESPONSE_DEV_CURRENT_4          60
-#define RESPONSE_DEV_CURRENT_5          62
-#define RESPONSE_DEV_CURRENT_6          64
+    uint16_t dev_current_light;
+    uint16_t dev_current_tilt;
+    uint16_t dev_current_grab;
+    uint16_t dev_current_grab_rotate;
+    uint16_t dev_current_dev1;
+    uint16_t dev_current_dev2;
 
-#define RESPONSE_VMA_ERRORS             66
+    uint16_t vma_errors;
+    uint8_t dev_errors;
+    uint8_t pc_errors;
 
-#define RESPONSE_DEV_ERRORS             68
+    uint16_t checksum;
 
-#define RESPONSE_PC_ERRORS              69
+    friend QDataStream& operator<<(QDataStream &ds, const Response_s &res)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds << res.roll;
+        ds << res.pitch;
+        ds << res.yaw;
 
-#define RESPONSE_CHECKSUM               70
+        ds << res.rollSpeed;
+        ds << res.pitchSpeed;
+        ds << res.yawSpeed;
+
+        ds << res.pressure;
+
+        ds << res.wf_type;
+        ds << res.wf_tickrate;
+        ds << res.wf_voltage;
+        ds << res.wf_x;
+        ds << res.wf_y;
+
+        ds << res.dev_state;
+        ds << res.leak_data;
+        ds << res.in_pressure;
+
+        ds << res.vma_current_hlb;
+        ds << res.vma_current_hlf;
+        ds << res.vma_current_hrb;
+        ds << res.vma_current_hrf;
+        ds << res.vma_current_vb;
+        ds << res.vma_current_vf;
+        ds << res.vma_current_vl;
+        ds << res.vma_current_vr;
+
+        ds << res.vma_velocity_hlb;
+        ds << res.vma_velocity_hlf;
+        ds << res.vma_velocity_hrb;
+        ds << res.vma_velocity_hrf;
+        ds << res.vma_velocity_vb;
+        ds << res.vma_velocity_vf;
+        ds << res.vma_velocity_vl;
+        ds << res.vma_velocity_vr;
+
+        ds << res.dev_current_light;
+        ds << res.dev_current_tilt;
+        ds << res.dev_current_grab;
+        ds << res.dev_current_grab_rotate;
+        ds << res.dev_current_dev1;
+        ds << res.dev_current_dev2;
+
+        ds << res.vma_errors;
+        ds << res.dev_errors;
+        ds << res.pc_errors;
+        return ds;
+    }
+
+    friend QDataStream& operator>>(QDataStream &ds, Response_s &res)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds >> res.roll;
+        ds >> res.pitch;
+        ds >> res.yaw;
+
+        ds >> res.rollSpeed;
+        ds >> res.pitchSpeed;
+        ds >> res.yawSpeed;
+
+        ds >> res.pressure;
+
+        ds >> res.wf_type;
+        ds >> res.wf_tickrate;
+        ds >> res.wf_voltage;
+        ds >> res.wf_x;
+        ds >> res.wf_y;
+
+        ds >> res.dev_state;
+        ds >> res.leak_data;
+        ds >> res.in_pressure;
+
+        ds >> res.vma_current_hlb;
+        ds >> res.vma_current_hlf;
+        ds >> res.vma_current_hrb;
+        ds >> res.vma_current_hrf;
+        ds >> res.vma_current_vb;
+        ds >> res.vma_current_vf;
+        ds >> res.vma_current_vl;
+        ds >> res.vma_current_vr;
+
+        ds >> res.vma_velocity_hlb;
+        ds >> res.vma_velocity_hlf;
+        ds >> res.vma_velocity_hrb;
+        ds >> res.vma_velocity_hrf;
+        ds >> res.vma_velocity_vb;
+        ds >> res.vma_velocity_vf;
+        ds >> res.vma_velocity_vl;
+        ds >> res.vma_velocity_vr;
+
+        ds >> res.dev_current_light;
+        ds >> res.dev_current_tilt;
+        ds >> res.dev_current_grab;
+        ds >> res.dev_current_grab_rotate;
+        ds >> res.dev_current_dev1;
+        ds >> res.dev_current_dev2;
+
+        ds >> res.vma_errors;
+        ds >> res.dev_errors;
+        ds >> res.pc_errors;
+
+        ds >> res.checksum;
+        return ds;
+    }
+};
