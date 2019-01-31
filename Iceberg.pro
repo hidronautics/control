@@ -34,14 +34,14 @@ HEADERS += \
 
 DEFINES += SFML_STATIC
 
-LIBS += -L$$PWD/SFML-win32/lib
+LIBS += -L$$PWD/SFML-linux/lib
 
-INCLUDEPATH += $$PWD/SFML-win32/include
+INCLUDEPATH += $$PWD/SFML-linux/include
 
-DEPENDPATH += $$PWD/SFML-win32/include
+DEPENDPATH += $$PWD/SFML-linux/include
 
 CONFIG(release, debug|release): LIBS += -lsfml-window
-CONFIG(debug, debug|release): LIBS += -lsfml-window-d
+CONFIG(debug, debug|release): LIBS += -lsfml-window
 
 FORMS += \
     mainwindow.ui \

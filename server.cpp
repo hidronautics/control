@@ -17,7 +17,7 @@ bool Server::COMconnect(int com_num)
 {
     int isOpened = false;
 
-    QString str = "COM";
+    QString str = "/dev/ttyUSB";
     str.append(QString::number(com_num));
 
     std::cout << "Trying to open port |" << str.toStdString() << "|...";
@@ -34,6 +34,7 @@ bool Server::COMconnect(int com_num)
     } catch(...) {
         std::cout << " serial port openning error" << std::endl;
         emit info("Serial port openning error");
+        delete newPort;
         return false;
     }
 
@@ -43,10 +44,9 @@ bool Server::COMconnect(int com_num)
     } else {
         std::cout << ". Unable to open serial port" << std::endl;
         emit info("Unable to open serial port");
+        delete newPort;
         return false;
     }
-
-
 
     return true;
 }
@@ -242,7 +242,7 @@ void Server::sendMessageConfig() {
 
     // TODO what was this? warning
     //settings->motors;
-
+/*
     for (int i = 0; i < 8; ++i) {
         switch (settings->motors[i].code) {
         case settings->motors[i].HLB:
@@ -337,7 +337,7 @@ void Server::sendMessageConfig() {
             std::cout << "ERROR: unknown motor code!" << std::endl;
         }
 
-    }
+    }*/
 
     // Moving structure to QByteArray
     stream << req;

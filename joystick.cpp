@@ -61,8 +61,8 @@ void Joystick::printAxises() {
     std::cout << "Axis PovX (" << sf::Joystick::PovX << "): " << sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovX) << std::endl;
     std::cout << "Axis PovY (" << sf::Joystick::PovY << "): " << sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::PovY) << std::endl;
 
-    std::cout << "Axis J1 (" << sf::Joystick::J1 << "): " << sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::J1) << std::endl;
-    std::cout << "Axis J2 (" << sf::Joystick::J2 << "): " << sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::J2) << std::endl;
+    //std::cout << "Axis J1 (" << sf::Joystick::J1 << "): " << sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::J1) << std::endl;
+    //std::cout << "Axis J2 (" << sf::Joystick::J2 << "): " << sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::J2) << std::endl;
 }
 
 void Joystick::updateJoystick() {

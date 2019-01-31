@@ -11,7 +11,7 @@
 #include "server.h"
 #include "joystick.h"
 #include "settings.h"
-#include "NewWindow.h"
+//#include "NewWindow.h"
 #include "qmainwindow.h"
 
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
@@ -124,7 +124,7 @@ signals:
 
 private:
     Ui::MainWindow *ui;
-    NewWindow *bluetooth_menu;
+    //NewWindow *bluetooth_menu;
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];
