@@ -122,37 +122,6 @@ void Server::sendMessageNormal()
     }
     */
 
-    //path_csv_request = log_folder_path + "REQUEST_" + QDateTime::currentDateTime().toString() + ".csv";
-
-    path_csv_request = log_folder_path + "REQUEST.csv";
-    QFile file_csv_request(path_csv_request);
-
-    /*
-    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        QTextStream stream_request(&file_csv_request);
-        stream_request << QTime::currentTime().toString() << ":" << QTime::currentTime().msec();
-        stream_request << " ;" << j->roll;
-        stream_request << " ;" << j->pitch;
-        stream_request << " ;" << j->yaw;
-        stream_request << " ;" << j->depth;
-        stream_request << '\n';
-        std::cout << "Request file opened at " << path_csv_request.toStdString() << std::endl;
-    } else {
-        std::cout << "Unable to open file: " << path_csv_request.toStdString() << std::endl;
-    }
-    */
-
-    //QFile file_csv_request(path_csv_request);
-    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        QTextStream stream_request(&file_csv_request);
-        //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
-        stream_request << QTime::currentTime().toString();
-        for(int i=0; i < REQUEST_NORMAL_LENGTH; i++){
-            stream_request << ";" << msg_to_send[i];
-        }
-        stream_request << "\n";
-    }
-
     newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
 
     emit imSleeping();
@@ -236,6 +205,8 @@ void Server::sendMessageConfig() {
 
     newPort->write(msg_to_send, REQUEST_CONFIG_LENGTH);
 
+    settings->oldCS = settings->CS;
+
     emit imSleeping();
     QTest::qSleep (settings->connection->pause_after_sent);
     receiveMessage();
@@ -266,8 +237,9 @@ void Server::receiveMessage() {
                     case REQUEST_CONFIG_CODE:
                         receiveConfigMessage();
                         break;
+                    default:
+                       newPort->clear();
                 }
-                receiveNormalMessage();
                 break;
             }
             else if (counter > 250000) {
@@ -280,7 +252,7 @@ void Server::receiveMessage() {
     }
 
     //QTest::qSleep (settings->connection->pause_after_received);
-    msg_lost_percent = (float) msg_lost_counter / ((float)msg_received_counter+ (float)msg_lost_counter);
+    msg_lost_percent = static_cast<float>(msg_lost_counter) / (static_cast<float>(msg_received_counter) + static_cast<float>(msg_lost_counter));
     msg_lost_percent *= 100;
 
     std::cout << "RECEIVED = " << msg_received_counter << std::endl;
@@ -310,7 +282,7 @@ void Server::receiveNormalMessage()
     std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
     std::cout << "Checksum...";
 
-    if (isCheckSumm16bCorrect((uint8_t*) msg_in.data(), RESPONSE_LENGTH)) {
+    if (isCheckSumm16bCorrect(reinterpret_cast<uint8_t*>(msg_in.data()), RESPONSE_LENGTH)) {
         std::cout << "OK" << std::endl;
         msg_received_counter++;
     } else {
@@ -369,7 +341,7 @@ void Server::receiveConfigMessage()
     std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
     std::cout << "Checksum...";
 
-    if (isCheckSumm16bCorrect((uint8_t*) msg_in.data(), RESPONSE_LENGTH)) {
+    if (isCheckSumm16bCorrect(reinterpret_cast<uint8_t*>(msg_in.data()), RESPONSE_LENGTH)) {
         std::cout << "OK" << std::endl;
         msg_received_counter++;
     } else {
@@ -385,15 +357,19 @@ void Server::receiveConfigMessage()
     stream >> resp;
 
     // Moving data from resp structure to application
-    imu_roll = resp.roll;
-    imu_pitch = resp.pitch;
-    imu_yaw = resp.yaw;
+    stream >> imu_roll;
+    stream >> imu_pitch;
+    stream >> imu_yaw;
 
-    imu_roll_speed = resp.rollSpeed;
-    imu_pitch_speed = resp.pitchSpeed;
-    imu_yaw_speed = resp.yawSpeed;
+    stream >> imu_roll_speed;
+    stream >> imu_pitch_speed;
+    stream >> imu_yaw_speed;
 
-    imu_pressure = resp.pressure; // Pressure вместо depth
+    stream >> imu_pressure;
+
+    stream >> settings->stabContour[settings->oldCS].stabState;
+
+    emit updateCsView();
 }
 
 /* CRC16-CCITT algorithm */

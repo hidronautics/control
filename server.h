@@ -17,7 +17,6 @@
 #include "joystick.h"
 #include "settings.h"
 
-
 #define REQUEST_DELAY					25
 #define REQUEST_TIMEOUT					25
 #define CHANGE_TYPE_TIMEOUT             200
@@ -148,6 +147,7 @@ private:
 signals:
     void imSleeping();
     void info(QString s);
+    void updateCsView();
 
 public slots:
     void connect_fake();

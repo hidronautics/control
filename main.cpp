@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QObject>
 #include "server.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    m_logFile.reset(new QFile("C:/logs/log.txt")); // Только для WINDOWS
+    m_logFile.reset(new QFile("log.txt"));
     m_logFile.data()->open(QFile::Append | QFile::Text);
     qInstallMessageHandler(messageHandler);
 
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
     QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
 
-    mainWindow->showFullScreen();
+    mainWindow->show();
 
     return a.exec();
 }
@@ -68,7 +69,8 @@ void initServer() {
 }
 
 void initSettings() {
-
+    settings->oldCS = 0;
+    settings->CS = STAB_YAW;
 }
 
 void initJoystick() {

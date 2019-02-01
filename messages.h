@@ -1,3 +1,6 @@
+#ifndef MESSAGES_H
+#define MESSAGES_H
+
 #include "stdint.h"
 #include <QDataStream>
 
@@ -224,3 +227,5 @@ struct Response_s
         return ds;
     }
 };
+
+#endif

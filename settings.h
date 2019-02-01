@@ -131,7 +131,8 @@ public:
     bool loadFromJSONFile();
     bool saveToJSONFIle() const;
 
-    int CS = 0;
+    int CS;
+    int oldCS;
 
 private:
     void initialize();

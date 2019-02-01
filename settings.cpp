@@ -65,21 +65,24 @@ void Settings::read(const QJsonObject &json)
     cs_json[STAB_YAW]    = stabilization_json["yaw"].toObject();
 
     for(int i=0; i<STABILIZATION_AMOUNT; i++) {
-        stabContour[CS].stabConstants.pJoyUnitCast = static_cast<float>(cs_json[i]["pJoyUnitCast"].toDouble());
-        stabContour[CS].stabConstants.pSpeedDyn = static_cast<float>(cs_json[i]["pSpeedDyn"].toDouble());
-        stabContour[CS].stabConstants.pErrGain = static_cast<float>(cs_json[i]["pErrGain"].toDouble());
-        stabContour[CS].stabConstants.pid.pGain = static_cast<float>(cs_json[i]["pid.pGain"].toDouble());
-        stabContour[CS].stabConstants.pid.iGain = static_cast<float>(cs_json[i]["pid.iGain"].toDouble());
-        stabContour[CS].stabConstants.pid.iMax = static_cast<float>(cs_json[i]["pid.iMax"].toDouble());
-        stabContour[CS].stabConstants.pid.iMin = static_cast<float>(cs_json[i]["pid.iMin"].toDouble());
-        stabContour[CS].stabConstants.pThrustersCast = static_cast<float>(cs_json[i]["pThrustersCast"].toDouble());
-        stabContour[CS].stabConstants.pThrustersMin = static_cast<float>(cs_json[i]["pThrustersMin"].toDouble());
-        stabContour[CS].stabConstants.pThrustersMax = static_cast<float>(cs_json[i]["pThrustersMax"].toDouble());
+        stabContour[i].stabConstants.pJoyUnitCast = static_cast<float>(cs_json[i]["pJoyUnitCast"].toDouble());
+        stabContour[i].stabConstants.pSpeedDyn = static_cast<float>(cs_json[i]["pSpeedDyn"].toDouble());
+        stabContour[i].stabConstants.pErrGain = static_cast<float>(cs_json[i]["pErrGain"].toDouble());
+        stabContour[i].stabConstants.pid.pGain = static_cast<float>(cs_json[i]["pid.pGain"].toDouble());
+        stabContour[i].stabConstants.pid.iGain = static_cast<float>(cs_json[i]["pid.iGain"].toDouble());
+        stabContour[i].stabConstants.pid.iMax = static_cast<float>(cs_json[i]["pid.iMax"].toDouble());
+        stabContour[i].stabConstants.pid.iMin = static_cast<float>(cs_json[i]["pid.iMin"].toDouble());
+        stabContour[i].stabConstants.pThrustersCast = static_cast<float>(cs_json[i]["pThrustersCast"].toDouble());
+        stabContour[i].stabConstants.pThrustersMin = static_cast<float>(cs_json[i]["pThrustersMin"].toDouble());
+        stabContour[i].stabConstants.pThrustersMax = static_cast<float>(cs_json[i]["pThrustersMax"].toDouble());
 
-        stabContour[CS].stabConstants.aFilter[POS_FILTER].K = static_cast<float>(cs_json[i]["POS_FILTER.K"].toDouble());
-        stabContour[CS].stabConstants.aFilter[POS_FILTER].T = static_cast<float>(cs_json[i]["POS_FILTER.T"].toDouble());
-        stabContour[CS].stabConstants.aFilter[SPEED_FILTER].K = static_cast<float>(cs_json[i]["SPEED_FILTER.K"].toDouble());
-        stabContour[CS].stabConstants.aFilter[SPEED_FILTER].T = static_cast<float>(cs_json[i]["SPEED_FILTER.T"].toDouble());
+        stabContour[i].stabConstants.aFilter[POS_FILTER].K = static_cast<float>(cs_json[i]["POS_FILTER.K"].toDouble());
+        stabContour[i].stabConstants.aFilter[POS_FILTER].T = static_cast<float>(cs_json[i]["POS_FILTER.T"].toDouble());
+        stabContour[i].stabConstants.aFilter[SPEED_FILTER].K = static_cast<float>(cs_json[i]["SPEED_FILTER.K"].toDouble());
+        stabContour[i].stabConstants.aFilter[SPEED_FILTER].T = static_cast<float>(cs_json[i]["SPEED_FILTER.T"].toDouble());
+
+        std::cout << "STABILIZATION NUMBER number: " << i << std::endl;
+        std::cout << "STABILIZATION SPEEDDYN: " << stabContour[i].stabConstants.pSpeedDyn << std::endl;
     }
 
     QJsonObject connection_json = json["connection"].toObject();

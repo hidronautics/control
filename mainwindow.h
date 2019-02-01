@@ -11,13 +11,10 @@
 #include "server.h"
 #include "joystick.h"
 #include "settings.h"
-//#include "NewWindow.h"
 #include "qmainwindow.h"
 
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
 #define RESPONSE_TABLE_ROW_COUNT        RESPONSE_LENGTH
-
-
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +35,9 @@ public:
     Joystick *joystick;
     Settings *settings;
 
+    void updateCsView();
+    void saveCsView();
+    void updateCsLabels();
 public slots:
     void info(QString s);
     void serverIsSleeping();
@@ -58,7 +58,7 @@ private slots:
 
     void on_pushButton_Disconnect_released();
 
-    void on_pushButton_load_config_released();
+    void on_pushButton_CS_loadConfig_released();
 
     void on_pushButton_send_config_released();
 
@@ -68,7 +68,7 @@ private slots:
 
     void on_pushButton_3_released();
 
-    void on_pushButton_save_config_released();
+    void on_pushButton_CS_saveConfig_released();
 
     void on_pushButton_4_released();
 
@@ -112,8 +112,18 @@ private slots:
 
     void updateTime();
 
+    void on_radioButton_CS_YawSelect_released();
+
+    void on_radioButton_CS_DepthSelect_released();
+
+    void on_radioButton_CS_RollSelect_released();
+
+    void on_radioButton_CS_PitchSelect_released();
+
+    void update_csView();
+
 signals:
-    void newValues(int* vals);\
+    void newValues(int* vals);
 
     //void changeMessageType(uint8_t type);
 
@@ -125,9 +135,6 @@ signals:
 private:
     Ui::MainWindow *ui;
     //NewWindow *bluetooth_menu;
-
-    void updateCsView();
-    void saveCsView();
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];
@@ -165,3 +172,4 @@ private:
 };
 
 #endif // MAINWINDOW_H
+

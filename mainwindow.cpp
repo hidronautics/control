@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -553,7 +551,7 @@ void MainWindow::info(QString s) {
 
 void MainWindow::init() {
     on_spinBox_Motor_Slot_valueChanged(0);
-    on_pushButton_load_config_released(); // Зло во плоти (в коде)
+    on_pushButton_CS_loadConfig_released(); // Зло во плоти (в коде)
 
     //settings->connection->num = ui->spinBox_COM->value();
     //settings->connection->baudRate = settings->connection->getBaudRate(ui->comboBox_BaudRate->currentText().toInt());
@@ -622,7 +620,7 @@ void MainWindow::on_pushButton_Disconnect_released()
     emit disconnect();
 }
 
-void MainWindow::on_pushButton_load_config_released()
+void MainWindow::on_pushButton_CS_loadConfig_released()
 {
     if (settings->loadFromJSONFile()) {
         updateCsView();
@@ -666,7 +664,7 @@ void MainWindow::on_pushButton_3_released()
     server->nextMessageType = REQUEST_NORMAL_CODE;
 }
 
-void MainWindow::on_pushButton_save_config_released()
+void MainWindow::on_pushButton_CS_saveConfig_released()
 {
     saveCsView();
 
@@ -780,6 +778,30 @@ void MainWindow::on_checkBox_SYaw_toggled(bool checked)
     joystick->stabilize_yaw = checked;
 }
 
+void MainWindow::on_radioButton_CS_YawSelect_released()
+{
+    settings->CS = STAB_YAW;
+    updateCsView();
+}
+
+void MainWindow::on_radioButton_CS_DepthSelect_released()
+{
+    settings->CS = STAB_DEPTH;
+    updateCsView();
+}
+
+void MainWindow::on_radioButton_CS_RollSelect_released()
+{
+    settings->CS = STAB_ROLL;
+    updateCsView();
+}
+
+void MainWindow::on_radioButton_CS_PitchSelect_released()
+{
+    settings->CS = STAB_PITCH;
+    updateCsView();
+}
+
 // Stopwatch
 void MainWindow::on_StartPauseButton_clicked()
 {
@@ -870,3 +892,25 @@ void MainWindow::saveCsView()
     settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].K = static_cast<float>(ui->doubleSpinBox_CS_speedFilterK->value());
     settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].T = static_cast<float>(ui->doubleSpinBox_CS_speedFilterT->value());
 }
+
+void MainWindow::updateCsLabels()
+{
+    ui->label_CS_inputSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.inputSignal)));
+    ui->label_CS_joyUnitCasted->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.joyUnitCasted)));
+    ui->label_CS_joy_iValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.joy_iValue)));
+    ui->label_CS_posError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posError)));
+    ui->label_CS_posSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posSignal)));
+    ui->label_CS_posFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posFiltered)));
+    ui->label_CS_pidValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.pidValue)));
+    ui->label_CS_dynSummator->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.dynSummator)));
+    ui->label_CS_speedError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedError)));
+    ui->label_CS_speedSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedSignal)));
+    ui->label_CS_speedFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedFiltered)));
+}
+
+void MainWindow::update_csView()
+{
+    updateCsLabels();
+    updateCsView();
+}
+
