@@ -115,7 +115,7 @@ void Joystick::updateJoystick() {
 
     this->btn_stabilize_depth = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_DEPTH);
     this->btn_stabilize_roll  = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_ROLL);
-    this->btn_stabilize_pitch = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_PITCH);
+    this->btn_stabilize_yaw = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_STABILIZE_YAW);
 
     if (this->btn_stabilize_depth != false) {
         if (btn_stabilize_depth_delay <= 0) {
@@ -134,9 +134,9 @@ void Joystick::updateJoystick() {
     }
     if (btn_stabilize_roll_delay > 0) btn_stabilize_roll_delay--;
 
-    if (this->btn_stabilize_pitch != false) {
+    if (this->btn_stabilize_yaw != false) {
         if (btn_stabilize_pitch_delay <= 0) {
-            stabilize_pitch = !stabilize_pitch;
+            stabilize_yaw = !stabilize_yaw;
             btn_stabilize_pitch_delay = BTN_DELAY;
         }
     }

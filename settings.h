@@ -13,15 +13,106 @@
 #include <QJsonDocument>
 
 #include <QSerialPort>
+#include <QDataStream>
+
+#define STABILIZATION_AMOUNT 4
+
+enum STAB_CIRCUITS {
+    STAB_DEPTH = 0,
+    STAB_YAW,
+    STAB_ROLL,
+    STAB_PITCH
+};
+
+#define STABILIZATION_FILTERS 2
+
+enum STAB_FILTERS {
+    POS_FILTER = 0,
+    SPEED_FILTER
+};
 
 struct Stabilization {
-    float iborders;
-    float igain;
-    float k1;
-    float k2;
-    float k3;
-    float k4;
-    float pgain;
+    bool enable;
+    struct RobotStabilizationConstants {
+        // Before P
+        float pJoyUnitCast;
+        float pSpeedDyn;
+        float pErrGain;
+        // Feedback aperiodic filters
+        struct AperiodicFilter {
+            float T;
+            float K;
+        } aFilter[STABILIZATION_FILTERS];
+        // PID
+        struct PidConstants {
+            float pGain;
+            float iGain;
+            float iMax;
+            float iMin;
+        } pid;
+        // Thrusters unit cast
+        float pThrustersCast;
+        float pThrustersMin;
+        float pThrustersMax;
+
+        friend QDataStream& operator<<(QDataStream &ds, const RobotStabilizationConstants &req)
+        {
+            ds.setByteOrder(QDataStream::LittleEndian);
+            ds << req.pJoyUnitCast;
+            ds << req.pSpeedDyn;
+            ds << req.pErrGain;
+            ds << req.aFilter[POS_FILTER].T;
+            ds << req.aFilter[POS_FILTER].K;
+            ds << req.aFilter[SPEED_FILTER].T;
+            ds << req.aFilter[SPEED_FILTER].K;
+            ds << req.pid.pGain;
+            ds << req.pid.iGain;
+            ds << req.pid.iMax;
+            ds << req.pid.iMin;
+            ds << req.pThrustersCast;
+            ds << req.pThrustersMin;
+            ds << req.pThrustersMax;
+            return ds;
+        }
+    } stabConstants;
+
+    struct RobotStabilizationState {
+        float inputSignal;
+        float speedSignal;
+        float posSignal;
+
+        float oldSpeed;
+        float oldPos;
+
+        float joyUnitCasted;
+        float joy_iValue;
+        float posError;
+        float speedError;
+        float dynSummator;
+        float pidValue;
+        float posErrorAmp;
+        float speedFiltered;
+        float posFiltered;
+
+        float LastTick;
+
+        friend QDataStream& operator>>(QDataStream &ds, RobotStabilizationState &req)
+        {
+            ds.setByteOrder(QDataStream::LittleEndian);
+            ds >> req.inputSignal;
+            ds >> req.speedSignal;
+            ds >> req.posSignal;
+            ds >> req.oldSpeed;
+            ds >> req.oldPos;
+            ds >> req.posError;
+            ds >> req.speedError;
+            ds >> req.dynSummator;
+            ds >> req.posErrorAmp;
+            ds >> req.speedFiltered;
+            ds >> req.posFiltered;
+            return ds;
+        }
+    } stabState;
 };
 
 class Motor;
@@ -31,15 +122,16 @@ class Settings : public QObject
 {
     Q_OBJECT
 public:
-    explicit Settings(QObject *parent = 0);
+    explicit Settings(QObject *parent = nullptr);
 
     Motor* motors;
     Connection* connection;
-    Stabilization depth, roll, pitch, yaw;
-
+    Stabilization stabContour[STABILIZATION_AMOUNT];
 
     bool loadFromJSONFile();
     bool saveToJSONFIle() const;
+
+    int CS = 0;
 
 private:
     void initialize();
@@ -74,28 +166,20 @@ public:
        switch (num) {
        case 1200:
            return QSerialPort::BaudRate::Baud1200;
-           break;
        case 2400:
            return QSerialPort::BaudRate::Baud2400;
-           break;
        case 4800:
            return QSerialPort::BaudRate::Baud4800;
-           break;
        case 9600:
            return QSerialPort::BaudRate::Baud9600;
-           break;
        case 19200:
            return QSerialPort::BaudRate::Baud19200;
-           break;
        case 38400:
            return QSerialPort::BaudRate::Baud38400;
-           break;
        case 57600:
            return QSerialPort::BaudRate::Baud57600;
-           break;
        case 115200:
            return QSerialPort::BaudRate::Baud115200;
-           break;
        default:
            return QSerialPort::BaudRate::UnknownBaud;
        }
@@ -109,16 +193,12 @@ public:
        switch (num) {
        case 5:
            return QSerialPort::DataBits::Data5;
-           break;
        case 6:
            return QSerialPort::DataBits::Data6;
-           break;
        case 7:
            return QSerialPort::DataBits::Data7;
-           break;
        case 8:
            return QSerialPort::DataBits::Data8;
-           break;
        default:
            return QSerialPort::DataBits::UnknownDataBits;
        }
@@ -256,7 +336,7 @@ public:
         case VR:
             return "VR";
         }
-        return NULL;
+        return nullptr;
     }
 
     void setCode(QString code) {

@@ -168,100 +168,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot_window_yaw_speed->addGraph();
     ui->plot_window_yaw_speed->graph(0)->setPen(QPen(QColor(228, 110, 50)));
 
-    //_________________________________________________________________________________________________________________________________
-
-    /*labels_response <<   "0:roll"<<
-                        "1:"<<
-                        "2:pitch"<<
-                        "3:"<<
-                        "4:yaw"<<
-                        "5:"<<
-                        "6:roll_speed"<<
-                        "7:"<<
-                        "8:pitch_speed"<<
-                        "9:"<<
-                        "10:yaw_speed"<<
-                        "11:"<<
-                        "12:pressure"<<
-                        "13:"<<
-                        "14:Bluetooth"<<
-                        "15:"<<
-                        "16:"<<
-                        "17:"<<
-                        "18:"<<
-                        "19:"<<
-                        "20:"<<
-                        "21:"<<
-                        "22:current_HLB"<<
-                        "23:"<<
-                        "24:current_HLF"<<
-                        "25:"<<
-                        "26:current_HRB"<<
-                        "27:"<<
-                        "28:current_HRF"<<
-                        "29:"<<
-                        "30:current_VB"<<
-                        "31:"<<
-                        "32:current_VF"<<
-                        "33:"<<
-                        "34:current_VL"<<
-                        "35:"<<
-                        "36:current_VR"<<
-                        "37:"<<
-                        "38:velocity_HLB"<<
-                        "39:velocity_HLF"<<
-                        "40:velocity_HRB"<<
-                        "41:velocity_HRF"<<
-                        "42:velocity_VB"<<
-                        "43:velocity_VF"<<
-                        "44:velocity_VL"<<
-                        "45:velocity_VR"<<
-                        "46:current_light"<<
-                        "47:"<<
-                        "48:current_bottom_light"<<
-                        "49:"<<
-                        "50:current_arar"<<
-                        "51:"<<
-                        "52:current_grab"<<
-                        "53:"<<
-                        "54:current_grab_rotate"<<
-                        "55:"<<
-                        "56:current_tilt"<<
-                        "57:"<<
-                        "58:"<<
-                        "59:"<<
-                        "60:"<<
-                        "61:checksum"<<
-                        "62:";
-
-    labels_request << "0:code"<<
-                      "1:"<<
-                      "2:march"<<
-                      "3:"<<
-                      "4:lag"<<
-                      "5:"<<
-                      "6:depth"<<
-                      "7:"<<
-                      "8:roll"<<
-                      "9:"<<
-                      "10:pitch"<<
-                      "11:"<<
-                      "12:yaw"<<
-                      "13:"<<
-                      "14:light"<<
-                      "15:grab"<<
-                      "16:tilt"<<
-                      "17:rotate"<<
-                      "18:bt"<<
-                      "19:bottom_light"<<
-                      "20:stabilize_depth"<<
-                      "21:stabilize_roll"<<
-                      "22:stabilize_pitch"<<
-                      "23:stabilize_yaw"<<
-                      "24:reset_IMU"<<
-                      "25:checksum"<<
-                      "26:";*/
-
     labels_response <<  "0:roll"<<
                         "1:"<<
                         "2:pitch"<<
@@ -499,15 +405,15 @@ void MainWindow::serverIsSleeping() {
 
     ui->lcdNumber_Lost->display(server->msg_lost_counter);
     ui->lcdNumber_Received->display(server->msg_received_counter);
-    ui->lcdNumber_Percent->display(server->msg_lost_percent);
+    ui->lcdNumber_Percent->display(static_cast<double>(server->msg_lost_percent));
 
     ui->checkBox_SDepth->setChecked(joystick->stabilize_depth);
     ui->checkBox_SRoll->setChecked(joystick->stabilize_roll);
-    ui->checkBox_SPitch->setChecked(joystick->stabilize_pitch);
+    ui->checkBox_SYaw->setChecked(joystick->stabilize_yaw);
 
     std::cout << "STABILIZE DEPTH = " << joystick->stabilize_depth << std::endl;
     std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
-    std::cout << "STABILIZE PITCH = " << joystick->stabilize_pitch << std::endl;
+    std::cout << "STABILIZE PITCH = " << joystick->stabilize_yaw << std::endl;
 
     ui->graphicsPFD_2->setRoll(server->imu_roll);
     ui->graphicsPFD_2->setPitch(server->imu_pitch);
@@ -669,7 +575,7 @@ void MainWindow::on_pushButton_Test_Motor_released()
         settings->motors[i].speed = 0;
     int currentSlot = ui->spinBox_Motor_Slot->text().toInt();
     int currentSpeed = ui->spinBox_Motor_Speed->text().toInt();
-    settings->motors[currentSlot].speed = currentSpeed;
+    settings->motors[currentSlot].speed = static_cast<int16_t>(currentSpeed);
 }
 
 
@@ -719,37 +625,7 @@ void MainWindow::on_pushButton_Disconnect_released()
 void MainWindow::on_pushButton_load_config_released()
 {
     if (settings->loadFromJSONFile()) {
-        ui->doubleSpinBox_depth_iborders->setValue(settings->depth.iborders);
-        ui->doubleSpinBox_depth_igain->setValue(settings->depth.igain);
-        ui->doubleSpinBox_depth_k1->setValue(settings->depth.k1);
-        ui->doubleSpinBox_depth_k2->setValue(settings->depth.k2);
-        ui->doubleSpinBox_depth_k3->setValue(settings->depth.k3);
-        ui->doubleSpinBox_depth_k4->setValue(settings->depth.k4);
-        ui->doubleSpinBox_depth_pgain->setValue(settings->depth.pgain);
-
-        ui->doubleSpinBox_pitch_iborders->setValue(settings->pitch.iborders);
-        ui->doubleSpinBox_pitch_igain->setValue(settings->pitch.igain);
-        ui->doubleSpinBox_pitch_k1->setValue(settings->pitch.k1);
-        ui->doubleSpinBox_pitch_k2->setValue(settings->pitch.k2);
-        ui->doubleSpinBox_pitch_k3->setValue(settings->pitch.k3);
-        ui->doubleSpinBox_pitch_k4->setValue(settings->pitch.k4);
-        ui->doubleSpinBox_pitch_pgain->setValue(settings->pitch.pgain);
-
-        ui->doubleSpinBox_roll_iborders->setValue(settings->roll.iborders);
-        ui->doubleSpinBox_roll_igain->setValue(settings->roll.igain);
-        ui->doubleSpinBox_roll_k1->setValue(settings->roll.k1);
-        ui->doubleSpinBox_roll_k2->setValue(settings->roll.k2);
-        ui->doubleSpinBox_roll_k3->setValue(settings->roll.k3);
-        ui->doubleSpinBox_roll_k4->setValue(settings->roll.k4);
-        ui->doubleSpinBox_roll_pgain->setValue(settings->roll.pgain);
-
-        ui->doubleSpinBox_yaw_iborders->setValue(settings->yaw.iborders);
-        ui->doubleSpinBox_yaw_igain->setValue(settings->yaw.igain);
-        ui->doubleSpinBox_yaw_k1->setValue(settings->yaw.k1);
-        ui->doubleSpinBox_yaw_k2->setValue(settings->yaw.k2);
-        ui->doubleSpinBox_yaw_k3->setValue(settings->yaw.k3);
-        ui->doubleSpinBox_yaw_k4->setValue(settings->yaw.k4);
-        ui->doubleSpinBox_yaw_pgain->setValue(settings->yaw.pgain);
+        updateCsView();
 
         ui->spinBox_COM->setValue(settings->connection->num);
         std::cout << QString::number(settings->connection->setBaudRate(settings->connection->baudRate)).toStdString() << std::endl;
@@ -792,38 +668,7 @@ void MainWindow::on_pushButton_3_released()
 
 void MainWindow::on_pushButton_save_config_released()
 {
-    settings->depth.iborders = ui->doubleSpinBox_depth_iborders->value();
-    settings->depth.igain = ui->doubleSpinBox_depth_igain->value();
-    settings->depth.k1 = ui->doubleSpinBox_depth_k1->value();
-    settings->depth.k2 = ui->doubleSpinBox_depth_k2->value();
-    settings->depth.k3 = ui->doubleSpinBox_depth_k3->value();
-    settings->depth.k4 = ui->doubleSpinBox_depth_k4->value();
-    settings->depth.pgain = ui->doubleSpinBox_depth_pgain->value();
-
-    settings->pitch.iborders = ui->doubleSpinBox_pitch_iborders->value();
-    settings->pitch.igain = ui->doubleSpinBox_pitch_igain->value();
-    settings->pitch.k1 = ui->doubleSpinBox_pitch_k1->value();
-    settings->pitch.k2 = ui->doubleSpinBox_pitch_k2->value();
-    settings->pitch.k3 = ui->doubleSpinBox_pitch_k3->value();
-    settings->pitch.k4 = ui->doubleSpinBox_pitch_k4->value();
-    settings->pitch.pgain = ui->doubleSpinBox_pitch_pgain->value();
-
-    settings->roll.iborders = ui->doubleSpinBox_roll_iborders->value();
-    settings->roll.igain = ui->doubleSpinBox_roll_igain->value();
-    settings->roll.k1 = ui->doubleSpinBox_roll_k1->value();
-    settings->roll.k2 = ui->doubleSpinBox_roll_k2->value();
-    settings->roll.k3 = ui->doubleSpinBox_roll_k3->value();
-    settings->roll.k4 = ui->doubleSpinBox_roll_k4->value();
-    settings->roll.pgain = ui->doubleSpinBox_roll_pgain->value();
-
-    settings->yaw.iborders = ui->doubleSpinBox_yaw_iborders->value();
-    settings->yaw.igain = ui->doubleSpinBox_yaw_igain->value();
-    settings->yaw.k1 = ui->doubleSpinBox_yaw_k1->value();
-    settings->yaw.k2 = ui->doubleSpinBox_yaw_k2->value();
-    settings->yaw.k3 = ui->doubleSpinBox_yaw_k3->value();
-    settings->yaw.k4 = ui->doubleSpinBox_yaw_k4->value();
-    settings->yaw.pgain = ui->doubleSpinBox_yaw_pgain->value();
-
+    saveCsView();
 
     settings->connection->pause_after_sent = ui->spinBox_PauseAfterSent->value();
     settings->connection->pause_after_received = ui->spinBox_PauseAfterReceived->value();
@@ -930,9 +775,9 @@ void MainWindow::on_checkBox_SRoll_toggled(bool checked)
     joystick->stabilize_roll = checked;
 }
 
-void MainWindow::on_checkBox_SPitch_toggled(bool checked)
+void MainWindow::on_checkBox_SYaw_toggled(bool checked)
 {
-    joystick->stabilize_pitch = checked;
+    joystick->stabilize_yaw = checked;
 }
 
 // Stopwatch
@@ -986,4 +831,42 @@ void MainWindow::updateTime(){
     currentMissionTime->setText(getWatchTime(x));
     x += bufferTimeMain;
     commonTime->setText(getWatchTime(x));
+}
+
+void MainWindow::updateCsView()
+{
+    ui->doubleSpinBox_CS_pJoyUnitCast->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pJoyUnitCast));
+    ui->doubleSpinBox_CS_pSpeedDyn->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pSpeedDyn));
+    ui->doubleSpinBox_CS_pErrGain->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pErrGain));
+    ui->doubleSpinBox_CS_pid_pGain->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pid.pGain));
+    ui->doubleSpinBox_CS_pid_iGain->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pid.iGain));
+    ui->doubleSpinBox_CS_pid_iMax->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pid.iMax));
+    ui->doubleSpinBox_CS_pid_iMin->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pid.iMin));
+    ui->doubleSpinBox_CS_pThrustersCast->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pThrustersCast));
+    ui->doubleSpinBox_CS_pThrustersMin->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pThrustersMin));
+    ui->doubleSpinBox_CS_pThrustersMax->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.pThrustersMax));
+
+    ui->doubleSpinBox_CS_posFilterK->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].K));
+    ui->doubleSpinBox_CS_posFilterT->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].T));
+    ui->doubleSpinBox_CS_speedFilterK->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].K));
+    ui->doubleSpinBox_CS_speedFilterT->setValue(static_cast<double>(settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].T));
+}
+
+void MainWindow::saveCsView()
+{
+    settings->stabContour[settings->CS].stabConstants.pJoyUnitCast = static_cast<float>(ui->doubleSpinBox_CS_pJoyUnitCast->value());
+    settings->stabContour[settings->CS].stabConstants.pSpeedDyn = static_cast<float>(ui->doubleSpinBox_CS_pSpeedDyn->value());
+    settings->stabContour[settings->CS].stabConstants.pErrGain = static_cast<float>(ui->doubleSpinBox_CS_pErrGain->value());
+    settings->stabContour[settings->CS].stabConstants.pid.pGain = static_cast<float>(ui->doubleSpinBox_CS_pid_pGain->value());
+    settings->stabContour[settings->CS].stabConstants.pid.iGain = static_cast<float>(ui->doubleSpinBox_CS_pid_iGain->value());
+    settings->stabContour[settings->CS].stabConstants.pid.iMax = static_cast<float>(ui->doubleSpinBox_CS_pid_iMax->value());
+    settings->stabContour[settings->CS].stabConstants.pid.iMin = static_cast<float>(ui->doubleSpinBox_CS_pid_iMin->value());
+    settings->stabContour[settings->CS].stabConstants.pThrustersCast = static_cast<float>(ui->doubleSpinBox_CS_pThrustersCast->value());
+    settings->stabContour[settings->CS].stabConstants.pThrustersMin = static_cast<float>(ui->doubleSpinBox_CS_pThrustersMin->value());
+    settings->stabContour[settings->CS].stabConstants.pThrustersMax = static_cast<float>(ui->doubleSpinBox_CS_pThrustersMax->value());
+
+    settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].K = static_cast<float>(ui->doubleSpinBox_CS_posFilterK->value());
+    settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].T = static_cast<float>(ui->doubleSpinBox_CS_posFilterT->value());
+    settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].K = static_cast<float>(ui->doubleSpinBox_CS_speedFilterK->value());
+    settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].T = static_cast<float>(ui->doubleSpinBox_CS_speedFilterT->value());
 }

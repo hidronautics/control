@@ -58,43 +58,29 @@ void Settings::read(const QJsonObject &json)
     }
 
     QJsonObject stabilization_json = json["stabilization"].toObject();
+    QJsonObject cs_json[STABILIZATION_AMOUNT];
+    cs_json[STAB_DEPTH]  = stabilization_json["depth"].toObject();
+    cs_json[STAB_ROLL]   = stabilization_json["roll"].toObject();
+    cs_json[STAB_PITCH]  = stabilization_json["pitch"].toObject();
+    cs_json[STAB_YAW]    = stabilization_json["yaw"].toObject();
 
-    QJsonObject depth_json  = stabilization_json["depth"].toObject();
-    QJsonObject roll_json   = stabilization_json["roll"].toObject();
-    QJsonObject pitch_json  = stabilization_json["pitch"].toObject();
-    QJsonObject yaw_json    = stabilization_json["yaw"].toObject();
+    for(int i=0; i<STABILIZATION_AMOUNT; i++) {
+        stabContour[CS].stabConstants.pJoyUnitCast = static_cast<float>(cs_json[i]["pJoyUnitCast"].toDouble());
+        stabContour[CS].stabConstants.pSpeedDyn = static_cast<float>(cs_json[i]["pSpeedDyn"].toDouble());
+        stabContour[CS].stabConstants.pErrGain = static_cast<float>(cs_json[i]["pErrGain"].toDouble());
+        stabContour[CS].stabConstants.pid.pGain = static_cast<float>(cs_json[i]["pid.pGain"].toDouble());
+        stabContour[CS].stabConstants.pid.iGain = static_cast<float>(cs_json[i]["pid.iGain"].toDouble());
+        stabContour[CS].stabConstants.pid.iMax = static_cast<float>(cs_json[i]["pid.iMax"].toDouble());
+        stabContour[CS].stabConstants.pid.iMin = static_cast<float>(cs_json[i]["pid.iMin"].toDouble());
+        stabContour[CS].stabConstants.pThrustersCast = static_cast<float>(cs_json[i]["pThrustersCast"].toDouble());
+        stabContour[CS].stabConstants.pThrustersMin = static_cast<float>(cs_json[i]["pThrustersMin"].toDouble());
+        stabContour[CS].stabConstants.pThrustersMax = static_cast<float>(cs_json[i]["pThrustersMax"].toDouble());
 
-    depth.iborders       = depth_json["iborders"].toDouble();
-    depth.igain       = depth_json["igain"].toDouble();
-    depth.k1         = depth_json["k1"].toDouble();
-    depth.k2         = depth_json["k2"].toDouble();
-    depth.k3         = depth_json["k3"].toDouble();
-    depth.k4         = depth_json["k4"].toDouble();
-    depth.pgain       = depth_json["pgain"].toDouble();
-
-    roll.iborders       = roll_json["iborders"].toDouble();
-    roll.igain       = roll_json["igain"].toDouble();
-    roll.k1         = roll_json["k1"].toDouble();
-    roll.k2         = roll_json["k2"].toDouble();
-    roll.k3         = roll_json["k3"].toDouble();
-    roll.k4         = roll_json["k4"].toDouble();
-    roll.pgain       = roll_json["pgain"].toDouble();
-
-    pitch.iborders       = pitch_json["iborders"].toDouble();
-    pitch.igain       = pitch_json["igain"].toDouble();
-    pitch.k1         = pitch_json["k1"].toDouble();
-    pitch.k2         = pitch_json["k2"].toDouble();
-    pitch.k3         = pitch_json["k3"].toDouble();
-    pitch.k4         = pitch_json["k4"].toDouble();
-    pitch.pgain       = pitch_json["pgain"].toDouble();
-
-    yaw.iborders       = yaw_json["iborders"].toDouble();
-    yaw.igain       = yaw_json["igain"].toDouble();
-    yaw.k1         = yaw_json["k1"].toDouble();
-    yaw.k2         = yaw_json["k2"].toDouble();
-    yaw.k3         = yaw_json["k3"].toDouble();
-    yaw.k4         = yaw_json["k4"].toDouble();
-    yaw.pgain       = yaw_json["pgain"].toDouble();
+        stabContour[CS].stabConstants.aFilter[POS_FILTER].K = static_cast<float>(cs_json[i]["POS_FILTER.K"].toDouble());
+        stabContour[CS].stabConstants.aFilter[POS_FILTER].T = static_cast<float>(cs_json[i]["POS_FILTER.T"].toDouble());
+        stabContour[CS].stabConstants.aFilter[SPEED_FILTER].K = static_cast<float>(cs_json[i]["SPEED_FILTER.K"].toDouble());
+        stabContour[CS].stabConstants.aFilter[SPEED_FILTER].T = static_cast<float>(cs_json[i]["SPEED_FILTER.T"].toDouble());
+    }
 
     QJsonObject connection_json = json["connection"].toObject();
 
@@ -149,50 +135,31 @@ void Settings::write(QJsonObject &json) const
 
     json["motors"] = motorArray;
 
-    QJsonObject depth_json;
-    QJsonObject roll_json;
-    QJsonObject pitch_json;
-    QJsonObject yaw_json;
+    QJsonObject cs_json[STABILIZATION_AMOUNT];
 
+    for(int i=0; i<STABILIZATION_AMOUNT; i++) {
+        cs_json[i]["pJoyUnitCast"] = static_cast<double>(stabContour[i].stabConstants.pJoyUnitCast);
+        cs_json[i]["pSpeedDyn"] = static_cast<double>(stabContour[i].stabConstants.pSpeedDyn);
+        cs_json[i]["pErrGain"] = static_cast<double>(stabContour[i].stabConstants.pErrGain);
+        cs_json[i]["pid.pGain"] = static_cast<double>(stabContour[i].stabConstants.pid.pGain);
+        cs_json[i]["pid.iGain"] = static_cast<double>(stabContour[i].stabConstants.pid.iGain);
+        cs_json[i]["pid.iMax"] = static_cast<double>(stabContour[i].stabConstants.pid.iMax);
+        cs_json[i]["pid.iMin"] = static_cast<double>(stabContour[i].stabConstants.pid.iMin);
+        cs_json[i]["pThrustersCast"] = static_cast<double>(stabContour[i].stabConstants.pThrustersCast);
+        cs_json[i]["pThrustersMin"] = static_cast<double>(stabContour[i].stabConstants.pThrustersMin);
+        cs_json[i]["pThrustersMax"] = static_cast<double>(stabContour[i].stabConstants.pThrustersMax);
 
-    depth_json["iborders"]     = depth.iborders;
-    depth_json["igain"]      = depth.igain;
-    depth_json["k1"]        = depth.k1;
-    depth_json["k2"]        = depth.k2;
-    depth_json["k3"]        = depth.k3;
-    depth_json["k4"]        = depth.k4;
-    depth_json["pgain"]      = depth.pgain;
-
-    pitch_json["iborders"]     = pitch.iborders;
-    pitch_json["igain"]      = pitch.igain;
-    pitch_json["k1"]        = pitch.k1;
-    pitch_json["k2"]        = pitch.k2;
-    pitch_json["k3"]        = pitch.k3;
-    pitch_json["k4"]        = pitch.k4;
-    pitch_json["pgain"]      = pitch.pgain;
-
-    roll_json["iborders"]     = roll.iborders;
-    roll_json["igain"]      = roll.igain;
-    roll_json["k1"]        = roll.k1;
-    roll_json["k2"]        = roll.k2;
-    roll_json["k3"]        = roll.k3;
-    roll_json["k4"]        = roll.k4;
-    roll_json["pgain"]      = roll.pgain;
-
-    yaw_json["iborders"]     = yaw.iborders;
-    yaw_json["igain"]      = yaw.igain;
-    yaw_json["k1"]        = yaw.k1;
-    yaw_json["k2"]        = yaw.k2;
-    yaw_json["k3"]        = yaw.k3;
-    yaw_json["k4"]        = yaw.k4;
-    yaw_json["pgain"]      = yaw.pgain;
+        cs_json[i]["POS_FILTER.K"] = static_cast<double>(stabContour[i].stabConstants.aFilter[POS_FILTER].K);
+        cs_json[i]["POS_FILTER.T"] = static_cast<double>(stabContour[i].stabConstants.aFilter[POS_FILTER].T);
+        cs_json[i]["SPEED_FILTER.K"] = static_cast<double>(stabContour[i].stabConstants.aFilter[SPEED_FILTER].K);
+        cs_json[i]["SPEED_FILTER.T"] = static_cast<double>(stabContour[i].stabConstants.aFilter[SPEED_FILTER].T);
+    }
 
     QJsonObject stabilization_json;
-
-    stabilization_json["depth"] = depth_json;
-    stabilization_json["roll"]  = roll_json;
-    stabilization_json["pitch"] = pitch_json;
-    stabilization_json["yaw"]   = yaw_json;
+    stabilization_json["depth"] = cs_json[STAB_DEPTH];
+    stabilization_json["roll"] =  cs_json[STAB_ROLL];
+    stabilization_json["pitch"] = cs_json[STAB_PITCH];
+    stabilization_json["yaw"] = cs_json[STAB_YAW];
 
     json["stabilization"] = stabilization_json;
 

@@ -62,7 +62,7 @@ public:
 
     bool btn_stabilize_depth = false;
     bool btn_stabilize_roll  = false;
-    bool btn_stabilize_pitch = false;
+    bool btn_stabilize_yaw = false;
 
     int btn_stabilize_depth_delay = 0;
     int btn_stabilize_roll_delay = 0;
@@ -70,9 +70,9 @@ public:
 
     bool stabilize_depth = false;
     bool stabilize_roll  = false;
-    bool stabilize_pitch = false;
+    bool stabilize_yaw = false;
 
-    explicit Joystick(QObject *parent = 0);
+    explicit Joystick(QObject *parent = nullptr);
     bool init(int joystick_id);
     void update();    
     void printButtons();
@@ -89,7 +89,7 @@ private:
 
     const int SFML_BTN_STABILIZE_DEPTH = 9;
     const int SFML_BTN_STABILIZE_ROLL  = 11;
-    const int SFML_BTN_STABILIZE_PITCH = 13;
+    const int SFML_BTN_STABILIZE_YAW = 13;
 
     const int SFML_BTN_TILT_UP = 19;
     const int SFML_BTN_TILT_DOWN = 21;

@@ -30,7 +30,7 @@ class Server : public QObject
 {
     Q_OBJECT
 public:
-    explicit Server(QObject *parent = 0);
+    explicit Server(QObject *parent = nullptr);
     ~Server();
     Joystick* j;
 
@@ -51,41 +51,33 @@ public:
     Settings* settings;
 
     //float temperature = 0;
-    int16_t imu_roll;
-    int16_t imu_pitch;
-    int16_t imu_yaw;
+    float imu_roll;
+    float imu_pitch;
+    float imu_yaw;
 
-    int16_t imu_roll_speed;
-    int16_t imu_pitch_speed;
-    int16_t imu_yaw_speed;
+    float imu_roll_speed;
+    float imu_pitch_speed;
+    float imu_yaw_speed;
 
     // For plots
-    int16_t imu_roll_d;
-    int16_t imu_pitch_d;
-    int16_t imu_yaw_d;
+    float imu_roll_d;
+    float imu_pitch_d;
+    float imu_yaw_d;
 
-    int16_t imu_roll_speed_d;
-    int16_t imu_pitch_speed_d;
-    int16_t imu_yaw_speed_d;
+    float imu_roll_speed_d;
+    float imu_pitch_speed_d;
+    float imu_yaw_speed_d;
 
     double key1;
 
     // _______________________________
 
     //int16_t imu_depth;
-    uint16_t imu_pressure;
-
-    uint8_t wf_data_type;
-    uint8_t wf_tick_rate;
-    uint8_t wf_voltage;
-    float wf_x_angle_float;
-    float wf_y_angle_float;
-    int32_t wf_x_angle_int32_t;
-    int32_t wf_y_angle_int32_t;
+    float imu_pressure;
 
     uint8_t acoustic_state;
     int16_t leak_sensor;
-    int16_t in_pressure;
+    float in_pressure;
 
     uint16_t current_HLB;
     uint16_t current_HLF;
@@ -113,7 +105,7 @@ public:
     uint16_t current_tilt;
 
     uint16_t err_vma;
-    uint8_t err_dev;
+    uint16_t err_dev;
     uint8_t err_pc;
 
     uint16_t msg_received_counter;
@@ -139,7 +131,10 @@ private:
     void sendMessageNormal();
     void sendMessageDirect();
     void sendMessageConfig();
+
     void receiveMessage();
+    void receiveNormalMessage();
+    void receiveConfigMessage();
 
     void addFloat(uint8_t * msg, int position, float val);
     float getFloat(QByteArray msg, int position);

@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void init();
@@ -102,7 +102,7 @@ private slots:
 
     void on_checkBox_SRoll_toggled(bool checked);
 
-    void on_checkBox_SPitch_toggled(bool checked);
+    void on_checkBox_SYaw_toggled(bool checked);
 
     void on_StartPauseButton_clicked();
 
@@ -125,6 +125,9 @@ signals:
 private:
     Ui::MainWindow *ui;
     //NewWindow *bluetooth_menu;
+
+    void updateCsView();
+    void saveCsView();
 
     QTableWidgetItem *requestQTableWidgetItemsHEX[REQUEST_TABLE_ROW_COUNT];
     QTableWidgetItem *requestQTableWidgetItemsDEC[REQUEST_TABLE_ROW_COUNT];

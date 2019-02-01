@@ -17,7 +17,6 @@ SOURCES += main.cpp \
     joystick.cpp \
     settings.cpp \
     qfi_PFD.cpp \
-    newwindow.cpp \
     logging_categories.cpp \
     qcustomplot.cpp
 
@@ -28,7 +27,6 @@ HEADERS += \
     joystick.h \
     settings.h \
     qfi_PFD.h \
-    newwindow.h \
     logging_categories.h \
     qcustomplot.h
 
@@ -44,8 +42,7 @@ CONFIG(release, debug|release): LIBS += -lsfml-window
 CONFIG(debug, debug|release): LIBS += -lsfml-window
 
 FORMS += \
-    mainwindow.ui \
-    bluetooth.ui
+    mainwindow.ui
 
 RESOURCES += \
     qfi.qrc \
