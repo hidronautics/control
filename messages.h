@@ -101,7 +101,7 @@ struct Request_s
 
 /* Config mode */
 #define REQUEST_CONFIG_CODE             0x55
-#define REQUEST_CONFIG_LENGTH           80
+#define REQUEST_CONFIG_LENGTH           71
 
 /* Response values and data structures */
 #define RESPONSE_LENGTH                 70

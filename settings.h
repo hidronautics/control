@@ -110,6 +110,7 @@ struct Stabilization {
             ds >> req.posErrorAmp;
             ds >> req.speedFiltered;
             ds >> req.posFiltered;
+            ds >> req.LastTick;
             return ds;
         }
     } stabState;
