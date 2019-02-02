@@ -61,6 +61,7 @@ struct Request_s
     friend QDataStream& operator>>(QDataStream &ds, Request_s &req)
     {
         ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
         ds >> req.type;
         ds >> req.flags;
         ds >> req.march;
@@ -84,6 +85,72 @@ struct Request_s
     }
 };
 
+struct ConfigRequest_s
+{
+    uint8_t type;
+    uint8_t contour;
+
+    int16_t march;
+    int16_t lag;
+    int16_t depth;
+    int16_t roll;
+    int16_t pitch;
+    int16_t yaw;
+
+    float pJoyUnitCast;
+    float pSpeedDyn;
+    float pErrGain;
+
+    float posFilterT;
+    float posFilterK;
+    float speedFilterT;
+    float speedFilterK;
+
+    float pid_pGain;
+    float pid_iGain;
+    float pid_iMax;
+    float pid_iMin;
+
+    float pThrustersCast;
+    float pThrustersMin;
+    float pThrustersMax;
+
+    friend QDataStream& operator<<(QDataStream &ds, const ConfigRequest_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        ds << req.type;
+        ds << req.contour;
+
+        ds << req.march;
+        ds << req.lag;
+        ds << req.depth;
+        ds << req.roll;
+        ds << req.pitch;
+        ds << req.yaw;
+
+        ds << req.pJoyUnitCast;
+        ds << req.pSpeedDyn;
+        ds << req.pErrGain;
+
+        ds << req.posFilterT;
+        ds << req.posFilterK;
+        ds << req.speedFilterT;
+        ds << req.speedFilterK;
+
+        ds << req.pid_pGain;
+        ds << req.pid_iGain;
+        ds << req.pid_iMax;
+        ds << req.pid_iMin;
+
+        ds << req.pThrustersCast;
+        ds << req.pThrustersMin;
+        ds << req.pThrustersMax;
+
+        return ds;
+    }
+};
+
 /* Direct mode */
 #define REQUEST_DIRECT_CODE             0xAA
 #define REQUEST_DIRECT_LENGTH           11
@@ -101,11 +168,11 @@ struct Request_s
 
 /* Config mode */
 #define REQUEST_CONFIG_CODE             0x55
-#define REQUEST_CONFIG_LENGTH           71
+#define REQUEST_CONFIG_LENGTH           72
 
 /* Response values and data structures */
 #define RESPONSE_LENGTH                 70
-#define RESPONSE_CONFIG_LENGTH          94
+#define RESPONSE_CONFIG_LENGTH          95
 
 struct Response_s
 {
@@ -150,6 +217,7 @@ struct Response_s
     friend QDataStream& operator<<(QDataStream &ds, const Response_s &res)
     {
         ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
         ds << res.roll;
         ds << res.pitch;
         ds << res.yaw;
@@ -189,6 +257,7 @@ struct Response_s
     friend QDataStream& operator>>(QDataStream &ds, Response_s &res)
     {
         ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
         ds >> res.roll;
         ds >> res.pitch;
         ds >> res.yaw;
@@ -224,6 +293,84 @@ struct Response_s
         ds >> res.pc_errors;
 
         ds >> res.checksum;
+        return ds;
+    }
+};
+
+struct ConfigResponse_s
+{
+    uint8_t code;
+
+    float roll;
+    float pitch;
+    float yaw;
+
+    float rollSpeed;
+    float pitchSpeed;
+    float yawSpeed;
+
+    float pressure;
+    float in_pressure;
+
+    float inputSignal;
+    float speedSignal;
+    float posSignal;
+
+    float oldSpeed;
+    float oldPos;
+
+    float joyUnitCasted;
+    float joy_iValue;
+    float posError;
+    float speedError;
+    float dynSummator;
+    float pidValue;
+    float posErrorAmp;
+    float speedFiltered;
+    float posFiltered;
+
+    float LastTick;
+
+    uint16_t checksum;
+
+    friend QDataStream& operator>>(QDataStream &ds, ConfigResponse_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+        ds >> req.code;
+
+        ds >> req.roll;
+        ds >> req.pitch;
+        ds >> req.yaw;
+
+        ds >> req.rollSpeed;
+        ds >> req.pitchSpeed;
+        ds >> req.yawSpeed;
+
+        ds >> req.pressure;
+        ds >> req.in_pressure;
+
+        ds >> req.inputSignal;
+        ds >> req.speedSignal;
+        ds >> req.posSignal;
+
+        ds >> req.oldSpeed;
+        ds >> req.oldPos;
+
+        ds >> req.joyUnitCasted;
+        ds >> req.joy_iValue;
+        ds >> req.posError;
+        ds >> req.speedError;
+        ds >> req.dynSummator;
+        ds >> req.pidValue;
+        ds >> req.posErrorAmp;
+        ds >> req.speedFiltered;
+        ds >> req.posFiltered;
+
+        ds >> req.LastTick;
+
+        ds >> req.checksum;
         return ds;
     }
 };

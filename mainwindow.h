@@ -41,6 +41,7 @@ public:
 public slots:
     void info(QString s);
     void serverIsSleeping();
+    void update_csView();
 
 private slots:
 
@@ -119,8 +120,6 @@ private slots:
     void on_radioButton_CS_RollSelect_released();
 
     void on_radioButton_CS_PitchSelect_released();
-
-    void update_csView();
 
 signals:
     void newValues(int* vals);

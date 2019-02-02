@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, SIGNAL(connect_fake()), server, SLOT(connect_fake()));
     QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
     QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
+    QObject::connect(server, &Server::updateCsView, mainWindow, &MainWindow::update_csView);
 
     mainWindow->show();
 

@@ -69,6 +69,12 @@ void Server::sendMessage() {
     default:
         std::cout << "ERROR: Unknown current message code!" << std::endl;
     }
+
+    emit imSleeping();
+
+    std::cout << "Go sleeping for " << settings->connection->pause_after_sent << " ms" << std::endl;
+    QTest::qSleep (settings->connection->pause_after_sent);
+    receiveMessage();
 }
 
 void Server::sendMessageNormal()
@@ -123,12 +129,6 @@ void Server::sendMessageNormal()
     */
 
     newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
-
-    emit imSleeping();
-
-    std::cout << "Go sleeping for " << settings->connection->pause_after_sent << " ms" << std::endl;
-    QTest::qSleep (settings->connection->pause_after_sent);
-    receiveMessage();
 }
 
 void Server::sendMessageDirect() {
@@ -172,38 +172,42 @@ void Server::sendMessageConfig() {
     msg_to_send.clear();
     QDataStream stream(&msg_to_send, QIODevice::Append);
 
-    stream << static_cast<uint8_t>(REQUEST_CONFIG_CODE);
+    ConfigRequest_s req;
 
-    stream << settings->CS;
+    req.type = REQUEST_CONFIG_CODE;
+    req.contour = static_cast<uint8_t>(settings->CS);
 
-    stream << j->march;
-    stream << j->lag;
-    stream << j->depth;
+    req.march = j->march;
+    req.lag = j->lag;
+    req.depth = j->depth;
+    req.roll = j->roll;
+    req.pitch = j->pitch;
+    req.yaw = j->yaw;
 
-    stream << j->roll;
-    stream << j->pitch;
-    stream << j->yaw;
+    req.pJoyUnitCast = settings->stabContour[settings->CS].stabConstants.pJoyUnitCast;
+    req.pSpeedDyn = settings->stabContour[settings->CS].stabConstants.pSpeedDyn;
+    req.pErrGain = settings->stabContour[settings->CS].stabConstants.pErrGain;
 
-    stream << settings->stabContour[settings->CS].stabConstants;
+    req.posFilterT = settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].T;
+    req.posFilterK = settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].K;
+    req.speedFilterT = settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].T;
+    req.speedFilterK = settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].K;
+
+    req.pid_pGain = settings->stabContour[settings->CS].stabConstants.pid.pGain;
+    req.pid_iGain = settings->stabContour[settings->CS].stabConstants.pid.iGain;
+    req.pid_iMax = settings->stabContour[settings->CS].stabConstants.pid.iMax;
+    req.pid_iMin = settings->stabContour[settings->CS].stabConstants.pid.iMin;
+
+    req.pThrustersCast = settings->stabContour[settings->CS].stabConstants.pThrustersCast;
+    req.pThrustersMin = settings->stabContour[settings->CS].stabConstants.pThrustersMin;
+    req.pThrustersMax = settings->stabContour[settings->CS].stabConstants.pThrustersMax;
+
+    stream << req;
 
     // Calculating checksum
-    uint16_t checksum = getCheckSumm16b(&msg_to_send, REQUEST_NORMAL_LENGTH);
+    addCheckSumm16b(&msg_to_send, REQUEST_CONFIG_LENGTH);
 
-    // Moving checksum to QByteArray
-    stream << checksum;
-
-    QFile file_csv_request(path_csv_request);
-    if(file_csv_request.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        QTextStream stream_request(&file_csv_request);
-        //writeCSV(stream_request, msg_to_send, REQUEST_NORMAL_LENGTH);
-        stream_request << QTime::currentTime().toString();
-        for(int i=0; i < REQUEST_CONFIG_LENGTH; i++){
-            stream_request << ";" << msg_to_send[i];
-        }
-        stream_request << "\n";
-    }
-
-    newPort->write(msg_to_send, REQUEST_CONFIG_LENGTH);
+    newPort->write(msg_to_send.data(), REQUEST_CONFIG_LENGTH);
 
     settings->oldCS = settings->CS;
 
@@ -229,8 +233,8 @@ void Server::receiveMessage() {
             long long bytesAvailible = newPort->bytesAvailable();
             if (bytesAvailible > 0) {
                 msg_in.clear();
-                msg_in = newPort->read(1);
-                switch(msg_in[0]) {
+                msg_in.push_back(newPort->read(1));
+                switch(static_cast<uint8_t>(msg_in[0])) {
                     case REQUEST_NORMAL_CODE:
                         receiveNormalMessage();
                         break;
@@ -335,13 +339,13 @@ void Server::receiveNormalMessage()
 
 void Server::receiveConfigMessage()
 {
-    msg_in = newPort->readAll();
+    msg_in.push_back(newPort->readAll());
     QDataStream stream(&msg_in, QIODevice::ReadOnly);;
 
     std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
     std::cout << "Checksum...";
 
-    if (isCheckSumm16bCorrect(reinterpret_cast<uint8_t*>(msg_in.data()), RESPONSE_LENGTH)) {
+    if (isCheckSumm16bCorrect(reinterpret_cast<uint8_t*>(msg_in.data()), RESPONSE_CONFIG_LENGTH)) {
         std::cout << "OK" << std::endl;
         msg_received_counter++;
     } else {
@@ -351,23 +355,40 @@ void Server::receiveConfigMessage()
     }
 
     // Defining response data structure
-    struct Response_s resp;
+    struct ConfigResponse_s resp;
 
     // Moving QByteArray to structure
     stream >> resp;
 
-    // Moving data from resp structure to application
-    stream >> imu_roll;
-    stream >> imu_pitch;
-    stream >> imu_yaw;
+    imu_roll = resp.roll;
+    imu_pitch = resp.pitch;
+    imu_yaw = resp.yaw;
 
-    stream >> imu_roll_speed;
-    stream >> imu_pitch_speed;
-    stream >> imu_yaw_speed;
+    imu_roll_speed = resp.rollSpeed;
+    imu_pitch_speed = resp.pitchSpeed;
+    imu_yaw_speed = resp.yawSpeed;
 
-    stream >> imu_pressure;
+    imu_pressure = resp.pressure;
+    in_pressure = resp.in_pressure;
 
-    stream >> settings->stabContour[settings->oldCS].stabState;
+    settings->stabContour[settings->CS].stabState.inputSignal = resp.inputSignal;
+    settings->stabContour[settings->CS].stabState.speedSignal = resp.speedSignal;
+    settings->stabContour[settings->CS].stabState.posSignal = resp.posSignal;
+
+    settings->stabContour[settings->CS].stabState.oldSpeed = resp.oldSpeed;
+    settings->stabContour[settings->CS].stabState.oldPos = resp.oldPos;
+
+    settings->stabContour[settings->CS].stabState.joyUnitCasted = resp.joyUnitCasted;
+    settings->stabContour[settings->CS].stabState.joy_iValue = resp.joy_iValue;
+    settings->stabContour[settings->CS].stabState.posError = resp.posError;
+    settings->stabContour[settings->CS].stabState.speedError = resp.speedError;
+    settings->stabContour[settings->CS].stabState.dynSummator = resp.dynSummator;
+    settings->stabContour[settings->CS].stabState.pidValue = resp.pidValue;
+    settings->stabContour[settings->CS].stabState.posErrorAmp = resp.posErrorAmp;
+    settings->stabContour[settings->CS].stabState.speedFiltered = resp.speedFiltered;
+    settings->stabContour[settings->CS].stabState.posFiltered = resp.posFiltered;
+
+    settings->stabContour[settings->CS].stabState.LastTick = resp.LastTick;
 
     emit updateCsView();
 }
@@ -376,14 +397,19 @@ void Server::receiveConfigMessage()
 uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
 {
     uint16_t crcGot, crc = 0;
-    int i;
 
-    crcGot = (uint16_t)( msg[length-1] + (msg[length-2] << 8) );
+    uint16_t *ptr = reinterpret_cast<uint16_t*>(&msg[length-2]);
+    uint8_t *swap = reinterpret_cast<uint8_t*>(ptr);
+    uint8_t tmp = swap[0];
+    swap[0] = swap[1];
+    swap[1] = tmp;
 
-    for(i=0; i < length - 2; i++){ //i теперь не с 0, а с 1
-        crc = (uint8_t)(crc >> 8) | (crc << 8);
+    crcGot = *ptr;
+
+    for(unsigned long i=0; i < length-2; i++) {
+        crc = static_cast<uint16_t>((crc >> 8) | (crc << 8));
         crc ^= msg[i];
-        crc ^= (uint8_t)(crc & 0xff) >> 4;
+        crc ^= static_cast<uint8_t>((crc & 0xFF) >> 4);
         crc ^= (crc << 8) << 4;
         crc ^= ((crc & 0xff) << 4) << 1;
     }
@@ -393,32 +419,31 @@ uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
     else return 0;
 }
 
-void Server::addCheckSumm16b(uint8_t * msg, uint16_t length)//i теперь не с 0, а с 1
+void Server::addCheckSumm16b(QByteArray *msg, uint16_t length)
 {
     uint16_t crc = 0;
-    int i = 0;
 
-    for(i=0; i < length - 2; i++){
-        crc = (uint8_t)(crc >> 8) | (crc << 8);
-        crc ^= msg[i];
-        crc ^= (uint8_t)(crc & 0xff) >> 4;
+    for(unsigned long i=1; i < length-2; i++) {
+        crc = static_cast<uint16_t>((crc >> 8) | (crc << 8));
+        crc ^= msg->data()[i];
+        crc ^= static_cast<uint8_t>((crc & 0xFF) >> 4);
         crc ^= (crc << 8) << 4;
         crc ^= ((crc & 0xff) << 4) << 1;
     }
 
-    msg[length-2] = (uint8_t) (crc >> 8);
-    msg[length-1] = (uint8_t) crc;
+    char *ptr = reinterpret_cast<char*>(&crc);
+    msg->push_back(ptr[1]);
+    msg->push_back(ptr[0]);
 }
 
-uint16_t Server::getCheckSumm16b(QByteArray * msg, uint16_t length)
+uint16_t Server::getCheckSumm16b(QByteArray *msg, uint16_t length)
 {
     uint16_t crc = 0;
-    int i = 0;
 
-    for(i=0; i < length - 2; i++){
-        crc = (uint8_t)(crc >> 8) | (crc << 8);
-        crc ^= ((uint8_t*) msg->data())[i];
-        crc ^= (uint8_t)(crc & 0xff) >> 4;
+    for(unsigned long i=1; i < length-2; i++) {
+        crc = static_cast<uint16_t>((crc >> 8) | (crc << 8));
+        crc ^= msg->data()[i];
+        crc ^= static_cast<uint8_t>((crc & 0xFF) >> 4);
         crc ^= (crc << 8) << 4;
         crc ^= ((crc & 0xff) << 4) << 1;
     }
@@ -476,14 +501,6 @@ void writeCSV(QTextStream stream, uint8_t * msg, uint16_t length) {
 Server::~Server() {
     std::cout << "Server shutting down..." << std::endl;
     if (newPort && newPort->isOpen()) {
-        std::cout << "Stopping motors.." << std::endl;
-        uint8_t msg_to_send[REQUEST_NORMAL_LENGTH];
-        for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
-            msg_to_send[i] = 0x00;
-        }
-        addCheckSumm16b(msg_to_send, REQUEST_NORMAL_LENGTH);
-        newPort->write((char*)msg_to_send, REQUEST_NORMAL_LENGTH);
-        std::cout << "Success" << std::endl;
         std::cout << "Closing port" << std::endl;
         newPort->close();
         newPort->deleteLater();

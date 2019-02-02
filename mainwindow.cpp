@@ -895,17 +895,17 @@ void MainWindow::saveCsView()
 
 void MainWindow::updateCsLabels()
 {
-    ui->label_CS_inputSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.inputSignal)));
-    ui->label_CS_joyUnitCasted->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.joyUnitCasted)));
-    ui->label_CS_joy_iValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.joy_iValue)));
-    ui->label_CS_posError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posError)));
-    ui->label_CS_posSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posSignal)));
-    ui->label_CS_posFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posFiltered)));
-    ui->label_CS_pidValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.pidValue)));
-    ui->label_CS_dynSummator->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.dynSummator)));
-    ui->label_CS_speedError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedError)));
-    ui->label_CS_speedSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedSignal)));
-    ui->label_CS_speedFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedFiltered)));
+    ui->label_CS_inputSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.inputSignal), 'f', 4));
+    ui->label_CS_joyUnitCasted->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.joyUnitCasted), 'f', 4));
+    ui->label_CS_joy_iValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.joy_iValue), 'f', 4));
+    ui->label_CS_posError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posError), 'f', 4));
+    ui->label_CS_posSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posSignal), 'f', 4));
+    ui->label_CS_posFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.posFiltered), 'f', 4));
+    ui->label_CS_pidValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.pidValue), 'f', 4));
+    ui->label_CS_dynSummator->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.dynSummator), 'f', 4));
+    ui->label_CS_speedError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedError), 'f', 4));
+    ui->label_CS_speedSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedSignal), 'f', 4));
+    ui->label_CS_speedFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedFiltered), 'f', 4));
 }
 
 void MainWindow::update_csView()
