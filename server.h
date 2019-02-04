@@ -123,9 +123,9 @@ private:
 
     bool COMconnect(int com_name);
 
-    void addCheckSumm16b(QByteArray * msg, uint16_t length);
-    uint16_t getCheckSumm16b(QByteArray * msg, uint16_t length);
-    uint8_t isCheckSumm16bCorrect(uint8_t * msg, uint16_t length);
+    void addCheckSumm16b(char *pcBlock, uint16_t len);
+    uint16_t getCheckSumm16b(char *pcBlock, uint16_t len);
+    uint8_t isCheckSumm16bCorrect(char *pcBlock, uint16_t len);
 
     void sendMessageNormal();
     void sendMessageDirect();

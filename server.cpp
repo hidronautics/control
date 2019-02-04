@@ -116,7 +116,7 @@ void Server::sendMessageNormal()
     stream << req;
 
     // Calculating checksum
-    uint16_t checksum = getCheckSumm16b(&msg_to_send, REQUEST_NORMAL_LENGTH);
+    uint16_t checksum = getCheckSumm16b(msg_to_send.data(), REQUEST_NORMAL_LENGTH);
 
     // Moving checksum to QByteArray
     stream << checksum;
@@ -168,6 +168,7 @@ void Server::sendMessageDirect() {
 
 void Server::sendMessageConfig() {
     std::cout << "Server::sendMessageConfig()" << std::endl;
+    j->update();
 
     msg_to_send.clear();
     QDataStream stream(&msg_to_send, QIODevice::Append);
@@ -205,7 +206,7 @@ void Server::sendMessageConfig() {
     stream << req;
 
     // Calculating checksum
-    addCheckSumm16b(&msg_to_send, REQUEST_CONFIG_LENGTH);
+    addCheckSumm16b(msg_to_send.data(), REQUEST_CONFIG_LENGTH);
 
     newPort->write(msg_to_send.data(), REQUEST_CONFIG_LENGTH);
 
@@ -286,7 +287,7 @@ void Server::receiveNormalMessage()
     std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
     std::cout << "Checksum...";
 
-    if (isCheckSumm16bCorrect(reinterpret_cast<uint8_t*>(msg_in.data()), RESPONSE_LENGTH)) {
+    if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_LENGTH)) {
         std::cout << "OK" << std::endl;
         msg_received_counter++;
     } else {
@@ -345,7 +346,7 @@ void Server::receiveConfigMessage()
     std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
     std::cout << "Checksum...";
 
-    if (isCheckSumm16bCorrect(reinterpret_cast<uint8_t*>(msg_in.data()), RESPONSE_CONFIG_LENGTH)) {
+    if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_CONFIG_LENGTH)) {
         std::cout << "OK" << std::endl;
         msg_received_counter++;
     } else {
@@ -394,61 +395,42 @@ void Server::receiveConfigMessage()
 }
 
 /* CRC16-CCITT algorithm */
-uint8_t Server::isCheckSumm16bCorrect(uint8_t * msg, uint16_t length)
+uint16_t Server::getCheckSumm16b(char *pcBlock, uint16_t len)
 {
-    uint16_t crcGot, crc = 0;
+    uint16_t crc = 0xFFFF;
+    //int crc_fix = reinterpret_cast<int*>(&crc);
+    uint8_t i;
+    len = len-2;
 
-    uint16_t *ptr = reinterpret_cast<uint16_t*>(&msg[length-2]);
-    uint8_t *swap = reinterpret_cast<uint8_t*>(ptr);
-    uint8_t tmp = swap[0];
-    swap[0] = swap[1];
-    swap[1] = tmp;
+    while (len--) {
+        crc ^= *pcBlock++ << 8;
 
-    crcGot = *ptr;
-
-    for(unsigned long i=0; i < length-2; i++) {
-        crc = static_cast<uint16_t>((crc >> 8) | (crc << 8));
-        crc ^= msg[i];
-        crc ^= static_cast<uint8_t>((crc & 0xFF) >> 4);
-        crc ^= (crc << 8) << 4;
-        crc ^= ((crc & 0xff) << 4) << 1;
+        for (i = 0; i < 8; i++)
+            crc = crc & 0x8000 ? (crc << 1) ^ 0x1021 : crc << 1;
     }
-
-    if(crc == crcGot )
-        return 1;
-    else return 0;
-}
-
-void Server::addCheckSumm16b(QByteArray *msg, uint16_t length)
-{
-    uint16_t crc = 0;
-
-    for(unsigned long i=1; i < length-2; i++) {
-        crc = static_cast<uint16_t>((crc >> 8) | (crc << 8));
-        crc ^= msg->data()[i];
-        crc ^= static_cast<uint8_t>((crc & 0xFF) >> 4);
-        crc ^= (crc << 8) << 4;
-        crc ^= ((crc & 0xff) << 4) << 1;
-    }
-
-    char *ptr = reinterpret_cast<char*>(&crc);
-    msg->push_back(ptr[1]);
-    msg->push_back(ptr[0]);
-}
-
-uint16_t Server::getCheckSumm16b(QByteArray *msg, uint16_t length)
-{
-    uint16_t crc = 0;
-
-    for(unsigned long i=1; i < length-2; i++) {
-        crc = static_cast<uint16_t>((crc >> 8) | (crc << 8));
-        crc ^= msg->data()[i];
-        crc ^= static_cast<uint8_t>((crc & 0xFF) >> 4);
-        crc ^= (crc << 8) << 4;
-        crc ^= ((crc & 0xff) << 4) << 1;
-    }
-
     return crc;
+}
+
+uint8_t Server::isCheckSumm16bCorrect(char *pcBlock, uint16_t len)
+{
+    uint16_t crc_calculated = getCheckSumm16b(pcBlock, len);
+
+    uint16_t *crc_pointer = reinterpret_cast<uint16_t*>(&pcBlock[len-2]);
+    uint16_t crc_got = *crc_pointer;
+
+    if(crc_got == crc_calculated) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void Server::addCheckSumm16b(char *pcBlock, uint16_t len)
+{
+    uint16_t crc = getCheckSumm16b(pcBlock, len);
+    uint16_t *crc_pointer = reinterpret_cast<uint16_t*>(&pcBlock[len-2]);
+    *crc_pointer = crc;
 }
 
 void Server::addFloat(uint8_t * msg, int position, float value) {
