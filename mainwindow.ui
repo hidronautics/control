@@ -109,7 +109,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -2445,149 +2445,6 @@
           <double>0.000500000000000</double>
          </property>
         </widget>
-        <widget class="QLabel" name="label_CS_inputSignal">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>210</y>
-           <width>61</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>input</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_joyUnitCasted">
-         <property name="geometry">
-          <rect>
-           <x>140</x>
-           <y>240</y>
-           <width>61</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>joy</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_joy_iValue">
-         <property name="geometry">
-          <rect>
-           <x>250</x>
-           <y>240</y>
-           <width>61</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>iValue</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_posError">
-         <property name="geometry">
-          <rect>
-           <x>360</x>
-           <y>260</y>
-           <width>71</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>posError</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_pidValue">
-         <property name="geometry">
-          <rect>
-           <x>950</x>
-           <y>260</y>
-           <width>81</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>pidValue</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_posFiltered">
-         <property name="geometry">
-          <rect>
-           <x>310</x>
-           <y>460</y>
-           <width>81</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>posFiltered</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_dynSummator">
-         <property name="geometry">
-          <rect>
-           <x>1040</x>
-           <y>180</y>
-           <width>101</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>dynSummator</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_speedError">
-         <property name="geometry">
-          <rect>
-           <x>1160</x>
-           <y>260</y>
-           <width>91</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>speedError</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_speedFiltered">
-         <property name="geometry">
-          <rect>
-           <x>1090</x>
-           <y>370</y>
-           <width>101</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>speedFiltered</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_speedSignal">
-         <property name="geometry">
-          <rect>
-           <x>1310</x>
-           <y>370</y>
-           <width>101</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>speedSIgnal</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_CS_posSignal">
-         <property name="geometry">
-          <rect>
-           <x>500</x>
-           <y>460</y>
-           <width>81</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>posSignal</string>
-         </property>
-        </widget>
         <widget class="QRadioButton" name="radioButton_CS_YawSelect">
          <property name="geometry">
           <rect>
@@ -2673,6 +2530,182 @@
          </property>
          <property name="text">
           <string>Pitch</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_inputSignal">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>240</y>
+           <width>61</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>input</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_joyUnitCasted">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>240</y>
+           <width>51</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>joy</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_joy_iValue">
+         <property name="geometry">
+          <rect>
+           <x>250</x>
+           <y>240</y>
+           <width>61</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>iValue</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_posError">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>260</y>
+           <width>71</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>posError</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_posFiltered">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>470</y>
+           <width>91</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>posFiltered</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_posSignal">
+         <property name="geometry">
+          <rect>
+           <x>490</x>
+           <y>470</y>
+           <width>91</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>posSignal</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_pidValue">
+         <property name="geometry">
+          <rect>
+           <x>940</x>
+           <y>250</y>
+           <width>91</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>pidValue</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_dynSummator">
+         <property name="geometry">
+          <rect>
+           <x>1040</x>
+           <y>180</y>
+           <width>111</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>dynSummator</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_speedSignal">
+         <property name="geometry">
+          <rect>
+           <x>1300</x>
+           <y>370</y>
+           <width>91</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>speedSignal</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_speedFiltered">
+         <property name="geometry">
+          <rect>
+           <x>1080</x>
+           <y>370</y>
+           <width>111</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>speedFiltered</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_CS_speedError">
+         <property name="geometry">
+          <rect>
+           <x>1150</x>
+           <y>260</y>
+           <width>91</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>speedError</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
