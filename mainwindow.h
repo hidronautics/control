@@ -47,15 +47,9 @@ private slots:
 
     void on_checkBox_Calibration_Control_toggled(bool checked);
 
-    void on_pushButton_Test_Motor_released();
-
     void on_pushButton_Connect_released();
 
     void on_pushButton_Stop_Test_released();
-
-    void on_pushButton_Save_released();
-
-    void on_spinBox_Motor_Slot_valueChanged(int arg1);
 
     void on_pushButton_Disconnect_released();
 
@@ -167,7 +161,6 @@ private:
     int imu_roll_speed_min;
     int imu_yaw_min;
     int imu_yaw_speed_min;
-
 };
 
 #endif // MAINWINDOW_H

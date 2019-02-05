@@ -308,20 +308,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
 
-    // Stopwatch
-    time = new QTime();
-    bufferTimeMain = 0;
-    bufferTimeMission = 0;
-    timer = new QTimer();
-    timer->setInterval(500);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
-    timer->start(500);
-
-    startPauseBtn = ui->StartPauseButton;
-    commonTime = ui->Commontime;
-    currentMissionTime = ui->Missiontime;
-    missionNumber = ui->Mn;
-
 }
 
 
@@ -371,53 +357,9 @@ void MainWindow::serverIsSleeping() {
         responseQTableWidgetItemsBinary[i]->setText(QString("NO"));
     }
 
-    ui->lcdNumber_current_HLB->display(QString::number(server->current_HLB));
-    ui->lcdNumber_current_HLF->display(QString::number(server->current_HLF));
-    ui->lcdNumber_current_HRB->display(QString::number(server->current_HRB));
-    ui->lcdNumber_current_HRF->display(QString::number(server->current_HRF));
-
-    ui->lcdNumber_current_VB->display(QString::number(server->current_VB));
-    ui->lcdNumber_current_VF->display(QString::number(server->current_VF));
-    ui->lcdNumber_current_VL->display(QString::number(server->current_VL));
-    ui->lcdNumber_current_VR->display(QString::number(server->current_VR));
-
-
-    ui->lcdNumber_velocity_HLB->display(QString::number(server->velocity_HLB));
-    ui->lcdNumber_velocity_HLF->display(QString::number(server->velocity_HLF));
-    ui->lcdNumber_velocity_HRB->display(QString::number(server->velocity_HRB));
-    ui->lcdNumber_velocity_HRF->display(QString::number(server->velocity_HRF));
-
-    ui->lcdNumber_velocity_VB->display(QString::number(server->velocity_VB));
-    ui->lcdNumber_velocity_VF->display(QString::number(server->velocity_VF));
-    ui->lcdNumber_velocity_VL->display(QString::number(server->velocity_VL));
-    ui->lcdNumber_velocity_VR->display(QString::number(server->velocity_VR));
-
-    ui->label_BT->setText(server->bt_data);
-
-    ui->lcdNumber_velocity_Light->display(QString::number(server->current_light));
-    ui->lcdNumber_velocity_bottomLight->display(QString::number(server->current_bottom_light));
-    ui->lcdNumber_velocity_Agar->display(QString::number(server->current_agar));
-    ui->lcdNumber_velocity_Grab->display(QString::number(server->current_grab));
-    ui->lcdNumber_velocity_Rotate->display(QString::number(server->current_grab_rotate));
-    ui->lcdNumber_velocity_Tilt->display(QString::number(server->current_tilt));
-
-    ui->lcdNumber_Lost->display(server->msg_lost_counter);
-    ui->lcdNumber_Received->display(server->msg_received_counter);
-    ui->lcdNumber_Percent->display(static_cast<double>(server->msg_lost_percent));
-
-    ui->checkBox_SDepth->setChecked(joystick->stabilize_depth);
-    ui->checkBox_SRoll->setChecked(joystick->stabilize_roll);
-    ui->checkBox_SYaw->setChecked(joystick->stabilize_yaw);
-
     std::cout << "STABILIZE DEPTH = " << joystick->stabilize_depth << std::endl;
     std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
     std::cout << "STABILIZE PITCH = " << joystick->stabilize_yaw << std::endl;
-
-    ui->graphicsPFD_2->setRoll(server->imu_roll);
-    ui->graphicsPFD_2->setPitch(server->imu_pitch);
-    ui->graphicsPFD_2->setTurnRate(server->imu_roll_speed);
-    ui->graphicsPFD_2->setHeading(server->imu_yaw);
-    ui->graphicsPFD_2->setAltitude(server->imu_pressure);
 
     //PLOTS_____________________________________________________________________________________________________
     std::cout << "Drawing plots..." << std::endl;
@@ -540,17 +482,17 @@ void MainWindow::serverIsSleeping() {
     } else {
         std::cout << "Passed due to low dT." << std::endl;
     }
-    ui->graphicsPFD_2->update();
     std::cout << "Drawing done." << std::endl;
 }
 
-void MainWindow::info(QString s) {
+void MainWindow::info(QString s)
+{
  //   ui->terminal->append(s);
     ui->statusbar->showMessage(s);
 }
 
-void MainWindow::init() {
-    on_spinBox_Motor_Slot_valueChanged(0);
+void MainWindow::init()
+{
     on_pushButton_CS_loadConfig_released(); // Зло во плоти (в коде)
 
     //settings->connection->num = ui->spinBox_COM->value();
@@ -567,15 +509,6 @@ void MainWindow::on_checkBox_Calibration_Control_toggled(bool checked)
     //emit changeControl(checked);
 }
 
-void MainWindow::on_pushButton_Test_Motor_released()
-{
-    for (int i = 0; i < 8; ++i)
-        settings->motors[i].speed = 0;
-    int currentSlot = ui->spinBox_Motor_Slot->text().toInt();
-    int currentSpeed = ui->spinBox_Motor_Speed->text().toInt();
-    settings->motors[currentSlot].speed = static_cast<int16_t>(currentSpeed);
-}
-
 
 void MainWindow::on_pushButton_Connect_released()
 {
@@ -587,32 +520,6 @@ void MainWindow::on_pushButton_Stop_Test_released()
 {
     for (int i = 0; i < 8; ++i)
         settings->motors[i].speed = 0;
-}
-
-void MainWindow::on_pushButton_Save_released()
-{
-    int code = ui->spinBox_Motor_Slot->value();
-    settings->motors[code].enabled = ui->checkBox_Enabled->isChecked();
-    settings->motors[code].inverse = ui->checkBox_Inverse->isChecked();
-    settings->motors[code].k_backward = ui->doubleSpinBox_back->value();
-    settings->motors[code].k_forward = ui->doubleSpinBox_forw->value();
-    settings->motors[code].setCode(ui->comboBox_Tested_Motor->currentText());
-
-    // TODO Refactor method
-    /*emit changeMotorSetting(ui->spinBox_Motor_Slot->value(),
-                            ui->comboBox_Tested_Motor->currentText(),
-                            ui->checkBox_Inverse->isChecked());*/
-}
-
-void MainWindow::on_spinBox_Motor_Slot_valueChanged(int code)
-{
-    ui->checkBox_Enabled->setChecked(settings->motors[code].enabled);
-    ui->checkBox_Inverse->setChecked(settings->motors[code].inverse);
-
-    ui->doubleSpinBox_back->setValue(settings->motors[code].k_backward);
-    ui->doubleSpinBox_forw->setValue(settings->motors[code].k_forward);
-
-    ui->comboBox_Tested_Motor->setCurrentText(settings->motors[code].getCode());
 }
 
 void MainWindow::on_pushButton_Disconnect_released()
