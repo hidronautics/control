@@ -38,8 +38,23 @@ INCLUDEPATH += $$PWD/SFML-linux/include
 
 DEPENDPATH += $$PWD/SFML-linux/include
 
-CONFIG(release, debug|release): LIBS += -lsfml-window
-CONFIG(debug, debug|release): LIBS += -lsfml-window
+unix{
+    DEFINES += OS=\\\"unix\\\"
+    LIBS += -L$$PWD/SFML-linux/lib
+    INCLUDEPATH += $$PWD/SFML-linux/include
+    DEPENDPATH += $$PWD/SFML-linux/include
+    CONFIG(release, debug|release): LIBS += -lsfml-linux
+    CONFIG(debug, debug|release): LIBS += -lsfml-linux
+}
+
+win32{
+    DEFINES += OS=\\\"win32\\\"
+    LIBS += -L$$PWD/SFML-win32/lib
+    INCLUDEPATH += $$PWD/SFML-win32/include
+    DEPENDPATH += $$PWD/SFML-win32/include
+    CONFIG(release, debug|release): LIBS += -lsfml-window
+    CONFIG(debug, debug|release): LIBS += -lsfml-window-d
+}
 
 FORMS += \
     mainwindow.ui

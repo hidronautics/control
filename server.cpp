@@ -17,7 +17,14 @@ bool Server::COMconnect(int com_num)
 {
     int isOpened = false;
 
-    QString str = "/dev/ttyUSB";
+    QString str;
+    if (OS == "unix") {
+        str = "/dev/ttyUSB";
+    }
+    else if (OS == "win32") {
+        str = "COM";
+    }
+
     str.append(QString::number(com_num));
 
     std::cout << "Trying to open port |" << str.toStdString() << "|...";

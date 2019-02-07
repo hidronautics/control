@@ -818,6 +818,5 @@ void MainWindow::updateCsLabels()
 void MainWindow::update_csView()
 {
     updateCsLabels();
-    updateCsView();
 }
 
