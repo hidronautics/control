@@ -32,26 +32,22 @@ HEADERS += \
 
 DEFINES += SFML_STATIC
 
-LIBS += -L$$PWD/SFML-linux/lib
-
-INCLUDEPATH += $$PWD/SFML-linux/include
-
-DEPENDPATH += $$PWD/SFML-linux/include
-
 unix{
     DEFINES += OS=\\\"unix\\\"
-    LIBS += -L$$PWD/SFML-linux/lib
+    message("Unix build")
     INCLUDEPATH += $$PWD/SFML-linux/include
     DEPENDPATH += $$PWD/SFML-linux/include
-    CONFIG(release, debug|release): LIBS += -lsfml-linux
-    CONFIG(debug, debug|release): LIBS += -lsfml-linux
+    LIBS += -L$$PWD/SFML-linux/lib
+    CONFIG(release, debug|release): LIBS += -lsfml-window
+    CONFIG(debug, debug|release): LIBS += -lsfml-window
 }
 
 win32{
     DEFINES += OS=\\\"win32\\\"
-    LIBS += -L$$PWD/SFML-win32/lib
+    message("Windows build")
     INCLUDEPATH += $$PWD/SFML-win32/include
     DEPENDPATH += $$PWD/SFML-win32/include
+    LIBS += -L$$PWD/SFML-win32/lib
     CONFIG(release, debug|release): LIBS += -lsfml-window
     CONFIG(debug, debug|release): LIBS += -lsfml-window-d
 }

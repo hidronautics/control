@@ -25,37 +25,34 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if (OS == "win32") {
-        m_logFile.reset(new QFile("log.txt"));
-        m_logFile.data()->open(QFile::Append | QFile::Text);
-        qInstallMessageHandler(messageHandler);
+    m_logFile.reset(new QFile("log.txt"));
+    m_logFile.data()->open(QFile::Append | QFile::Text);
+    qInstallMessageHandler(messageHandler);
 
-        mainWindow = new MainWindow();
-        server = new Server();
-        settings = new Settings();
-        joystick = new Joystick();
+    mainWindow = new MainWindow();
+    server = new Server();
+    settings = new Settings();
+    joystick = new Joystick();
 
-        qInfo(logInfo()) << "Objects loaded";
+    qInfo(logInfo()) << "Objects loaded";
 
-        initMainWindow();
-        initServer();
-        initSettings();
-        initJoystick();
+    initMainWindow();
+    initServer();
+    initSettings();
+    initJoystick();
 
-        qInfo(logInfo()) << "Objects inited";
+    qInfo(logInfo()) << "Objects inited";
 
-        mainWindow->init(); // Дублирование кода
+    mainWindow->init(); // Дублирование кода
 
-        QObject::connect(server, SIGNAL(imSleeping()), mainWindow, SLOT(serverIsSleeping()));
-        QObject::connect(server, SIGNAL(info(QString s)), mainWindow, SLOT(info(QString s)));
-        QObject::connect(mainWindow, SIGNAL(connect_fake()), server, SLOT(connect_fake()));
-        QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
-        QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
-        QObject::connect(server, &Server::updateCsView, mainWindow, &MainWindow::update_csView);
+    QObject::connect(server, SIGNAL(imSleeping()), mainWindow, SLOT(serverIsSleeping()));
+    QObject::connect(server, SIGNAL(info(QString s)), mainWindow, SLOT(info(QString s)));
+    QObject::connect(mainWindow, SIGNAL(connect_fake()), server, SLOT(connect_fake()));
+    QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
+    QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
+    QObject::connect(server, &Server::updateCsView, mainWindow, &MainWindow::update_csView);
 
-        mainWindow->show();
-    }
-
+    mainWindow->show();
 
 
     return a.exec();
