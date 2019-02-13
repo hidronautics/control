@@ -6,7 +6,7 @@
         "flowControl": "no",
         "parity": "no",
         "pauseAfterReceived": 0,
-        "pauseAfterSent": 20,
+        "pauseAfterSent": 50,
         "stopBits": "one"
     },
     "motors": [
@@ -126,18 +126,18 @@
         },
         "yaw": {
             "POS_FILTER.K": 1,
-            "POS_FILTER.T": 1,
-            "SPEED_FILTER.K": 1,
-            "SPEED_FILTER.T": 1,
-            "pErrGain": 1,
-            "pJoyUnitCast": 1,
-            "pSpeedDyn": 1,
+            "POS_FILTER.T": 0,
+            "SPEED_FILTER.K": 2000,
+            "SPEED_FILTER.T": 0,
+            "pErrGain": 100,
+            "pJoyUnitCast": 0.009999999776482582,
+            "pSpeedDyn": 0,
             "pThrustersCast": 1,
-            "pThrustersMax": 500,
-            "pThrustersMin": 500,
-            "pid.iGain": 1,
-            "pid.iMax": 500,
-            "pid.iMin": -500,
+            "pThrustersMax": 10000,
+            "pThrustersMin": -10000,
+            "pid.iGain": 0.5,
+            "pid.iMax": 1000,
+            "pid.iMin": -1000,
             "pid.pGain": 1
         }
     }
