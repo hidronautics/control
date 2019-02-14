@@ -12,7 +12,6 @@
 #include <math.h>
 #include <string>
 #include <cstdlib>
-#include "qcustomplot.h"
 
 #include "joystick.h"
 #include "settings.h"
