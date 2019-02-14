@@ -329,7 +329,7 @@ struct ConfigResponse_s
     float speedFiltered;
     float posFiltered;
 
-    float LastTick;
+    float pid_iValue;
 
     uint16_t checksum;
 
@@ -368,7 +368,7 @@ struct ConfigResponse_s
         ds >> req.speedFiltered;
         ds >> req.posFiltered;
 
-        ds >> req.LastTick;
+        ds >> req.pid_iValue;
 
         ds >> req.checksum;
         return ds;

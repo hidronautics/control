@@ -160,6 +160,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
 
+    connect(ui->pushButton_jetsonOnOff, &QPushButton::pressed, [this](){
+        settings->pcreset = 0xAA;
+    });
+
+    connect(ui->pushButton_jetsonOnOff, &QPushButton::released, [this](){
+        settings->pcreset = 0x00;
+    });
+
     K_Protocol = new Qkx_coeffs("protocols.conf", "ki");
     X_Protocol = new x_protocol("protocols.conf", "xi", X);
 }
@@ -530,6 +538,8 @@ void MainWindow::saveCsView()
     settings->stabContour[settings->CS].stabConstants.aFilter[POS_FILTER].T = static_cast<float>(ui->doubleSpinBox_CS_posFilterT->value());
     settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].K = static_cast<float>(ui->doubleSpinBox_CS_speedFilterK->value());
     settings->stabContour[settings->CS].stabConstants.aFilter[SPEED_FILTER].T = static_cast<float>(ui->doubleSpinBox_CS_speedFilterT->value());
+
+    settings->controlMultiplier = static_cast<float>(ui->doubleSpinBox_sensitivity->value());
 }
 
 void MainWindow::updateCsLabels()
@@ -545,6 +555,7 @@ void MainWindow::updateCsLabels()
     ui->lineEdit_CS_speedError->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedError), 'f', 2));
     ui->lineEdit_CS_speedSignal->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedSignal), 'f', 2));
     ui->lineEdit_CS_speedFiltered->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.speedFiltered), 'f', 2));
+    ui->lineEdit_CS_pid_iValue->setText(QString::number(static_cast<double>(settings->stabContour[settings->CS].stabState.pid_iValue), 'f', 2));
 }
 
 void MainWindow::update_csView()

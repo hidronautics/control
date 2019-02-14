@@ -129,6 +129,9 @@ public:
     Connection* connection;
     Stabilization stabContour[STABILIZATION_AMOUNT];
 
+    float controlMultiplier = 0;
+    uint8_t pcreset = 0;
+
     bool loadFromJSONFile();
     bool saveToJSONFIle() const;
 

@@ -99,13 +99,13 @@ void Server::sendMessageNormal()
     req.type = REQUEST_NORMAL_CODE;
     req.flags = 0x00;
 
-    req.march = j->march;
-    req.lag = j->lag;
-    req.depth = j->depth;
+    req.march = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->march));
+    req.lag = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->lag));
+    req.depth = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->depth));
 
-    req.roll = j->roll;
-    req.pitch = j->pitch;
-    req.yaw = j->yaw;
+    req.roll = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->roll));
+    req.pitch = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->pitch));
+    req.yaw = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->yaw));
 
     req.light = j->light;
     req.grab = j->grab;
@@ -185,12 +185,12 @@ void Server::sendMessageConfig() {
     req.type = REQUEST_CONFIG_CODE;
     req.contour = static_cast<uint8_t>(settings->CS);
 
-    req.march = j->march;
-    req.lag = j->lag;
-    req.depth = j->depth;
-    req.roll = j->roll;
-    req.pitch = j->pitch;
-    req.yaw = j->yaw;
+    req.march = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->march));
+    req.lag = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->lag));
+    req.depth = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->depth));
+    req.roll = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->roll));
+    req.pitch = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->pitch));
+    req.yaw = static_cast<int16_t>(settings->controlMultiplier*static_cast<float>(j->yaw));
 
     req.pJoyUnitCast = settings->stabContour[settings->CS].stabConstants.pJoyUnitCast;
     req.pSpeedDyn = settings->stabContour[settings->CS].stabConstants.pSpeedDyn;
@@ -396,7 +396,7 @@ void Server::receiveConfigMessage()
     settings->stabContour[settings->CS].stabState.speedFiltered = resp.speedFiltered;
     settings->stabContour[settings->CS].stabState.posFiltered = resp.posFiltered;
 
-    settings->stabContour[settings->CS].stabState.LastTick = resp.LastTick;
+    settings->stabContour[settings->CS].stabState.pid_iValue = resp.pid_iValue;
 
     emit updateCsView();
 }
