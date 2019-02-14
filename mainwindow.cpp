@@ -160,6 +160,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
 
+    K_Protocol = new Qkx_coeffs("protocols.conf", "ki");
+    X_Protocol = new x_protocol("protocols.conf", "xi", X);
 }
 
 
@@ -548,5 +550,24 @@ void MainWindow::updateCsLabels()
 void MainWindow::update_csView()
 {
     updateCsLabels();
+
+    X[0][0] = settings->stabContour->stabState.inputSignal;
+    X[1][0] = settings->stabContour->stabState.speedSignal;
+    X[2][0] = settings->stabContour->stabState.posSignal;
+
+    X[3][0] = settings->stabContour->stabState.oldSpeed;
+    X[4][0] = settings->stabContour->stabState.oldPos;
+
+    X[5][0] = settings->stabContour->stabState.joyUnitCasted;
+    X[6][0] = settings->stabContour->stabState.joy_iValue;
+    X[7][0] = settings->stabContour->stabState.posError;
+    X[8][0] = settings->stabContour->stabState.speedError;
+    X[9][0] = settings->stabContour->stabState.dynSummator;
+    X[10][0] = settings->stabContour->stabState.pidValue;
+    X[11][0] = settings->stabContour->stabState.posErrorAmp;
+    X[12][0] = settings->stabContour->stabState.speedFiltered;
+    X[13][0] = settings->stabContour->stabState.posFiltered;
+
+    X[14][0] = settings->stabContour->stabState.pid_iValue;
 }
 

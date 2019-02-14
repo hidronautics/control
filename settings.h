@@ -94,7 +94,7 @@ struct Stabilization {
         float speedFiltered;
         float posFiltered;
 
-        float LastTick;
+        float pid_iValue;
 
         friend QDataStream& operator>>(QDataStream &ds, RobotStabilizationState &req)
         {
@@ -110,7 +110,7 @@ struct Stabilization {
             ds >> req.posErrorAmp;
             ds >> req.speedFiltered;
             ds >> req.posFiltered;
-            ds >> req.LastTick;
+            ds >> req.pid_iValue;
             return ds;
         }
     } stabState;

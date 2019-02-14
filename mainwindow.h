@@ -13,6 +13,13 @@
 #include "settings.h"
 #include "qmainwindow.h"
 
+#include "KX_pult/kx_protocol.h"
+#include "KX_pult/qkx_coeffs.h"
+#include "KX_pult/rov_model.h"
+
+extern double X[2000][2];
+extern QVector<double> K;
+
 #define REQUEST_TABLE_ROW_COUNT         REQUEST_CONFIG_LENGTH
 #define RESPONSE_TABLE_ROW_COUNT        RESPONSE_LENGTH
 
@@ -161,6 +168,9 @@ private:
     int imu_roll_speed_min;
     int imu_yaw_min;
     int imu_yaw_speed_min;
+
+    Qkx_coeffs *K_Protocol;
+    x_protocol *X_Protocol;
 };
 
 #endif // MAINWINDOW_H

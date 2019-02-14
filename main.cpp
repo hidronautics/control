@@ -5,6 +5,9 @@
 #include "settings.h"
 #include "logging_categories.h"
 
+double X[2000][2];
+
+
 const int MAX_JOYSTICK_ID = 5;
 
 MainWindow* mainWindow;
