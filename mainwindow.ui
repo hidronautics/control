@@ -1197,43 +1197,6 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="tabPlots">
-       <attribute name="title">
-        <string>Plots</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_21">
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QCustomPlot" name="plot_window_roll" native="true"/>
-            </item>
-            <item>
-             <widget class="QCustomPlot" name="plot_window_pitch" native="true"/>
-            </item>
-            <item>
-             <widget class="QCustomPlot" name="plot_window_yaw" native="true"/>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QCustomPlot" name="plot_window_roll_speed" native="true"/>
-            </item>
-            <item>
-             <widget class="QCustomPlot" name="plot_window_pitch_speed" native="true"/>
-            </item>
-            <item>
-             <widget class="QCustomPlot" name="plot_window_yaw_speed" native="true"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -1244,20 +1207,12 @@
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QCustomPlot</class>
-   <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
