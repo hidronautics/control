@@ -117,7 +117,7 @@ void Server::sendMessageNormal()
     req.dev_flags = 0;
     req.stabilize_flags = 0;
     req.cameras = j->camera;
-    req.pc_reset = j->pc_reset;
+    req.pc_reset = settings->pcreset;
 
     // Moving structure to QByteArray
     stream << req;

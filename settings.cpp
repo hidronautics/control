@@ -225,3 +225,15 @@ void Settings::changeMotorSetting(int slot, QString motorID, bool inverse) {
     std::cout << "Motor " << motorID.toStdString() << " is now binded to " << slot << " slot"
               << (inverse?" ":" not ") << "inverse" << std::endl;
 }
+
+void Settings::jetson_on_off_btn_clicked(bool checked)
+{
+    if (checked) {
+        std::cout << "Jetson puttong pressed...";
+        this->pcreset = 0xAA;
+    }
+    else {
+        std::cout << "Jetson puttong released";
+        this->pcreset = 0x00;
+    }
+}

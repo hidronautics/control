@@ -2,7 +2,7 @@ QT += core serialport testlib
 QT += gui widgets
 QT += svg printsupport network
 
-message($$PWD)
+#message($$PWD)
 
 #win32 {
 #    COPY_FROM_PATH=$$shell_path($$PWD/KX_pult/protocols.conf)

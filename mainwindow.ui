@@ -523,13 +523,6 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_jetsonOnOff">
-                   <property name="text">
-                    <string>Jetson ON</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
                   <widget class="QRadioButton" name="radioButton_Joystick">
                    <property name="text">
                     <string>X52 Joystick</string>
@@ -560,6 +553,16 @@
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_jetsonOnOff">
+                 <property name="text">
+                  <string>Jetson ON</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
                </item>
                <item>
                 <spacer name="verticalSpacer">
@@ -1246,7 +1249,7 @@
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

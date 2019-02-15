@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->pushButton_jetsonOnOff, &QPushButton::toggled, this, &MainWindow::send_jetson_btn_signal);
+
     //this->setStyleSheet("background-color: black;");
 
     ui->tableWidgetRequest->setColumnCount(3);
@@ -160,16 +162,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidgetResponse->setVerticalHeaderLabels(labels_response);
     ui->tableWidgetResponse->setHorizontalHeaderLabels(headerLabels);
 
-    connect(ui->pushButton_jetsonOnOff, &QPushButton::pressed, [this](){
-        settings->pcreset = 0xAA;
-    });
-
-    connect(ui->pushButton_jetsonOnOff, &QPushButton::released, [this](){
-        settings->pcreset = 0x00;
-    });
-
     K_Protocol = new Qkx_coeffs("protocols.conf", "ki");
     X_Protocol = new x_protocol("protocols.conf", "xi", X);
+}
+
+void MainWindow::send_jetson_btn_signal(bool checked)
+{
+    std::cout << "SHOZAHUETA";
+    emit jetson_on_off_btn_toggled(checked);
 }
 
 
@@ -562,23 +562,23 @@ void MainWindow::update_csView()
 {
     updateCsLabels();
 
-    X[0][0] = settings->stabContour->stabState.inputSignal;
-    X[1][0] = settings->stabContour->stabState.speedSignal;
-    X[2][0] = settings->stabContour->stabState.posSignal;
+    X[0][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.inputSignal);
+    X[1][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.speedSignal);
+    X[2][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.posSignal);
 
-    X[3][0] = settings->stabContour->stabState.oldSpeed;
-    X[4][0] = settings->stabContour->stabState.oldPos;
+    X[3][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.oldSpeed);
+    X[4][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.oldPos);
 
-    X[5][0] = settings->stabContour->stabState.joyUnitCasted;
-    X[6][0] = settings->stabContour->stabState.joy_iValue;
-    X[7][0] = settings->stabContour->stabState.posError;
-    X[8][0] = settings->stabContour->stabState.speedError;
-    X[9][0] = settings->stabContour->stabState.dynSummator;
-    X[10][0] = settings->stabContour->stabState.pidValue;
-    X[11][0] = settings->stabContour->stabState.posErrorAmp;
-    X[12][0] = settings->stabContour->stabState.speedFiltered;
-    X[13][0] = settings->stabContour->stabState.posFiltered;
+    X[5][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.joyUnitCasted);
+    X[6][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.joy_iValue);
+    X[7][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.posError);
+    X[8][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.speedError);
+    X[9][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.dynSummator);
+    X[10][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.pidValue);
+    X[11][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.posErrorAmp);
+    X[12][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.speedFiltered);
+    X[13][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.posFiltered);
 
-    X[14][0] = settings->stabContour->stabState.pid_iValue;
+    X[14][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.pid_iValue);
 }
 

@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     settings = new Settings();
     joystick = new Joystick();
 
+
     qInfo(logInfo()) << "Objects loaded";
 
     initMainWindow();
@@ -56,6 +57,9 @@ int main(int argc, char *argv[])
     QObject::connect(server, &Server::updateCsView, mainWindow, &MainWindow::update_csView);
 
     mainWindow->show();
+
+    QObject::connect(mainWindow, &MainWindow::jetson_on_off_btn_toggled,
+                     settings, &Settings::jetson_on_off_btn_clicked);
 
 
     return a.exec();

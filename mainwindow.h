@@ -45,12 +45,18 @@ public:
     void updateCsView();
     void saveCsView();
     void updateCsLabels();
+
+signals:
+    void jetson_on_off_btn_toggled(bool checked);
+
 public slots:
     void info(QString s);
     void serverIsSleeping();
     void update_csView();
 
 private slots:
+
+    void send_jetson_btn_signal(bool checked);
 
     void on_checkBox_Calibration_Control_toggled(bool checked);
 

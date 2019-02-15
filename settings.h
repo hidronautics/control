@@ -148,6 +148,7 @@ signals:
 
 public slots:
     void changeMotorSetting(int slot, QString motorID, bool inverse);
+    void jetson_on_off_btn_clicked(bool checked);
 };
 
 

@@ -7,6 +7,7 @@ QVector<double> K;
 Qkx_coeffs::Qkx_coeffs(const QString & config, const QString & name, bool _pult, QObject *parent) : QObject(parent) {
     QPIConfig conf(config, QIODevice::ReadOnly);
     QPIConfig::Entry & e(conf.getValue(name));
+    k_protocol=NULL;
     fname = e.getValue("file", "k.dat").value(); //k.dat
     ip_pult = e.getValue("sender.ip").value();
     ip_k = e.getValue("receiver.ip").value();
