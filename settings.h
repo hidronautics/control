@@ -129,7 +129,7 @@ public:
     Connection* connection;
     Stabilization stabContour[STABILIZATION_AMOUNT];
 
-    float controlMultiplier = 0;
+    float controlMultiplier = 1;
     uint8_t pcreset = 0;
 
     bool loadFromJSONFile();
