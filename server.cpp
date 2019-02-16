@@ -84,6 +84,31 @@ void Server::sendMessage() {
     receiveMessage();
 }
 
+
+void Server::reset_IMU()
+{
+    reset_imu = true;
+}
+
+
+bool Server::pick_bit(uint8_t &input, uint8_t bit)
+{
+    return static_cast<bool>((input << (8 - bit)) >> 8);
+}
+
+
+void Server::set_bit(uint8_t &byte, uint8_t bit, bool state)
+{
+    uint8_t value = 1;
+    if(state) {
+        byte = byte | (value << bit);
+    }
+    else {
+        byte = byte | ~(value << bit);
+    }
+}
+
+
 void Server::sendMessageNormal()
 {
     std::cout << "Server::sendMessageNormal()" << std::endl;
@@ -116,6 +141,13 @@ void Server::sendMessageNormal()
 
     req.dev_flags = 0;
     req.stabilize_flags = 0;
+    if (reset_imu) {
+        std::cout << "RESEATING IMUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU";
+        qDebug() << "Reseat IMU in normal message";
+        set_bit(req.stabilize_flags, SHORE_STABILIZE_RESET_IMU_BIT, true);
+        reset_imu = false;
+    }
+
     req.cameras = j->camera;
     req.pc_reset = settings->pcreset;
 
@@ -128,50 +160,13 @@ void Server::sendMessageNormal()
     // Moving checksum to QByteArray
     stream << checksum;
 
-    /*
-    std::cout << "Sending NORMAL message:" << std::endl;
-    for (int i = 0; i < REQUEST_NORMAL_LENGTH; ++i) {
-        std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    }
-    */
-
     newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
 }
 
 void Server::sendMessageDirect() {
     std::cout << "Server::sendMessageDirect()" << std::endl;
-    // TODO this is actually doesn't realised on STM side, will do
-    /*
-    for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
-        msg_to_send[i] = 0x00;
-    }
-    msg_to_send[0] = 0xFF;
-
-    msg_to_send[REQUEST_DIRECT_TYPE] = REQUEST_DIRECT_CODE;
-
-    msg_to_send[REQUEST_DIRECT_1] = settings->motors[0].speed;
-    msg_to_send[REQUEST_DIRECT_2] = settings->motors[1].speed;
-    msg_to_send[REQUEST_DIRECT_3] = settings->motors[2].speed;
-    msg_to_send[REQUEST_DIRECT_4] = settings->motors[3].speed;
-    msg_to_send[REQUEST_DIRECT_5] = settings->motors[4].speed;
-    msg_to_send[REQUEST_DIRECT_6] = settings->motors[5].speed;
-    msg_to_send[REQUEST_DIRECT_7] = settings->motors[6].speed;
-    msg_to_send[REQUEST_DIRECT_8] = settings->motors[7].speed;
-
-    addCheckSumm16b(msg_to_send, REQUEST_DIRECT_LENGTH);
-
-    //std::cout << "Sending DIRECT message:" << std::endl;
-    for (int i = 0; i < REQUEST_DIRECT_LENGTH; ++i) {
-        std::cout << "|N" << i << "=" << unsigned(msg_to_send[i]) << std::endl;
-    }
-
-    newPort->write((char*)msg_to_send, REQUEST_DIRECT_LENGTH);
-
-    emit imSleeping();
-    QTest::qSleep (settings->connection->pause_after_sent);
-    receiveMessage();
-    */
 }
+
 
 void Server::sendMessageConfig() {
     std::cout << "Server::sendMessageConfig()" << std::endl;
@@ -350,14 +345,14 @@ void Server::receiveConfigMessage()
     msg_in.push_back(newPort->readAll());
     QDataStream stream(&msg_in, QIODevice::ReadOnly);;
 
-    std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
-    std::cout << "Checksum...";
+//    std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
+//    std::cout << "Checksum...";
 
     if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_CONFIG_LENGTH)) {
-        std::cout << "OK" << std::endl;
+//        std::cout << "OK" << std::endl;
         msg_received_counter++;
     } else {
-        std::cout << "INCORRECT!" << std::endl;
+//        std::cout << "INCORRECT!" << std::endl;
         msg_lost_counter++;
         return;
     }
@@ -382,9 +377,6 @@ void Server::receiveConfigMessage()
     settings->stabContour[settings->CS].stabState.inputSignal = resp.inputSignal;
     settings->stabContour[settings->CS].stabState.speedSignal = resp.speedSignal;
     settings->stabContour[settings->CS].stabState.posSignal = resp.posSignal;
-
-    settings->stabContour[settings->CS].stabState.oldSpeed = resp.oldSpeed;
-    settings->stabContour[settings->CS].stabState.oldPos = resp.oldPos;
 
     settings->stabContour[settings->CS].stabState.joyUnitCasted = resp.joyUnitCasted;
     settings->stabContour[settings->CS].stabState.joy_iValue = resp.joy_iValue;
@@ -473,11 +465,6 @@ void Server::disconnect_com() {
     newPort->deleteLater();
 }
 
-void Server::addSNP(uint8_t * msg) {
-    msg[0] = 'S';
-    msg[1] = 'N';
-    msg[2] = 'P';
-}
 
 void writeCSV(QTextStream stream, uint8_t * msg, uint16_t length) {
     stream << QTime::currentTime().toString();

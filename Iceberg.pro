@@ -2,22 +2,25 @@ QT += core serialport testlib
 QT += gui widgets
 QT += svg printsupport network
 
-#message($$PWD)
+[Rules]
+*.debug=true
 
-#win32 {
-#    COPY_FROM_PATH=$$shell_path($$PWD/KX_pult/protocols.conf)
-#    COPY_TO_PATH=$$shell_path($$OUT_PWD)
-#}
-#else {
-#    COPY_FROM_PATH=$$PWD/KX_pult/protocols.conf
-#    COPY_TO_PATH=$$OUT_PWD
-#}
+message($$PWD)
 
-#copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
-#first.depends = $(first) copydata
+win32 {
+    COPY_FROM_PATH=$$shell_path($$PWD/KX_pult/protocols.conf)
+    COPY_TO_PATH=$$shell_path($$OUT_PWD)
+}
+else {
+    COPY_FROM_PATH=$$PWD/KX_pult/protocols.conf
+    COPY_TO_PATH=$$OUT_PWD
+}
 
-#export(first.depends)
-#export(copydata.commands)
+copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
+first.depends = $(first) copydata
+
+export(first.depends)
+export(copydata.commands)
 
 QMAKE_EXTRA_TARGETS += first copydata
 

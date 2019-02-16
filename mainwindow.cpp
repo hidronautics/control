@@ -7,7 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->pushButton_jetsonOnOff, &QPushButton::toggled, this, &MainWindow::send_jetson_btn_signal);
+    // send to global view control buttons signals
+    connect(ui->pushButtonJetsonOnOff, &QPushButton::toggled,
+            this, &MainWindow::send_jetson_btn_signal);
+    connect(ui->pushButtonResetIMU, &QPushButton::pressed,
+            this, &MainWindow::send_reset_IMU_signal);
 
     //this->setStyleSheet("background-color: black;");
 
@@ -166,10 +170,16 @@ MainWindow::MainWindow(QWidget *parent) :
     X_Protocol = new x_protocol("protocols.conf", "xi", X);
 }
 
+
 void MainWindow::send_jetson_btn_signal(bool checked)
 {
-    std::cout << "SHOZAHUETA";
     emit jetson_on_off_btn_toggled(checked);
+}
+
+void MainWindow::send_reset_IMU_signal()
+{
+    emit reset_IMU_btn_clicked();
+    std::cout << "RESET IMU";
 }
 
 
@@ -222,14 +232,15 @@ void MainWindow::serverIsSleeping() {
     std::cout << "STABILIZE DEPTH = " << joystick->stabilize_depth << std::endl;
     std::cout << "STABILIZE ROLL  = " << joystick->stabilize_roll  << std::endl;
     std::cout << "STABILIZE PITCH = " << joystick->stabilize_yaw << std::endl;
-
 }
+
 
 void MainWindow::info(QString s)
 {
  //   ui->terminal->append(s);
     ui->statusbar->showMessage(s);
 }
+
 
 void MainWindow::init()
 {
@@ -239,10 +250,12 @@ void MainWindow::init()
     //settings->connection->baudRate = settings->connection->getBaudRate(ui->comboBox_BaudRate->currentText().toInt());
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::on_checkBox_Calibration_Control_toggled(bool checked)
 {
@@ -262,10 +275,12 @@ void MainWindow::on_pushButton_Stop_Test_released()
         settings->motors[i].speed = 0;
 }
 
+
 void MainWindow::on_pushButton_Disconnect_released()
 {
     emit disconnect();
 }
+
 
 void MainWindow::on_pushButton_CS_loadConfig_released()
 {
@@ -290,10 +305,12 @@ void MainWindow::on_pushButton_CS_loadConfig_released()
     }
 }
 
+
 void MainWindow::on_pushButton_send_config_released()
 {
     server->nextMessageType = REQUEST_CONFIG_CODE;
 }
+
 
 void MainWindow::on_pushButton_released()
 {
@@ -301,15 +318,18 @@ void MainWindow::on_pushButton_released()
     emit connect_fake();
 }
 
+
 void MainWindow::on_pushButton_2_released()
 {
     server->nextMessageType = REQUEST_DIRECT_CODE;
 }
 
+
 void MainWindow::on_pushButton_3_released()
 {
     server->nextMessageType = REQUEST_NORMAL_CODE;
 }
+
 
 void MainWindow::on_pushButton_CS_saveConfig_released()
 {
@@ -321,10 +341,12 @@ void MainWindow::on_pushButton_CS_saveConfig_released()
     settings->saveToJSONFIle();
 }
 
+
 void MainWindow::on_pushButton_4_released()
 {
     settings->loadFromJSONFile();
 }
+
 
 void MainWindow::on_radioButton_Joystick_released()
 {
@@ -337,6 +359,7 @@ void MainWindow::on_radioButton_Joystick_released()
     ui->radioButton_XBox->setChecked(false);
 }
 
+
 void MainWindow::on_radioButton_Keyboard_released()
 {
     joystick->isControlJoystick = false;
@@ -347,6 +370,7 @@ void MainWindow::on_radioButton_Keyboard_released()
     ui->radioButton_Keyboard->setChecked(true);
     ui->radioButton_XBox->setChecked(false);
 }
+
 
 void MainWindow::on_radioButton_XBox_released()
 {
@@ -359,30 +383,36 @@ void MainWindow::on_radioButton_XBox_released()
     ui->radioButton_XBox->setChecked(true);
 }
 
+
 void MainWindow::on_comboBox_Parity_currentTextChanged(const QString &arg1)
 {
     settings->connection->parity = settings->connection->getParity(arg1);
 }
+
 
 void MainWindow::on_comboBox_StopBits_currentTextChanged(const QString &arg1)
 {
     settings->connection->stopBits = settings->connection->getStopBits(arg1);
 }
 
+
 void MainWindow::on_comboBox_FlowControl_currentTextChanged(const QString &arg1)
 {
     settings->connection->flowControl = settings->connection->getFlowControl(arg1);
 }
+
 
 void MainWindow::on_spinBox_COM_valueChanged(int arg1)
 {
     settings->connection->num = arg1;
 }
 
+
 void MainWindow::on_comboBox_DataBits_currentTextChanged(const QString &arg1)
 {
     settings->connection->dataBits = settings->connection->getDataBits(arg1.toInt());
 }
+
 
 void MainWindow::on_comboBox_BaudRate_currentTextChanged(const QString &arg1)
 {
@@ -395,15 +425,18 @@ void MainWindow::on_checkBox_toggled(bool checked)
     server->emulation_mode = checked;
 }
 
+
 void MainWindow::on_spinBox_PauseAfterSent_valueChanged(int arg1)
 {
     settings->connection->pause_after_sent = arg1;
 }
 
+
 void MainWindow::on_spinBox_PauseAfterReceived_valueChanged(int arg1)
 {
     settings->connection->pause_after_received = arg1;
 }
+
 
 void MainWindow::on_checkBox_2_toggled(bool checked)
 {

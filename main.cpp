@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QObject>
+#include <QDebug>
 #include "server.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -26,6 +27,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "QDebug is working";
     QApplication a(argc, argv);
 
     m_logFile.reset(new QFile("log.txt"));
@@ -54,12 +56,15 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, SIGNAL(connect_fake()), server, SLOT(connect_fake()));
     QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
     QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
-    QObject::connect(server, &Server::updateCsView, mainWindow, &MainWindow::update_csView);
 
     mainWindow->show();
 
     QObject::connect(mainWindow, &MainWindow::jetson_on_off_btn_toggled,
                      settings, &Settings::jetson_on_off_btn_clicked);
+    QObject::connect(server, &Server::updateCsView, mainWindow,
+                     &MainWindow::update_csView);
+    QObject::connect(mainWindow, &MainWindow::reset_IMU_btn_clicked,
+                     server, &Server::reset_IMU);
 
 
     return a.exec();

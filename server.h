@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QTest>
 #include <QDebug>
+#include <QBitArray>
 #include <qtimer.h>
 #include <stdint.h>
 #include <messages.h>
@@ -48,6 +49,7 @@ public:
 
     Settings* settings;
 
+    bool reset_imu = false;
     //float temperature = 0;
     float imu_roll;
     float imu_pitch;
@@ -136,12 +138,13 @@ private:
 
     void addFloat(uint8_t * msg, int position, float val);
     float getFloat(QByteArray msg, int position);
-    void addSNP(uint8_t * msg);
 
     //float encodeTemperature(uint8_t MS, uint8_t LS);
 
     void writeCSV(QTextStream* stream, uint8_t * msg, uint16_t length);
 
+    bool pick_bit(uint8_t &input, uint8_t bit);
+    void set_bit(uint8_t &byte, uint8_t bit, bool state);
 
 signals:
     void imSleeping();
@@ -149,6 +152,7 @@ signals:
     void updateCsView();
 
 public slots:
+    void reset_IMU();
     void connect_fake();
 
     void connect_com();

@@ -12,6 +12,12 @@
 #define REQUEST_NORMAL_CODE             0xA5
 #define REQUEST_NORMAL_LENGTH           26
 
+#define SHORE_STABILIZE_DEPTH_BIT       0
+#define SHORE_STABILIZE_ROLL_BIT        1
+#define SHORE_STABILIZE_PITCH_BIT       2
+#define SHORE_STABILIZE_YAW_BIT         3
+#define SHORE_STABILIZE_RESET_IMU_BIT   4
+
 struct Request_s
 {
     uint8_t type;
@@ -172,7 +178,7 @@ struct ConfigRequest_s
 
 /* Response values and data structures */
 #define RESPONSE_LENGTH                 70
-#define RESPONSE_CONFIG_LENGTH          95
+#define RESPONSE_CONFIG_LENGTH          91
 
 struct Response_s
 {
@@ -304,6 +310,7 @@ struct ConfigResponse_s
     float roll;
     float pitch;
     float yaw;
+    float raw_yaw;
 
     float rollSpeed;
     float pitchSpeed;
@@ -315,9 +322,6 @@ struct ConfigResponse_s
     float inputSignal;
     float speedSignal;
     float posSignal;
-
-    float oldSpeed;
-    float oldPos;
 
     float joyUnitCasted;
     float joy_iValue;
@@ -343,6 +347,7 @@ struct ConfigResponse_s
         ds >> req.roll;
         ds >> req.pitch;
         ds >> req.yaw;
+        ds >> req.raw_yaw;
 
         ds >> req.rollSpeed;
         ds >> req.pitchSpeed;
@@ -354,9 +359,6 @@ struct ConfigResponse_s
         ds >> req.inputSignal;
         ds >> req.speedSignal;
         ds >> req.posSignal;
-
-        ds >> req.oldSpeed;
-        ds >> req.oldPos;
 
         ds >> req.joyUnitCasted;
         ds >> req.joy_iValue;
