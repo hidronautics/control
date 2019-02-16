@@ -54,6 +54,7 @@ public:
     float imu_roll;
     float imu_pitch;
     float imu_yaw;
+    float imu_raw_yaw;
 
     float imu_roll_speed;
     float imu_pitch_speed;

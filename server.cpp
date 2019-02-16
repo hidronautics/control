@@ -366,6 +366,7 @@ void Server::receiveConfigMessage()
     imu_roll = resp.roll;
     imu_pitch = resp.pitch;
     imu_yaw = resp.yaw;
+    imu_raw_yaw = resp.raw_yaw;
 
     imu_roll_speed = resp.rollSpeed;
     imu_pitch_speed = resp.pitchSpeed;

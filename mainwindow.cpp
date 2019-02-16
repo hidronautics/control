@@ -244,7 +244,7 @@ void MainWindow::info(QString s)
 
 void MainWindow::init()
 {
-    on_pushButton_CS_loadConfig_released(); // Зло во плоти (в коде)
+    //on_pushButton_CS_loadConfig_released(); // Зло во плоти (в коде)
 
     //settings->connection->num = ui->spinBox_COM->value();
     //settings->connection->baudRate = settings->connection->getBaudRate(ui->comboBox_BaudRate->currentText().toInt());
@@ -613,5 +613,6 @@ void MainWindow::update_csView()
     X[13][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.posFiltered);
 
     X[14][0] = static_cast<double>(settings->stabContour[settings->CS].stabState.pid_iValue);
+    X[15][0] = static_cast<double>(server->imu_raw_yaw);
 }
 
