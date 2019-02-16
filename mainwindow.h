@@ -50,6 +50,11 @@ public:
 signals:
     void jetson_on_off_btn_toggled(bool checked);
     void reset_IMU_btn_clicked();
+    void stabilize_roll_toggled(bool checked);
+    void stabilize_pitch_toggled(bool checked);
+    void stabilize_yaw_toggled(bool checked);
+    void stabilize_depth_toggled(bool checked);
+
     void newValues(int* vals);
     void tryConnect();
     void disconnect();
@@ -62,9 +67,12 @@ public slots:
     void update_csView();
 
 private slots:
-
     void send_jetson_btn_signal(bool checked);
     void send_reset_IMU_signal();
+    void send_stabilize_roll_signal(bool checked);
+    void send_stabilize_pitch_signal(bool checked);
+    void send_stabilize_yaw_signal(bool checked);
+    void send_stabilize_depth_signal(bool checked);
 
     void on_checkBox_Calibration_Control_toggled(bool checked);
     void on_pushButton_Connect_released();

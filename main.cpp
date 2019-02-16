@@ -66,6 +66,15 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, &MainWindow::reset_IMU_btn_clicked,
                      server, &Server::reset_IMU);
 
+    QObject::connect(mainWindow, &MainWindow::stabilize_roll_toggled,
+                     server, &Server::set_stabilize_roll);
+    QObject::connect(mainWindow, &MainWindow::stabilize_pitch_toggled,
+                     server, &Server::set_stabilize_pitch);
+    QObject::connect(mainWindow, &MainWindow::stabilize_yaw_toggled,
+                     server, &Server::set_stabilize_yaw);
+    QObject::connect(mainWindow, &MainWindow::stabilize_depth_toggled,
+                     server, &Server::set_stabilize_depth);
+
 
     return a.exec();
 }

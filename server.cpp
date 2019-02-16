@@ -91,6 +91,30 @@ void Server::reset_IMU()
 }
 
 
+void Server::set_stabilize_roll(bool enabled)
+{
+    stabilize_roll = enabled;
+}
+
+
+void Server::set_stabilize_pitch(bool enabled)
+{
+    stabilize_pitch = enabled;
+}
+
+
+void Server::set_stabilize_yaw(bool enabled)
+{
+    stabilize_yaw = enabled;
+}
+
+
+void Server::set_stabilize_depth(bool enabled)
+{
+    stabilize_depth = enabled;
+}
+
+
 bool Server::pick_bit(uint8_t &input, uint8_t bit)
 {
     return static_cast<bool>((input << (8 - bit)) >> 8);
@@ -104,7 +128,7 @@ void Server::set_bit(uint8_t &byte, uint8_t bit, bool state)
         byte = byte | (value << bit);
     }
     else {
-        byte = byte | ~(value << bit);
+        byte = byte & ~(value << bit);
     }
 }
 
@@ -141,12 +165,16 @@ void Server::sendMessageNormal()
 
     req.dev_flags = 0;
     req.stabilize_flags = 0;
+
     if (reset_imu) {
-        std::cout << "RESEATING IMUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU";
-        qDebug() << "Reseat IMU in normal message";
         set_bit(req.stabilize_flags, SHORE_STABILIZE_RESET_IMU_BIT, true);
         reset_imu = false;
     }
+
+    set_bit(req.stabilize_flags, SHORE_STABILIZE_ROLL_BIT, stabilize_roll);
+    set_bit(req.stabilize_flags, SHORE_STABILIZE_PITCH_BIT, stabilize_pitch);
+    set_bit(req.stabilize_flags, SHORE_STABILIZE_YAW_BIT, stabilize_yaw);
+    set_bit(req.stabilize_flags, SHORE_STABILIZE_DEPTH_BIT, stabilize_depth);
 
     req.cameras = j->camera;
     req.pc_reset = settings->pcreset;

@@ -13,6 +13,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pushButtonResetIMU, &QPushButton::pressed,
             this, &MainWindow::send_reset_IMU_signal);
 
+    connect(ui->checkBoxStabilizeRoll, &QCheckBox::toggled,
+            this, &MainWindow::send_stabilize_roll_signal);
+    connect(ui->checkBoxStabilizePitch, &QCheckBox::toggled,
+            this, &MainWindow::send_stabilize_pitch_signal);
+    connect(ui->checkBoxStabilizeYaw, &QCheckBox::toggled,
+            this, &MainWindow::send_stabilize_yaw_signal);
+    connect(ui->checkBoxStabilizeDepth, &QCheckBox::toggled,
+            this, &MainWindow::send_stabilize_depth_signal);
+
     //this->setStyleSheet("background-color: black;");
 
     ui->tableWidgetRequest->setColumnCount(3);
@@ -176,10 +185,35 @@ void MainWindow::send_jetson_btn_signal(bool checked)
     emit jetson_on_off_btn_toggled(checked);
 }
 
+
 void MainWindow::send_reset_IMU_signal()
 {
     emit reset_IMU_btn_clicked();
     std::cout << "RESET IMU";
+}
+
+
+void MainWindow::send_stabilize_roll_signal(bool checked)
+{
+    emit  stabilize_roll_toggled(checked);
+}
+
+
+void MainWindow::send_stabilize_pitch_signal(bool checked)
+{
+    emit stabilize_pitch_toggled(checked);
+}
+
+
+void MainWindow::send_stabilize_yaw_signal(bool checked)
+{
+    emit stabilize_yaw_toggled(checked);
+}
+
+
+void MainWindow::send_stabilize_depth_signal(bool checked)
+{
+    emit stabilize_depth_toggled(checked);
 }
 
 

@@ -50,6 +50,11 @@ public:
     Settings* settings;
 
     bool reset_imu = false;
+    bool stabilize_roll = false;
+    bool stabilize_pitch = false;
+    bool stabilize_yaw = false;
+    bool stabilize_depth = false;
+
     //float temperature = 0;
     float imu_roll;
     float imu_pitch;
@@ -154,6 +159,12 @@ signals:
 
 public slots:
     void reset_IMU();
+
+    void set_stabilize_roll(bool enabled);
+    void set_stabilize_pitch(bool enabled);
+    void set_stabilize_yaw(bool enabled);
+    void set_stabilize_depth(bool enabled);
+
     void connect_fake();
 
     void connect_com();
