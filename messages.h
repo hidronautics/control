@@ -13,9 +13,9 @@
 #define REQUEST_NORMAL_LENGTH           26
 
 #define SHORE_STABILIZE_DEPTH_BIT       0
-#define SHORE_STABILIZE_ROLL_BIT        1
-#define SHORE_STABILIZE_PITCH_BIT       2
-#define SHORE_STABILIZE_YAW_BIT         3
+#define SHORE_STABILIZE_YAW_BIT         1
+#define SHORE_STABILIZE_ROLL_BIT        2
+#define SHORE_STABILIZE_PITCH_BIT       3
 #define SHORE_STABILIZE_RESET_IMU_BIT   4
 
 struct Request_s
