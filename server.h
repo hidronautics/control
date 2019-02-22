@@ -49,7 +49,9 @@ public:
 
     Settings* settings;
 
+    bool flash_thruster_settings = false;
     bool reset_imu = false;
+
     bool stabilize_roll = false;
     bool stabilize_pitch = false;
     bool stabilize_yaw = false;
@@ -158,6 +160,9 @@ signals:
     void updateCsView();
 
 public slots:
+
+    void flash_thruster();
+
     void reset_IMU();
 
     void set_stabilize_roll(bool enabled);

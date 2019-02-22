@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
 
     mainWindow->show();
 
+
+    QObject::connect(mainWindow, &MainWindow::flash_thruster_btn_clicked,
+                     server, &Server::flash_thruster);
     QObject::connect(mainWindow, &MainWindow::jetson_on_off_btn_toggled,
                      settings, &Settings::jetson_on_off_btn_clicked);
     QObject::connect(server, &Server::updateCsView, mainWindow,

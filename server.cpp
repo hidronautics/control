@@ -85,6 +85,12 @@ void Server::sendMessage() {
 }
 
 
+void Server::flash_thruster()
+{
+    flash_thruster_settings = true;
+}
+
+
 void Server::reset_IMU()
 {
     reset_imu = true;
@@ -165,6 +171,11 @@ void Server::sendMessageNormal()
 
     req.dev_flags = 0;
     req.stabilize_flags = 0;
+
+    if (flash_thruster_settings) {
+        set_bit(req.stabilize_flags, SHORE_STABILIZE_SAVE_BIT, true);
+        flash_thruster_settings = false;
+    }
 
     if (reset_imu) {
         set_bit(req.stabilize_flags, SHORE_STABILIZE_RESET_IMU_BIT, true);

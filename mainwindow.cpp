@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pushButtonResetIMU, &QPushButton::pressed,
             this, &MainWindow::send_reset_IMU_signal);
 
+    // save to flash thruster configuration
+    connect(ui->pushButtonFlash, &QPushButton::pressed,
+            this, &MainWindow::send_thruster_flashing_signal);
+
     connect(ui->checkBoxStabilizeRoll, &QCheckBox::toggled,
             this, &MainWindow::send_stabilize_roll_signal);
     connect(ui->checkBoxStabilizePitch, &QCheckBox::toggled,
@@ -251,6 +255,12 @@ void MainWindow::thruster_backward_saturation_changed(int value)
 {
     settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation = static_cast<int16_t>(value);
     ui->spinBoxBarkwardSaturation->setValue(value);
+}
+
+
+void MainWindow::send_thruster_flashing_signal()
+{
+    emit flash_thruster_btn_clicked();
 }
 
 

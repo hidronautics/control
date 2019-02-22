@@ -57,6 +57,30 @@ void Settings::read(const QJsonObject &json)
 
     }
 
+
+    // Thrusters configuration
+    QJsonObject thrusters_json = json["thrusters"].toObject();
+    QJsonObject thruster_json[THRUSTERS_AMOUNT];
+
+    thruster_json[HLB] = thrusters_json["HLB"].toObject();
+    thruster_json[HLF] = thrusters_json["HLF"].toObject();
+    thruster_json[HRB] = thrusters_json["HRB"].toObject();
+    thruster_json[HRF] = thrusters_json["HRF"].toObject();
+    thruster_json[VB] = thrusters_json["VB"].toObject();
+    thruster_json[VF] = thrusters_json["VF"].toObject();
+    thruster_json[VL] = thrusters_json["VL"].toObject();
+    thruster_json[VR] = thrusters_json["VR"].toObject();
+
+    for (uint i = 0; i < THRUSTERS_AMOUNT; ++i) {
+        thrusters_configs[i].id = static_cast<uint8_t>(thruster_json[i]["id"].toInt());
+        thrusters_configs[i].kForward = thruster_json[i]["kForward"].toInt();
+        thrusters_configs[i].kBackward = thruster_json[i]["kBackward"].toInt();
+        thrusters_configs[i].forward_saturation = static_cast<int16_t>(thruster_json[i]["forward_saturation"].toInt());
+        thrusters_configs[i].backward_saturation = static_cast<int16_t>(thruster_json[i]["backward_saturation"].toInt());
+    }
+
+
+    // Stabilization configuration
     QJsonObject stabilization_json = json["stabilization"].toObject();
     QJsonObject cs_json[STABILIZATION_AMOUNT];
     cs_json[STAB_DEPTH]  = stabilization_json["depth"].toObject();
@@ -138,9 +162,34 @@ void Settings::write(QJsonObject &json) const
 
     json["motors"] = motorArray;
 
+
+    // Thrusters configuration
+    QJsonObject thruster_json[THRUSTERS_AMOUNT];
+
+    for (uint i = 0; i < THRUSTERS_AMOUNT; ++i) {
+        thruster_json[i]["id"] = thrusters_configs[i].id;
+        thruster_json[i]["kForward"] = thrusters_configs[i].id;
+        thruster_json[i]["kBackward"] = thrusters_configs[i].id;
+        thruster_json[i]["forward_saturation"] = thrusters_configs[i].id;
+        thruster_json[i]["backward_saturation"] = thrusters_configs[i].id;
+    }
+
+    QJsonObject thrusters_json;
+    thrusters_json["HLB"] = thruster_json[HLB];
+    thrusters_json["HLF"] = thruster_json[HLF];
+    thrusters_json["HRB"] = thruster_json[HRB];
+    thrusters_json["HRF"] = thruster_json[HRF];
+    thrusters_json["VB"] = thruster_json[VB];
+    thrusters_json["VF"] = thruster_json[VF];
+    thrusters_json["VL"] = thruster_json[VL];
+    thrusters_json["VR"] = thruster_json[VR];
+
+    json["thrusters"] = thrusters_json;
+
+    // Stabilization configuration
     QJsonObject cs_json[STABILIZATION_AMOUNT];
 
-    for(int i=0; i<STABILIZATION_AMOUNT; i++) {
+    for(int i = 0; i < STABILIZATION_AMOUNT; i++) {
         cs_json[i]["pJoyUnitCast"] = static_cast<double>(stabContour[i].stabConstants.pJoyUnitCast);
         cs_json[i]["pSpeedDyn"] = static_cast<double>(stabContour[i].stabConstants.pSpeedDyn);
         cs_json[i]["pErrGain"] = static_cast<double>(stabContour[i].stabConstants.pErrGain);
@@ -225,6 +274,7 @@ void Settings::changeMotorSetting(int slot, QString motorID, bool inverse) {
     std::cout << "Motor " << motorID.toStdString() << " is now binded to " << slot << " slot"
               << (inverse?" ":" not ") << "inverse" << std::endl;
 }
+
 
 void Settings::jetson_on_off_btn_clicked(bool checked)
 {

@@ -32,6 +32,17 @@ enum STAB_FILTERS {
 };
 
 #define THRUSTERS_AMOUNT 8
+enum Thrusters {
+    HLB = 0,
+    HLF,
+    HRB,
+    HRF,
+    VB,
+    VF,
+    VL,
+    VR
+};
+
 
 struct ThrusterConfig {
     uint8_t id = 0;

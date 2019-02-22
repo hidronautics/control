@@ -48,6 +48,7 @@ public:
     void updateCsLabels();
 
 signals:
+    void flash_thruster_btn_clicked();
     void jetson_on_off_btn_toggled(bool checked);
     void reset_IMU_btn_clicked();
     void stabilize_roll_toggled(bool checked);
@@ -80,6 +81,7 @@ private slots:
     void thruster_forward_saturation_changed(int value);
     void thruster_backward_saturation_changed(int value);
 
+    void send_thruster_flashing_signal();
     void send_jetson_btn_signal(bool checked);
     void send_reset_IMU_signal();
     void send_stabilize_roll_signal(bool checked);

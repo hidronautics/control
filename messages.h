@@ -17,6 +17,7 @@
 #define SHORE_STABILIZE_ROLL_BIT        2
 #define SHORE_STABILIZE_PITCH_BIT       3
 #define SHORE_STABILIZE_RESET_IMU_BIT   4
+#define SHORE_STABILIZE_SAVE_BIT        5
 
 /* Config mode */
 #define REQUEST_CONFIG_CODE             0x55
@@ -367,17 +368,6 @@ struct ConfigResponse_s
     }
 };
 
-enum Thrusters {
-    HLB = 0,
-    HLF,
-    HRB,
-    HRF,
-    VB,
-    VF,
-    VL,
-    VR
-};
-
 struct RequestDirect_s
 {
     uint8_t type;
@@ -386,7 +376,7 @@ struct RequestDirect_s
 
     int16_t velocity;
 
-    bool reverse;
+    uint8_t reverse; // true of false
 
     float kForward;
     float kBackward;
