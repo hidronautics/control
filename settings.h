@@ -31,6 +31,23 @@ enum STAB_FILTERS {
     SPEED_FILTER
 };
 
+#define THRUSTERS_AMOUNT 8
+
+struct ThrusterConfig {
+    uint8_t id = 0;
+
+    int16_t velocity = 0;
+
+    bool reverse = 0;
+
+    float kForward = 0;
+    float kBackward = 0;
+
+    int16_t forward_saturation = 0;
+    int16_t backward_saturation = 0;
+};
+
+
 struct Stabilization {
     bool enable;
     struct RobotStabilizationConstants {
@@ -128,6 +145,9 @@ public:
     Motor* motors;
     Connection* connection;
     Stabilization stabContour[STABILIZATION_AMOUNT];
+
+    uint8_t current_thrusters_numb;
+    ThrusterConfig thrusters_configs[THRUSTERS_AMOUNT];
 
     float controlMultiplier = 1;
     uint8_t pcreset = 0;

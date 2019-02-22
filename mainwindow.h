@@ -61,12 +61,25 @@ signals:
     void connect_fake();
     void changeMotorSetting(int slot, QString motorID, bool inverse);
 
+    // direct signals
+
+
 public slots:
     void info(QString s);
     void serverIsSleeping();
     void update_csView();
 
 private slots:
+    // Direct
+    void thruster_number_changed(int number);
+    void thruster_id_changed(int id);
+    void thruster_reverse_clicked(bool checked);
+    void thruster_velocity_changed(int value);
+    void thruster_k_forward_changed(int value);
+    void thruster_k_backward_changed(int value);
+    void thruster_forward_saturation_changed(int value);
+    void thruster_backward_saturation_changed(int value);
+
     void send_jetson_btn_signal(bool checked);
     void send_reset_IMU_signal();
     void send_stabilize_roll_signal(bool checked);

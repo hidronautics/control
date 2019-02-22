@@ -22,8 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->checkBoxStabilizeDepth, &QCheckBox::toggled,
             this, &MainWindow::send_stabilize_depth_signal);
 
-    //this->setStyleSheet("background-color: black;");
-
     ui->tableWidgetRequest->setColumnCount(3);
     ui->tableWidgetRequest->setRowCount(REQUEST_TABLE_ROW_COUNT);
 
@@ -177,6 +175,82 @@ MainWindow::MainWindow(QWidget *parent) :
 
     K_Protocol = new Qkx_coeffs("protocols.conf", "ki");
     X_Protocol = new x_protocol("protocols.conf", "xi", X);
+
+    // Direct tab,
+    connect(ui->buttonGroupThrusterNumber,
+            static_cast<void(QButtonGroup::*)(int)>(
+                &QButtonGroup::buttonClicked), this,
+            &MainWindow::thruster_number_changed);
+
+    connect(ui->spinBoxThrusterId,
+            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &MainWindow::thruster_id_changed);
+    connect(ui->checkBoxReverse, &QCheckBox::clicked,
+            this, &MainWindow::thruster_reverse_clicked);
+
+    connect(ui->verticalSliderVelocity, &QSlider::valueChanged,
+            this, &MainWindow::thruster_velocity_changed);
+    connect(ui->verticalSliderForwardK, &QSlider::valueChanged,
+            this, &MainWindow::thruster_k_forward_changed);
+    connect(ui->verticalSliderBackwardK, &QSlider::valueChanged,
+            this, &MainWindow::thruster_k_backward_changed);
+    connect(ui->verticalSliderForwardSaturation, &QSlider::valueChanged,
+            this, &MainWindow::thruster_forward_saturation_changed);
+    connect(ui->verticalSliderBarkwardSaturation, &QSlider::valueChanged,
+            this, &MainWindow::thruster_backward_saturation_changed);
+}
+
+
+void MainWindow::thruster_number_changed(int number)
+{
+    settings->current_thrusters_numb = static_cast<uint8_t>(number);
+}
+
+
+void MainWindow::thruster_id_changed(int id)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].id = static_cast<uint8_t>(id);
+}
+
+
+void MainWindow::thruster_reverse_clicked(bool checked)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].reverse = checked;
+}
+
+
+void MainWindow::thruster_velocity_changed(int value)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].velocity = static_cast<int16_t>(value);
+    ui->spinBoxVelocity->setValue(value);
+}
+
+
+void MainWindow::thruster_k_forward_changed(int value)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].kForward = static_cast<int16_t>(value);
+    ui->spinBoxForwardK->setValue(value);
+}
+
+
+void MainWindow::thruster_k_backward_changed(int value)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].kBackward = static_cast<int16_t>(value);
+    ui->spinBoxBackwardK->setValue(value);
+}
+
+
+void MainWindow::thruster_forward_saturation_changed(int value)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].forward_saturation = static_cast<int16_t>(value);
+    ui->spinBoxForwardSaturation->setValue(value);
+}
+
+
+void MainWindow::thruster_backward_saturation_changed(int value)
+{
+    settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation = static_cast<int16_t>(value);
+    ui->spinBoxBarkwardSaturation->setValue(value);
 }
 
 

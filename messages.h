@@ -18,6 +18,19 @@
 #define SHORE_STABILIZE_PITCH_BIT       3
 #define SHORE_STABILIZE_RESET_IMU_BIT   4
 
+/* Config mode */
+#define REQUEST_CONFIG_CODE             0x55
+#define REQUEST_CONFIG_LENGTH           72
+
+/* Response values and data structures */
+#define RESPONSE_LENGTH                 70
+#define RESPONSE_CONFIG_LENGTH          91
+
+/* ThrusterConfig mode */
+#define REQUEST_DIRECT_CODE             0xAA
+#define REQUEST_DIRECT_LENGTH           20
+#define DIRECT_RESPONSE_LENGTH          6
+
 struct Request_s
 {
     uint8_t type;
@@ -90,95 +103,6 @@ struct Request_s
         return ds;
     }
 };
-
-struct ConfigRequest_s
-{
-    uint8_t type;
-    uint8_t contour;
-
-    int16_t march;
-    int16_t lag;
-    int16_t depth;
-    int16_t roll;
-    int16_t pitch;
-    int16_t yaw;
-
-    float pJoyUnitCast;
-    float pSpeedDyn;
-    float pErrGain;
-
-    float posFilterT;
-    float posFilterK;
-    float speedFilterT;
-    float speedFilterK;
-
-    float pid_pGain;
-    float pid_iGain;
-    float pid_iMax;
-    float pid_iMin;
-
-    float pThrustersCast;
-    float pThrustersMin;
-    float pThrustersMax;
-
-    friend QDataStream& operator<<(QDataStream &ds, const ConfigRequest_s &req)
-    {
-        ds.setByteOrder(QDataStream::LittleEndian);
-        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
-        ds << req.type;
-        ds << req.contour;
-
-        ds << req.march;
-        ds << req.lag;
-        ds << req.depth;
-        ds << req.roll;
-        ds << req.pitch;
-        ds << req.yaw;
-
-        ds << req.pJoyUnitCast;
-        ds << req.pSpeedDyn;
-        ds << req.pErrGain;
-
-        ds << req.posFilterT;
-        ds << req.posFilterK;
-        ds << req.speedFilterT;
-        ds << req.speedFilterK;
-
-        ds << req.pid_pGain;
-        ds << req.pid_iGain;
-        ds << req.pid_iMax;
-        ds << req.pid_iMin;
-
-        ds << req.pThrustersCast;
-        ds << req.pThrustersMin;
-        ds << req.pThrustersMax;
-
-        return ds;
-    }
-};
-
-/* Direct mode */
-#define REQUEST_DIRECT_CODE             0xAA
-#define REQUEST_DIRECT_LENGTH           11
-
-#define REQUEST_DIRECT_TYPE             0
-#define REQUEST_DIRECT_1                1
-#define REQUEST_DIRECT_2                2
-#define REQUEST_DIRECT_3                3
-#define REQUEST_DIRECT_4                4
-#define REQUEST_DIRECT_5                5
-#define REQUEST_DIRECT_6                6
-#define REQUEST_DIRECT_7                7
-#define REQUEST_DIRECT_8                8
-#define REQUEST_DIRECT_CHECKSUM         9
-
-/* Config mode */
-#define REQUEST_CONFIG_CODE             0x55
-#define REQUEST_CONFIG_LENGTH           72
-
-/* Response values and data structures */
-#define RESPONSE_LENGTH                 70
-#define RESPONSE_CONFIG_LENGTH          91
 
 struct Response_s
 {
@@ -303,6 +227,72 @@ struct Response_s
     }
 };
 
+struct ConfigRequest_s
+{
+    uint8_t type;
+    uint8_t contour;
+
+    int16_t march;
+    int16_t lag;
+    int16_t depth;
+    int16_t roll;
+    int16_t pitch;
+    int16_t yaw;
+
+    float pJoyUnitCast;
+    float pSpeedDyn;
+    float pErrGain;
+
+    float posFilterT;
+    float posFilterK;
+    float speedFilterT;
+    float speedFilterK;
+
+    float pid_pGain;
+    float pid_iGain;
+    float pid_iMax;
+    float pid_iMin;
+
+    float pThrustersCast;
+    float pThrustersMin;
+    float pThrustersMax;
+
+    friend QDataStream& operator<<(QDataStream &ds, const ConfigRequest_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        ds << req.type;
+        ds << req.contour;
+
+        ds << req.march;
+        ds << req.lag;
+        ds << req.depth;
+        ds << req.roll;
+        ds << req.pitch;
+        ds << req.yaw;
+
+        ds << req.pJoyUnitCast;
+        ds << req.pSpeedDyn;
+        ds << req.pErrGain;
+
+        ds << req.posFilterT;
+        ds << req.posFilterK;
+        ds << req.speedFilterT;
+        ds << req.speedFilterK;
+
+        ds << req.pid_pGain;
+        ds << req.pid_iGain;
+        ds << req.pid_iMax;
+        ds << req.pid_iMin;
+
+        ds << req.pThrustersCast;
+        ds << req.pThrustersMin;
+        ds << req.pThrustersMax;
+
+        return ds;
+    }
+};
+
 struct ConfigResponse_s
 {
     uint8_t code;
@@ -373,6 +363,105 @@ struct ConfigResponse_s
         ds >> req.pid_iValue;
 
         ds >> req.checksum;
+        return ds;
+    }
+};
+
+enum Thrusters {
+    HLB = 0,
+    HLF,
+    HRB,
+    HRF,
+    VB,
+    VF,
+    VL,
+    VR
+};
+
+struct RequestDirect_s
+{
+    uint8_t type;
+    uint8_t number;
+    uint8_t id;
+
+    int16_t velocity;
+
+    bool reverse;
+
+    float kForward;
+    float kBackward;
+
+    int16_t forward_saturation;
+    int16_t backward_saturation;
+
+    uint16_t checksum;
+
+    friend QDataStream& operator<<(QDataStream &ds, const RequestDirect_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds << req.type;
+        ds << req.number;
+        ds << req.id;
+
+        ds << req.velocity;
+        ds << req.reverse;
+
+        ds << req.kForward;
+        ds << req.kBackward;
+
+        ds << req.forward_saturation;
+        ds << req.backward_saturation;
+        return ds;
+    }
+
+    friend QDataStream& operator>>(QDataStream &ds, RequestDirect_s &req)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        ds >> req.type;
+        ds >> req.number;
+        ds >> req.id;
+
+        ds >> req.velocity;
+        ds >> req.reverse;
+
+        ds >> req.kForward;
+        ds >> req.kBackward;
+
+        ds >> req.forward_saturation;
+        ds >> req.backward_saturation;
+        ds >> req.checksum;
+        return ds;
+    }
+};
+
+struct ResponseDirect_s
+{
+    uint8_t number;
+    bool connection;
+    uint16_t current;
+
+    uint16_t checksum;
+
+    friend QDataStream& operator<<(QDataStream &ds, const ResponseDirect_s &resp)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds << resp.number;
+        ds << resp.connection;
+        ds << resp.current;
+
+        return ds;
+    }
+
+    friend QDataStream& operator>>(QDataStream &ds, ResponseDirect_s &resp)
+    {
+        ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+        ds >> resp.number;
+        ds >> resp.connection;
+        ds >> resp.current;
+        ds >> resp.checksum;
         return ds;
     }
 };

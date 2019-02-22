@@ -193,6 +193,32 @@ void Server::sendMessageNormal()
 
 void Server::sendMessageDirect() {
     std::cout << "Server::sendMessageDirect()" << std::endl;
+
+    msg_to_send.clear();
+    QDataStream stream(&msg_to_send, QIODevice::Append);
+
+    // Filling request structure
+    RequestDirect_s req;
+    req.type = REQUEST_DIRECT_CODE;
+    req.number = settings->current_thrusters_numb;
+    req.id = settings->thrusters_configs[req.number].id;
+    req.velocity = settings->thrusters_configs[req.number].velocity;
+    req.reverse = settings->thrusters_configs[req.number].reverse;
+    req.kForward = settings->thrusters_configs[req.number].kForward;
+    req.kBackward = settings->thrusters_configs[req.number].kBackward;
+    req.forward_saturation = settings->thrusters_configs[req.number].forward_saturation;
+    req.backward_saturation = settings->thrusters_configs[req.number].backward_saturation;
+
+    // Moving structure to QByteArray
+    stream << req;
+
+    // Calculating checksum
+    uint16_t checksum = getCheckSumm16b(msg_to_send.data(), REQUEST_DIRECT_LENGTH);
+
+    // Moving checksum to QByteArray
+    stream << checksum;
+
+    newPort->write(msg_to_send, REQUEST_DIRECT_LENGTH);
 }
 
 
