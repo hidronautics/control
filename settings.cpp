@@ -37,10 +37,11 @@ void Settings::read(const QJsonObject &json)
 
     for (uint i = 0; i < THRUSTERS_AMOUNT; ++i) {
         thrusters_configs[i].id = static_cast<uint8_t>(thruster_json[i]["id"].toInt());
-        thrusters_configs[i].kForward = thruster_json[i]["kForward"].toInt();
-        thrusters_configs[i].kBackward = thruster_json[i]["kBackward"].toInt();
-        thrusters_configs[i].forward_saturation = static_cast<int16_t>(thruster_json[i]["forward_saturation"].toInt());
-        thrusters_configs[i].backward_saturation = static_cast<int16_t>(thruster_json[i]["backward_saturation"].toInt());
+        thrusters_configs[i].reverse = thruster_json[i]["reverse"].toBool();
+        thrusters_configs[i].kForward = static_cast<float>(thruster_json[i]["kForward"].toDouble());
+        thrusters_configs[i].kBackward = static_cast<float>(thruster_json[i]["kBackward"].toDouble());
+        thrusters_configs[i].forward_saturation = static_cast<int8_t>(thruster_json[i]["forward_saturation"].toInt());
+        thrusters_configs[i].backward_saturation = static_cast<int8_t>(thruster_json[i]["backward_saturation"].toInt());
     }
 
 
@@ -114,8 +115,9 @@ void Settings::write(QJsonObject &json) const
 
     for (uint i = 0; i < THRUSTERS_AMOUNT; ++i) {
         thruster_json[i]["id"] = thrusters_configs[i].id;
-        thruster_json[i]["kForward"] = thrusters_configs[i].kForward;
-        thruster_json[i]["kBackward"] = thrusters_configs[i].kBackward;
+        thruster_json[i]["reverse"] = thrusters_configs[i].reverse;
+        thruster_json[i]["kForward"] = static_cast<double>(thrusters_configs[i].kForward);
+        thruster_json[i]["kBackward"] = static_cast<double>(thrusters_configs[i].kBackward);
         thruster_json[i]["forward_saturation"] = thrusters_configs[i].forward_saturation;
         thruster_json[i]["backward_saturation"] = thrusters_configs[i].backward_saturation;
     }
