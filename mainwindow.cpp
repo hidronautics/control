@@ -226,14 +226,6 @@ void MainWindow::thruster_number_changed(int number)
     ui->verticalSliderBackwardK->setValue(static_cast<int>(settings->thrusters_configs[settings->current_thrusters_numb].kBackward*ui->verticalSliderBackwardK->maximum()));
     ui->verticalSliderForwardSaturation->setValue(settings->thrusters_configs[settings->current_thrusters_numb].forward_saturation);
     ui->verticalSliderBarkwardSaturation->setValue(settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation);
-
-//    thruster_id_changed(ui->spinBoxThrusterId->value());
-//    thruster_reverse_clicked(ui->checkBoxReverse->isChecked());
-//    thruster_velocity_changed(ui->verticalSliderVelocity->value());
-//    thruster_k_forward_changed(ui->verticalSliderForwardK->value());
-//    thruster_k_backward_changed(ui->verticalSliderBackwardK->value());
-//    thruster_forward_saturation_changed(ui->verticalSliderForwardSaturation->value());
-//    thruster_backward_saturation_changed(ui->verticalSliderBarkwardSaturation->value());
 }
 
 
