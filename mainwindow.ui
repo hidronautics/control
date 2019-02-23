@@ -1677,9 +1677,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1699,9 +1696,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1724,9 +1718,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1746,9 +1737,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1768,9 +1756,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1790,9 +1775,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1812,9 +1794,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
                <item>
@@ -1837,9 +1816,6 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                  <property name="autoExclusive">
                   <bool>true</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">buttonGroupThrusterNumber</string>
-                 </attribute>
                 </widget>
                </item>
               </layout>
@@ -1921,6 +1897,9 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 <property name="maximum">
                  <number>32767</number>
                 </property>
+                <property name="singleStep">
+                 <number>1</number>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
@@ -1963,10 +1942,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item alignment="Qt::AlignHCenter">
                <widget class="QSlider" name="verticalSliderForwardK">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>1000</number>
                 </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -1974,12 +1953,12 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBoxForwardK">
-                <property name="minimum">
-                 <number>-32768</number>
+               <widget class="QDoubleSpinBox" name="spinBoxForwardK">
+                <property name="decimals">
+                 <number>3</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <double>1.000000000000000</double>
                 </property>
                </widget>
               </item>
@@ -2010,10 +1989,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item alignment="Qt::AlignHCenter">
                <widget class="QSlider" name="verticalSliderBackwardK">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>1000</number>
                 </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -2021,12 +2000,12 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="spinBoxBackwardK">
-                <property name="minimum">
-                 <number>-32768</number>
+               <widget class="QDoubleSpinBox" name="spinBoxBackwardK">
+                <property name="decimals">
+                 <number>3</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <double>1.000000000000000</double>
                 </property>
                </widget>
               </item>
@@ -2100,7 +2079,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item>
                <widget class="QLabel" name="label_5">
                 <property name="text">
-                 <string>Barkward Saturation</string>
+                 <string>Backward Saturation</string>
                 </property>
                </widget>
               </item>
@@ -3260,7 +3239,4 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
  </widget>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroupThrusterNumber"/>
- </buttongroups>
 </ui>

@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QPushButton>
+#include <QButtonGroup>
 #include <QLabel>
 #include "server.h"
 #include "joystick.h"
@@ -138,6 +139,7 @@ private:
     QTableWidgetItem *responseQTableWidgetItemsDEC[RESPONSE_TABLE_ROW_COUNT];
     QTableWidgetItem *responseQTableWidgetItemsBinary[RESPONSE_TABLE_ROW_COUNT];
 
+    QButtonGroup *btn_gr_thruster_numb;
     QPushButton *startPauseBtn;
     QLabel *commonTime;
     QLabel *currentMissionTime;

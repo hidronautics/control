@@ -180,8 +180,17 @@ MainWindow::MainWindow(QWidget *parent) :
     K_Protocol = new Qkx_coeffs("protocols.conf", "ki");
     X_Protocol = new x_protocol("protocols.conf", "xi", X);
 
-    // Direct tab,
-    connect(ui->buttonGroupThrusterNumber,
+    // Direct tab
+    btn_gr_thruster_numb = new QButtonGroup(this);
+    btn_gr_thruster_numb->addButton(ui->pushButtonHLB, 0);
+    btn_gr_thruster_numb->addButton(ui->pushButtonHLF, 1);
+    btn_gr_thruster_numb->addButton(ui->pushButtonHRB, 2);
+    btn_gr_thruster_numb->addButton(ui->pushButtonHRF, 3);
+    btn_gr_thruster_numb->addButton(ui->pushButtonVB, 4);
+    btn_gr_thruster_numb->addButton(ui->pushButtonVF, 5);
+    btn_gr_thruster_numb->addButton(ui->pushButtonVL, 6);
+    btn_gr_thruster_numb->addButton(ui->pushButtonVR, 7);
+    connect(btn_gr_thruster_numb,
             static_cast<void(QButtonGroup::*)(int)>(
                 &QButtonGroup::buttonClicked), this,
             &MainWindow::thruster_number_changed);
