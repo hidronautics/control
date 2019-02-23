@@ -190,6 +190,7 @@ MainWindow::MainWindow(QWidget *parent) :
     btn_gr_thruster_numb->addButton(ui->pushButtonVF, 5);
     btn_gr_thruster_numb->addButton(ui->pushButtonVL, 6);
     btn_gr_thruster_numb->addButton(ui->pushButtonVR, 7);
+
     connect(btn_gr_thruster_numb,
             static_cast<void(QButtonGroup::*)(int)>(
                 &QButtonGroup::buttonClicked), this,
@@ -217,6 +218,14 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::thruster_number_changed(int number)
 {
     settings->current_thrusters_numb = static_cast<uint8_t>(number);
+
+    thruster_id_changed(ui->spinBoxThrusterId->value());
+    thruster_reverse_clicked(ui->checkBoxReverse->isChecked());
+    thruster_velocity_changed(ui->verticalSliderVelocity->value());
+    thruster_k_forward_changed(ui->verticalSliderForwardK->value());
+    thruster_k_backward_changed(ui->verticalSliderBackwardK->value());
+    thruster_forward_saturation_changed(ui->verticalSliderForwardSaturation->value());
+    thruster_backward_saturation_changed(ui->verticalSliderBarkwardSaturation->value());
 }
 
 
@@ -234,7 +243,7 @@ void MainWindow::thruster_reverse_clicked(bool checked)
 
 void MainWindow::thruster_velocity_changed(int value)
 {
-    settings->thrusters_configs[settings->current_thrusters_numb].velocity = static_cast<int16_t>(value);
+    settings->thrusters_configs[settings->current_thrusters_numb].velocity = static_cast<int8_t>(value);
     ui->spinBoxVelocity->setValue(value);
 }
 
@@ -257,14 +266,14 @@ void MainWindow::thruster_k_backward_changed(int value)
 
 void MainWindow::thruster_forward_saturation_changed(int value)
 {
-    settings->thrusters_configs[settings->current_thrusters_numb].forward_saturation = static_cast<int16_t>(value);
+    settings->thrusters_configs[settings->current_thrusters_numb].forward_saturation = static_cast<int8_t>(value);
     ui->spinBoxForwardSaturation->setValue(value);
 }
 
 
 void MainWindow::thruster_backward_saturation_changed(int value)
 {
-    settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation = static_cast<int16_t>(value);
+    settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation = static_cast<int8_t>(value);
     ui->spinBoxBarkwardSaturation->setValue(value);
 }
 

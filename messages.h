@@ -29,7 +29,7 @@
 
 /* ThrusterConfig mode */
 #define REQUEST_DIRECT_CODE             0xAA
-#define REQUEST_DIRECT_LENGTH           20
+#define REQUEST_DIRECT_LENGTH           17
 #define DIRECT_RESPONSE_LENGTH          6
 
 struct Request_s
