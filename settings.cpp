@@ -52,7 +52,7 @@ void Settings::read(const QJsonObject &json)
     cs_json[STAB_PITCH]  = stabilization_json["pitch"].toObject();
     cs_json[STAB_YAW]    = stabilization_json["yaw"].toObject();
 
-    for(int i=0; i<STABILIZATION_AMOUNT; i++) {
+    for(int i = 0; i < STABILIZATION_AMOUNT; i++) {
         stabContour[i].stabConstants.pJoyUnitCast = static_cast<float>(cs_json[i]["pJoyUnitCast"].toDouble());
         stabContour[i].stabConstants.pSpeedDyn = static_cast<float>(cs_json[i]["pSpeedDyn"].toDouble());
         stabContour[i].stabConstants.pErrGain = static_cast<float>(cs_json[i]["pErrGain"].toDouble());
@@ -114,10 +114,10 @@ void Settings::write(QJsonObject &json) const
 
     for (uint i = 0; i < THRUSTERS_AMOUNT; ++i) {
         thruster_json[i]["id"] = thrusters_configs[i].id;
-        thruster_json[i]["kForward"] = thrusters_configs[i].id;
-        thruster_json[i]["kBackward"] = thrusters_configs[i].id;
-        thruster_json[i]["forward_saturation"] = thrusters_configs[i].id;
-        thruster_json[i]["backward_saturation"] = thrusters_configs[i].id;
+        thruster_json[i]["kForward"] = thrusters_configs[i].kForward;
+        thruster_json[i]["kBackward"] = thrusters_configs[i].kBackward;
+        thruster_json[i]["forward_saturation"] = thrusters_configs[i].forward_saturation;
+        thruster_json[i]["backward_saturation"] = thrusters_configs[i].backward_saturation;
     }
 
     QJsonObject thrusters_json;
