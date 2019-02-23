@@ -57,6 +57,7 @@ struct Request_s
     friend QDataStream& operator<<(QDataStream &ds, const Request_s &req)
     {
         ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
         ds << req.type;
         ds << req.flags;
         ds << req.march;
@@ -389,6 +390,7 @@ struct RequestDirect_s
     friend QDataStream& operator<<(QDataStream &ds, const RequestDirect_s &req)
     {
         ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
         ds << req.type;
         ds << req.number;
         ds << req.id;
@@ -436,6 +438,8 @@ struct ResponseDirect_s
     friend QDataStream& operator<<(QDataStream &ds, const ResponseDirect_s &resp)
     {
         ds.setByteOrder(QDataStream::LittleEndian);
+        ds.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
         ds << resp.number;
         ds << resp.connection;
         ds << resp.current;
