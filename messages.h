@@ -369,21 +369,22 @@ struct ConfigResponse_s
     }
 };
 
+
 struct RequestDirect_s
 {
     uint8_t type;
     uint8_t number;
     uint8_t id;
 
-    int16_t velocity;
+    int8_t velocity;
 
     uint8_t reverse; // true of false
 
     float kForward;
     float kBackward;
 
-    int16_t forward_saturation;
-    int16_t backward_saturation;
+    int8_t forward_saturation;
+    int8_t backward_saturation;
 
     uint16_t checksum;
 

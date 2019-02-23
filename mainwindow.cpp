@@ -241,15 +241,17 @@ void MainWindow::thruster_velocity_changed(int value)
 
 void MainWindow::thruster_k_forward_changed(int value)
 {
-    settings->thrusters_configs[settings->current_thrusters_numb].kForward = static_cast<int16_t>(value);
-    ui->spinBoxForwardK->setValue(value);
+    float f_val = static_cast<double>(value) / ui->verticalSliderForwardK->maximum();
+    settings->thrusters_configs[settings->current_thrusters_numb].kForward = f_val;
+    ui->spinBoxForwardK->setValue(f_val);
 }
 
 
 void MainWindow::thruster_k_backward_changed(int value)
 {
-    settings->thrusters_configs[settings->current_thrusters_numb].kBackward = static_cast<int16_t>(value);
-    ui->spinBoxBackwardK->setValue(value);
+    float f_val = static_cast<double>(value) / ui->verticalSliderBackwardK->maximum();
+    settings->thrusters_configs[settings->current_thrusters_numb].kBackward = f_val;
+    ui->spinBoxBackwardK->setValue(f_val);
 }
 
 
@@ -393,13 +395,6 @@ void MainWindow::on_checkBox_Calibration_Control_toggled(bool checked)
 void MainWindow::on_pushButton_Connect_released()
 {
     emit tryConnect();
-}
-
-
-void MainWindow::on_pushButton_Stop_Test_released()
-{
-    for (int i = 0; i < 8; ++i)
-        settings->motors[i].speed = 0;
 }
 
 

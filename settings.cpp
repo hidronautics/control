@@ -2,22 +2,12 @@
 
 Settings::Settings(QObject *parent) : QObject(parent)
 {
-    motors = new Motor[8];
     connection = new Connection();
     initialize();
 }
 
 void Settings::initialize() {
     std::cout << "Setting default config" << std::endl;
-    for (int i = 0; i < 8; ++i) {
-        motors[i].code = Motor::MotorCode::VF;
-        motors[i].adress = i;
-        motors[i].inverse = false;
-        motors[i].enabled = true;
-        motors[i].speed = 0;
-        motors[i].k_backward = 1.;
-        motors[i].k_forward = 1.;
-    }
 
     connection->num = 1;
     connection->baudRate = QSerialPort::BaudRate::Baud57600;
@@ -33,31 +23,6 @@ void Settings::initialize() {
 
 void Settings::read(const QJsonObject &json)
 {
-    QJsonArray motorArray = json["motors"].toArray();
-    for (int i = 0; i < motorArray.size(); ++i) {
-        QJsonObject motorObject = motorArray[i].toObject();
-
-        if (i == motorObject["slot"].toInt()) {
-            std::cout << "Parsing slot " << i << " settings..." << std::endl;
-            motors[i].setCode(motorObject["code"].toString());
-            std::cout << "code = " << motors[i].getCode().toStdString() << std::endl;
-            motors[i].inverse = motorObject["inverse"].toBool();
-            std::cout << "inverse = " << motors[i].inverse << std::endl;
-            motors[i].enabled = motorObject["enabled"].toBool();
-            std::cout << "enabled = " << motors[i].enabled << std::endl;
-            motors[i].k_backward = motorObject["k_backward"].toDouble();
-            std::cout << "k_backward = " << motors[i].k_backward << std::endl;
-            motors[i].k_forward = motorObject["k_forward"].toDouble();
-            std::cout << "k_forward = " << motors[i].k_forward << std::endl;
-            std::cout << std::endl;
-        } else {
-            std::cout << "Wrong slot order in JSON file" << std::endl;
-            std::cout << i << " expected, " << motorObject["slot"].toInt() << " got." << std::endl;
-        }
-
-    }
-
-
     // Thrusters configuration
     QJsonObject thrusters_json = json["thrusters"].toObject();
     QJsonObject thruster_json[THRUSTERS_AMOUNT];
@@ -145,24 +110,6 @@ void Settings::read(const QJsonObject &json)
 
 void Settings::write(QJsonObject &json) const
 {
-    QJsonArray motorArray;
-
-    for (int i = 0; i < 8; ++i) {
-        QJsonObject motorObject;
-
-        motorObject["slot"] = i;
-        motorObject["code"] = motors[i].getCode();
-        motorObject["inverse"] = motors[i].inverse;
-        motorObject["enabled"] = motors[i].enabled;
-        motorObject["k_backward"] = motors[i].k_backward;
-        motorObject["k_forward"] = motors[i].k_forward;
-
-        motorArray.append(motorObject);
-    }
-
-    json["motors"] = motorArray;
-
-
     // Thrusters configuration
     QJsonObject thruster_json[THRUSTERS_AMOUNT];
 
@@ -266,13 +213,6 @@ bool Settings::saveToJSONFIle() const{
     saveFile.write(saveDoc.toJson(QJsonDocument::Indented));
     std::cout << "Settings saved" << std::endl;
     return true;
-}
-
-void Settings::changeMotorSetting(int slot, QString motorID, bool inverse) {
-    saveToJSONFIle();
-    loadFromJSONFile();
-    std::cout << "Motor " << motorID.toStdString() << " is now binded to " << slot << " slot"
-              << (inverse?" ":" not ") << "inverse" << std::endl;
 }
 
 

@@ -43,19 +43,16 @@ enum Thrusters {
     VR
 };
 
-
 struct ThrusterConfig {
     uint8_t id = 0;
-
-    int16_t velocity = 0;
-
+    int8_t velocity = 0;
     bool reverse = 0;
 
     float kForward = 0;
     float kBackward = 0;
 
-    int16_t forward_saturation = 0;
-    int16_t backward_saturation = 0;
+    int8_t forward_saturation = 0;
+    int8_t backward_saturation = 0;
 };
 
 
@@ -144,7 +141,6 @@ struct Stabilization {
     } stabState;
 };
 
-class Motor;
 class Connection;
 
 class Settings : public QObject
@@ -153,7 +149,6 @@ class Settings : public QObject
 public:
     explicit Settings(QObject *parent = nullptr);
 
-    Motor* motors;
     Connection* connection;
     Stabilization stabContour[STABILIZATION_AMOUNT];
 
@@ -178,7 +173,6 @@ private:
 signals:
 
 public slots:
-    void changeMotorSetting(int slot, QString motorID, bool inverse);
     void jetson_on_off_btn_clicked(bool checked);
 };
 
@@ -332,84 +326,5 @@ public:
    }
 };
 
-
-
-class Motor
-{
-public:
-    Motor() {}
-
-    enum MotorCode {
-        HLB, HLF, HRB, HRF, VB, VF, VL, VR
-    };
-
-    MotorCode code;
-    uint8_t adress; // 0..7
-    int16_t speed;  // -32 768..+32 767
-    bool inverse;
-    bool enabled;
-
-    double k_forward;
-    double k_backward;
-
-
-
-    QString getCode() const{
-        switch (code) {
-        case HLB:
-            return "HLB";
-        case HLF:
-            return "HLF";
-        case HRB:
-            return "HRB";
-        case HRF:
-            return "HRF";
-        case VB:
-            return "VB";
-        case VF:
-            return "VF";
-        case VL:
-            return "VL";
-        case VR:
-            return "VR";
-        }
-        return nullptr;
-    }
-
-    void setCode(QString code) {
-        if (!code.compare("HLB")) {
-            this->code = HLB;
-            return;
-        }
-        if (!code.compare("HLF")) {
-            this->code = HLF;
-            return;
-        }
-        if (!code.compare("HRB")) {
-            this->code = HRB;
-            return;
-        }
-        if (!code.compare("HRF")) {
-            this->code = HRF;
-            return;
-        }
-        if (!code.compare("VB")) {
-            this->code = VB;
-            return;
-        }
-        if (!code.compare("VF")) {
-            this->code = VF;
-            return;
-        }
-        if (!code.compare("VL")) {
-            this->code = VL;
-            return;
-        }
-        if (!code.compare("VR")) {
-            this->code = VR;
-            return;
-        }
-    }
-};
 
 #endif // SETTINGS_H

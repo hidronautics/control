@@ -1892,10 +1892,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item alignment="Qt::AlignHCenter">
                <widget class="QSlider" name="verticalSliderVelocity">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>-128</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>127</number>
                 </property>
                 <property name="singleStep">
                  <number>1</number>
@@ -1908,10 +1908,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item>
                <widget class="QSpinBox" name="spinBoxVelocity">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>-128</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -2039,10 +2039,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item alignment="Qt::AlignHCenter">
                <widget class="QSlider" name="verticalSliderForwardSaturation">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>127</number>
                 </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -2052,10 +2052,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item>
                <widget class="QSpinBox" name="spinBoxForwardSaturation">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>127</number>
                 </property>
                </widget>
               </item>
@@ -2086,10 +2086,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item alignment="Qt::AlignHCenter">
                <widget class="QSlider" name="verticalSliderBarkwardSaturation">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>127</number>
                 </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -2099,10 +2099,10 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
               <item>
                <widget class="QSpinBox" name="spinBoxBarkwardSaturation">
                 <property name="minimum">
-                 <number>-32768</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
-                 <number>32767</number>
+                 <number>127</number>
                 </property>
                </widget>
               </item>

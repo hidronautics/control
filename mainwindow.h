@@ -92,7 +92,6 @@ private slots:
 
     void on_checkBox_Calibration_Control_toggled(bool checked);
     void on_pushButton_Connect_released();
-    void on_pushButton_Stop_Test_released();
     void on_pushButton_Disconnect_released();
     void on_pushButton_CS_loadConfig_released();
     void on_pushButton_send_config_released();
