@@ -112,7 +112,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabSettings">
        <property name="styleSheet">
@@ -1680,7 +1680,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonVF">
+                <widget class="QPushButton" name="pushButtonHLF">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1699,7 +1699,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonVB">
+                <widget class="QPushButton" name="pushButtonHRB">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1721,7 +1721,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonVL">
+                <widget class="QPushButton" name="pushButtonHRF">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1740,7 +1740,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonHRF">
+                <widget class="QPushButton" name="pushButtonVB">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1759,7 +1759,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonHRB">
+                <widget class="QPushButton" name="pushButtonVF">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1778,7 +1778,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonHLF">
+                <widget class="QPushButton" name="pushButtonVL">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
