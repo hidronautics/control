@@ -219,13 +219,21 @@ void MainWindow::thruster_number_changed(int number)
 {
     settings->current_thrusters_numb = static_cast<uint8_t>(number);
 
-    thruster_id_changed(ui->spinBoxThrusterId->value());
-    thruster_reverse_clicked(ui->checkBoxReverse->isChecked());
-    thruster_velocity_changed(ui->verticalSliderVelocity->value());
-    thruster_k_forward_changed(ui->verticalSliderForwardK->value());
-    thruster_k_backward_changed(ui->verticalSliderBackwardK->value());
-    thruster_forward_saturation_changed(ui->verticalSliderForwardSaturation->value());
-    thruster_backward_saturation_changed(ui->verticalSliderBarkwardSaturation->value());
+    ui->spinBoxThrusterId->setValue(settings->thrusters_configs[settings->current_thrusters_numb].id);
+    ui->checkBoxReverse->setChecked(settings->thrusters_configs[settings->current_thrusters_numb].reverse);
+    ui->verticalSliderVelocity->setValue(settings->thrusters_configs[settings->current_thrusters_numb].velocity);
+    ui->verticalSliderForwardK->setValue(settings->thrusters_configs[settings->current_thrusters_numb].kForward);
+    ui->verticalSliderBackwardK->setValue(settings->thrusters_configs[settings->current_thrusters_numb].kBackward);
+    ui->verticalSliderForwardSaturation->setValue(settings->thrusters_configs[settings->current_thrusters_numb].forward_saturation);
+    ui->verticalSliderBarkwardSaturation->setValue(settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation);
+
+//    thruster_id_changed(ui->spinBoxThrusterId->value());
+//    thruster_reverse_clicked(ui->checkBoxReverse->isChecked());
+//    thruster_velocity_changed(ui->verticalSliderVelocity->value());
+//    thruster_k_forward_changed(ui->verticalSliderForwardK->value());
+//    thruster_k_backward_changed(ui->verticalSliderBackwardK->value());
+//    thruster_forward_saturation_changed(ui->verticalSliderForwardSaturation->value());
+//    thruster_backward_saturation_changed(ui->verticalSliderBarkwardSaturation->value());
 }
 
 

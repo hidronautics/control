@@ -20,7 +20,6 @@ void Settings::initialize() {
 }
 
 
-
 void Settings::read(const QJsonObject &json)
 {
     // Thrusters configuration
