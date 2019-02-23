@@ -1,0 +1,144 @@
+{
+    "connection": {
+        "baudRate": 57600,
+        "comNumber": 1,
+        "dataBits": 8,
+        "flowControl": "no",
+        "parity": "no",
+        "pauseAfterReceived": 0,
+        "pauseAfterSent": 20,
+        "stopBits": "one"
+    },
+    "stabilization": {
+        "depth": {
+            "POS_FILTER.K": 1,
+            "POS_FILTER.T": 0.5,
+            "SPEED_FILTER.K": 10000,
+            "SPEED_FILTER.T": 0,
+            "pErrGain": 5000,
+            "pJoyUnitCast": 0.0010000000474974513,
+            "pSpeedDyn": 0,
+            "pThrustersCast": 1,
+            "pThrustersMax": 10000,
+            "pThrustersMin": -10000,
+            "pid.iGain": 0.10000000149011612,
+            "pid.iMax": 2000,
+            "pid.iMin": -2000,
+            "pid.pGain": 1
+        },
+        "pitch": {
+            "POS_FILTER.K": 1,
+            "POS_FILTER.T": 1,
+            "SPEED_FILTER.K": 1,
+            "SPEED_FILTER.T": 1,
+            "pErrGain": 1,
+            "pJoyUnitCast": 1,
+            "pSpeedDyn": 1,
+            "pThrustersCast": 1,
+            "pThrustersMax": 500,
+            "pThrustersMin": 500,
+            "pid.iGain": 1,
+            "pid.iMax": 500,
+            "pid.iMin": -500,
+            "pid.pGain": 1
+        },
+        "roll": {
+            "POS_FILTER.K": 1,
+            "POS_FILTER.T": 1,
+            "SPEED_FILTER.K": 1,
+            "SPEED_FILTER.T": 1,
+            "pErrGain": 1,
+            "pJoyUnitCast": 1,
+            "pSpeedDyn": 1,
+            "pThrustersCast": 1,
+            "pThrustersMax": 500,
+            "pThrustersMin": 500,
+            "pid.iGain": 1,
+            "pid.iMax": 500,
+            "pid.iMin": -500,
+            "pid.pGain": 1
+        },
+        "yaw": {
+            "POS_FILTER.K": 1,
+            "POS_FILTER.T": 0,
+            "SPEED_FILTER.K": 8000,
+            "SPEED_FILTER.T": 0,
+            "pErrGain": 85,
+            "pJoyUnitCast": 0.009999999776482582,
+            "pSpeedDyn": 0,
+            "pThrustersCast": 1,
+            "pThrustersMax": 10000,
+            "pThrustersMin": -10000,
+            "pid.iGain": 0.10000000149011612,
+            "pid.iMax": 2000,
+            "pid.iMin": -2000,
+            "pid.pGain": 1
+        }
+    },
+    "thrusters": {
+        "HLB": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 6,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": true
+        },
+        "HLF": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 8,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        },
+        "HRB": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 1,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        },
+        "HRF": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 2,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        },
+        "VB": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 3,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        },
+        "VF": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 5,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        },
+        "VL": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 4,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        },
+        "VR": {
+            "backward_saturation": 75,
+            "forward_saturation": 75,
+            "id": 7,
+            "kBackward": 1,
+            "kForward": 1,
+            "reverse": false
+        }
+    }
+}
