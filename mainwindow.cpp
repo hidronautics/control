@@ -222,8 +222,8 @@ void MainWindow::thruster_number_changed(int number)
     ui->spinBoxThrusterId->setValue(settings->thrusters_configs[settings->current_thrusters_numb].id);
     ui->checkBoxReverse->setChecked(settings->thrusters_configs[settings->current_thrusters_numb].reverse);
     ui->verticalSliderVelocity->setValue(settings->thrusters_configs[settings->current_thrusters_numb].velocity);
-    ui->verticalSliderForwardK->setValue(settings->thrusters_configs[settings->current_thrusters_numb].kForward);
-    ui->verticalSliderBackwardK->setValue(settings->thrusters_configs[settings->current_thrusters_numb].kBackward);
+    ui->verticalSliderForwardK->setValue(static_cast<int>(settings->thrusters_configs[settings->current_thrusters_numb].kForward*ui->verticalSliderForwardK->maximum()));
+    ui->verticalSliderBackwardK->setValue(static_cast<int>(settings->thrusters_configs[settings->current_thrusters_numb].kBackward*ui->verticalSliderBackwardK->maximum()));
     ui->verticalSliderForwardSaturation->setValue(settings->thrusters_configs[settings->current_thrusters_numb].forward_saturation);
     ui->verticalSliderBarkwardSaturation->setValue(settings->thrusters_configs[settings->current_thrusters_numb].backward_saturation);
 
