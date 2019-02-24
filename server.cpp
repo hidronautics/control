@@ -65,12 +65,15 @@ void Server::sendMessage() {
         currentMessageType = nextMessageType;
     switch (currentMessageType) {
     case REQUEST_NORMAL_CODE:
+        message_type = REQUEST_NORMAL_CODE;
         sendMessageNormal();
         break;
     case REQUEST_CONFIG_CODE:
+        message_type = REQUEST_CONFIG_CODE;
         sendMessageConfig();
         break;
     case REQUEST_DIRECT_CODE:
+        message_type = REQUEST_DIRECT_CODE;
         sendMessageDirect();
         break;
     default:
@@ -300,9 +303,7 @@ void Server::receiveMessage() {
         while (true) {
             long long bytesAvailible = newPort->bytesAvailable();
             if (bytesAvailible > 0) {
-                msg_in.clear();
-                msg_in.push_back(newPort->read(1));
-                switch(static_cast<uint8_t>(msg_in[0])) {
+                switch(message_type) {
                     case REQUEST_NORMAL_CODE:
                         receiveNormalMessage();
                         break;
@@ -334,7 +335,8 @@ void Server::receiveMessage() {
 
 void Server::receiveNormalMessage()
 {
-    msg_in = newPort->readAll();
+    msg_in.clear();
+    msg_in.push_back(newPort->readAll());
     QDataStream stream(&msg_in, QIODevice::ReadOnly);;
 
     // For PLOTS  __________________________________________________________________
@@ -407,6 +409,7 @@ void Server::receiveNormalMessage()
 
 void Server::receiveConfigMessage()
 {
+    msg_in.clear();
     msg_in.push_back(newPort->readAll());
     QDataStream stream(&msg_in, QIODevice::ReadOnly);;
 

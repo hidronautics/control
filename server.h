@@ -35,6 +35,7 @@ public:
 
     QByteArray msg_to_send;
     QByteArray msg_in;
+    uint8_t message_type = 0;
 
     uint8_t nextMessageType;
     uint8_t currentMessageType;
