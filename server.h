@@ -52,6 +52,7 @@ public:
 
     bool flash_thruster_settings = false;
     bool reset_imu = false;
+    bool start_qualification = false;
 
     bool stabilize_roll = false;
     bool stabilize_pitch = false;
@@ -170,6 +171,7 @@ public slots:
     void set_stabilize_pitch(bool enabled);
     void set_stabilize_yaw(bool enabled);
     void set_stabilize_depth(bool enabled);
+    void start_qualification_task();
 
     void connect_fake();
 

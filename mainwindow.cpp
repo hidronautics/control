@@ -26,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->checkBoxStabilizeDepth, &QCheckBox::toggled,
             this, &MainWindow::send_stabilize_depth_signal);
 
+    // send start qualification address
+    connect(ui->pushButtonStartQualification, &QPushButton::pressed,
+            this, &MainWindow::send_start_qualification_signal);
+
     ui->tableWidgetRequest->setColumnCount(3);
     ui->tableWidgetRequest->setRowCount(REQUEST_TABLE_ROW_COUNT);
 
@@ -212,6 +216,12 @@ MainWindow::MainWindow(QWidget *parent) :
             this, &MainWindow::thruster_forward_saturation_changed);
     connect(ui->verticalSliderBarkwardSaturation, &QSlider::valueChanged,
             this, &MainWindow::thruster_backward_saturation_changed);
+}
+
+
+void MainWindow::send_start_qualification_signal()
+{
+    emit start_qualification_btn_clicked();
 }
 
 

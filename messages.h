@@ -18,6 +18,7 @@
 #define SHORE_STABILIZE_PITCH_BIT       3
 #define SHORE_STABILIZE_RESET_IMU_BIT   4
 #define SHORE_STABILIZE_SAVE_BIT        5
+#define SHORE_START_QUALIFICATION_BIT   6
 
 /* Config mode */
 #define REQUEST_CONFIG_CODE             0x55

@@ -87,6 +87,11 @@ void Server::sendMessage() {
     receiveMessage();
 }
 
+void Server::start_qualification_task()
+{
+    start_qualification = true;
+}
+
 
 void Server::flash_thruster()
 {
@@ -183,6 +188,11 @@ void Server::sendMessageNormal()
     if (reset_imu) {
         set_bit(req.stabilize_flags, SHORE_STABILIZE_RESET_IMU_BIT, true);
         reset_imu = false;
+    }
+
+    if (start_qualification) {
+        set_bit(req.stabilize_flags, SHORE_START_QUALIFICATION_BIT, true);
+        start_qualification = false;
     }
 
     set_bit(req.stabilize_flags, SHORE_STABILIZE_ROLL_BIT, stabilize_roll);

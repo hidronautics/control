@@ -78,6 +78,10 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, &MainWindow::stabilize_depth_toggled,
                      server, &Server::set_stabilize_depth);
 
+    // start qualifiction
+    QObject::connect(mainWindow, &MainWindow::start_qualification_btn_clicked,
+                     server, &Server::start_qualification_task);
+
 
     return a.exec();
 }

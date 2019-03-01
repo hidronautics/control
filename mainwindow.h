@@ -52,6 +52,7 @@ signals:
     void flash_thruster_btn_clicked();
     void jetson_on_off_btn_toggled(bool checked);
     void reset_IMU_btn_clicked();
+    void start_qualification_btn_clicked();
     void stabilize_roll_toggled(bool checked);
     void stabilize_pitch_toggled(bool checked);
     void stabilize_yaw_toggled(bool checked);
@@ -89,6 +90,7 @@ private slots:
     void send_stabilize_pitch_signal(bool checked);
     void send_stabilize_yaw_signal(bool checked);
     void send_stabilize_depth_signal(bool checked);
+    void send_start_qualification_signal();
 
     void on_checkBox_Calibration_Control_toggled(bool checked);
     void on_pushButton_Connect_released();
