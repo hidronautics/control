@@ -101,6 +101,7 @@ void Joystick::updateJoystick() {
 
     this->grab_rotate = +
       (sf::Joystick::getAxisPosition(joystick_id, sf::Joystick::V));
+    this->grab_rotate = static_cast<int8_t>(static_cast<float>(this->grab_rotate)/100*127);
 
     this->btn_depth_inv   = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_DEPTH_INV);
     this->btn_grab        = sf::Joystick::isButtonPressed(joystick_id,  SFML_BTN_GRAB);
