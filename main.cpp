@@ -57,6 +57,10 @@ int main(int argc, char *argv[])
     QObject::connect(mainWindow, SIGNAL(tryConnect()), server, SLOT(connect_com()));
     QObject::connect(mainWindow, SIGNAL(disconnect()), server, SLOT(disconnect_com()));
 
+    // UDP connection
+    QObject::connect(mainWindow, &MainWindow::connect_udp,
+                     server, &Server::connect_udp);
+
     mainWindow->show();
 
 
@@ -77,6 +81,7 @@ int main(int argc, char *argv[])
                      server, &Server::set_stabilize_yaw);
     QObject::connect(mainWindow, &MainWindow::stabilize_depth_toggled,
                      server, &Server::set_stabilize_depth);
+
 
     // start qualifiction
     QObject::connect(mainWindow, &MainWindow::start_qualification_btn_clicked,

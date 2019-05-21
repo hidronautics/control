@@ -2,9 +2,11 @@
 
 const int MAX_COM_ID = 20;
 
-Server::Server(QObject *parent) : QObject(parent)
+Server::Server(QObject *parent) :
+    QObject(parent),
+    sendTimer(new QTimer(this)),
+    _udp(new UDPClient(this))
 {
-    sendTimer = new QTimer(this);
     connect(sendTimer, SIGNAL(timeout()), this, SLOT( sendMessage() ));
     newPort = nullptr;
     nextMessageType = 0xA5;
@@ -45,7 +47,7 @@ bool Server::COMconnect(int com_num)
         return false;
     }
 
-    if (isOpened) {
+    if (isOpened ) {
         std::cout << " successfully opened!" << std::endl;
         sendTimer->start(REQUEST_DELAY);
     } else {
@@ -212,7 +214,13 @@ void Server::sendMessageNormal()
     // Moving checksum to QByteArray
     stream << checksum;
 
-    newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
+    if (_udp_enable) {
+        std::cout << "Send message though UDP" << std::endl;
+        _udp->request(msg_to_send);
+    }
+    else {
+        newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
+    }
 }
 
 void Server::sendMessageDirect() {
@@ -297,50 +305,61 @@ void Server::sendMessageConfig() {
     receiveMessage();
 }
 
+
+void Server::connect_udp(const QString &host, const QString &port)
+{
+    _udp->set_address(host, port);
+    _udp_enable = true;
+    sendTimer->start(REQUEST_DELAY);
+}
+
+
 void Server::receiveMessage() {
-    std::cout << "Server::receiveMessage()" << std::endl;
-    long long buffer_size = 0;
-    newPort->waitForReadyRead(25);
-    buffer_size = newPort->bytesAvailable();
+    if (!_udp_enable) {
+        std::cout << "Server::receiveMessage()" << std::endl;
+        long long buffer_size = 0;
+        newPort->waitForReadyRead(25);
+        buffer_size = newPort->bytesAvailable();
 
-    std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
+        std::cout << "In input buffer there are " << buffer_size << " bytes availible" << std::endl;
 
-    if (buffer_size == 0) {
-        std::cout << "No message to read. Buffer is empty" << std::endl;
-        msg_lost_counter++;
-    } else {
-        int counter = 0;
-        while (true) {
-            long long bytesAvailible = newPort->bytesAvailable();
-            if (bytesAvailible > 0) {
-                switch(message_type) {
-                    case REQUEST_NORMAL_CODE:
-                        receiveNormalMessage();
-                        break;
-                    case REQUEST_CONFIG_CODE:
-                        receiveConfigMessage();
-                        break;
-                    default:
-                       newPort->clear();
+        if (buffer_size == 0) {
+            std::cout << "No message to read. Buffer is empty" << std::endl;
+            msg_lost_counter++;
+        } else {
+            int counter = 0;
+            while (true) {
+                long long bytesAvailible = newPort->bytesAvailable();
+                if (bytesAvailible > 0) {
+                    switch(message_type) {
+                        case REQUEST_NORMAL_CODE:
+                            receiveNormalMessage();
+                            break;
+                        case REQUEST_CONFIG_CODE:
+                            receiveConfigMessage();
+                            break;
+                        default:
+                           newPort->clear();
+                    }
+                    break;
                 }
-                break;
-            }
-            else if (counter > 250000) {
-                newPort->clear();
-            }
-            else {
-                counter++;
+                else if (counter > 250000) {
+                    newPort->clear();
+                }
+                else {
+                    counter++;
+                }
             }
         }
+
+        //QTest::qSleep (settings->connection->pause_after_received);
+        msg_lost_percent = static_cast<float>(msg_lost_counter) / (static_cast<float>(msg_received_counter) + static_cast<float>(msg_lost_counter));
+        msg_lost_percent *= 100;
+
+        std::cout << "RECEIVED = " << msg_received_counter << std::endl;
+        std::cout << "LOST = " << msg_lost_counter << std::endl;
+        std::cout << "LOST PERCENT = " << msg_lost_percent << std::endl;
     }
-
-    //QTest::qSleep (settings->connection->pause_after_received);
-    msg_lost_percent = static_cast<float>(msg_lost_counter) / (static_cast<float>(msg_received_counter) + static_cast<float>(msg_lost_counter));
-    msg_lost_percent *= 100;
-
-    std::cout << "RECEIVED = " << msg_received_counter << std::endl;
-    std::cout << "LOST = " << msg_lost_counter << std::endl;
-    std::cout << "LOST PERCENT = " << msg_lost_percent << std::endl;
 }
 
 void Server::receiveNormalMessage()
@@ -561,5 +580,7 @@ Server::~Server() {
         newPort->deleteLater();
     }
     std::cout << "Goodbye!" << std::endl;
+    delete sendTimer;
+    delete _udp;
 }
 

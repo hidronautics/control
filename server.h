@@ -16,6 +16,7 @@
 
 #include "joystick.h"
 #include "settings.h"
+#include "udpclient.h"
 
 #define REQUEST_DELAY					25
 #define REQUEST_TIMEOUT					25
@@ -131,6 +132,8 @@ public:
 private:
     QSerialPort *newPort;
     const QString log_folder_path = "C:\\logs\\";
+    UDPClient *_udp;
+    bool _udp_enable = false;
 
     bool COMconnect(int com_name);
 
@@ -175,6 +178,7 @@ public slots:
 
     void connect_fake();
 
+    void connect_udp(const QString &host, const QString &port);
     void connect_com();
     void disconnect_com();
 

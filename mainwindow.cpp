@@ -7,6 +7,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // UDP connection
+    connect(ui->pushButtonConnectUDP, &QPushButton::pressed, [this] ()
+    {
+        emit connect_udp(ui->lineEditHost->text(), ui->lineEditPort->text());
+    });
+
+
     // send to global view control buttons signals
     connect(ui->pushButtonJetsonOnOff, &QPushButton::toggled,
             this, &MainWindow::send_jetson_btn_signal);

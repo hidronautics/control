@@ -60,6 +60,7 @@ signals:
 
     void newValues(int* vals);
     void tryConnect();
+    void connect_udp(const QString &host, const QString &port);
     void disconnect();
     void connect_fake();
     void changeMotorSetting(int slot, QString motorID, bool inverse);

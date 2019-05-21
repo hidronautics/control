@@ -42,6 +42,7 @@ SOURCES += main.cpp \
     KX_pult/qkx_coeffs.cpp \
     KX_pult/qpiconfig.cpp \
     KX_pult/rov_model.cpp \
+    udpclient.cpp
 
 HEADERS += \
     server.h \
@@ -55,6 +56,7 @@ HEADERS += \
     KX_pult/qkx_coeffs.h \
     KX_pult/qpiconfig.h \
     KX_pult/rov_model.h \
+    udpclient.h
 
 DEFINES += SFML_STATIC
 
