@@ -13,6 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
         emit connect_udp(ui->lineEditHost->text(), ui->lineEditPort->text());
     });
 
+    connect(ui->pushButtonDisconnectUDP, &QPushButton::pressed, [this] ()
+    {
+        emit disconnect_udp();
+    });
+
 
     // send to global view control buttons signals
     connect(ui->pushButtonJetsonOnOff, &QPushButton::toggled,

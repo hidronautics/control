@@ -134,6 +134,7 @@ private:
     const QString log_folder_path = "C:\\logs\\";
     UDPClient *_udp;
     bool _udp_enable = false;
+    bool _com_enable = false;
 
     bool COMconnect(int com_name);
 
@@ -179,6 +180,7 @@ public slots:
     void connect_fake();
 
     void connect_udp(const QString &host, const QString &port);
+    void disconnect_udp();
     void connect_com();
     void disconnect_com();
 

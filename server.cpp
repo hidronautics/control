@@ -49,6 +49,7 @@ bool Server::COMconnect(int com_num)
 
     if (isOpened ) {
         std::cout << " successfully opened!" << std::endl;
+        _com_enable = true;
         sendTimer->start(REQUEST_DELAY);
     } else {
         std::cout << ". Unable to open serial port" << std::endl;
@@ -215,10 +216,9 @@ void Server::sendMessageNormal()
     stream << checksum;
 
     if (_udp_enable) {
-        std::cout << "Send message though UDP" << std::endl;
         _udp->request(msg_to_send);
     }
-    else {
+    if (_com_enable) {
         newPort->write(msg_to_send, REQUEST_NORMAL_LENGTH);
     }
 }
@@ -250,7 +250,12 @@ void Server::sendMessageDirect() {
     // Moving checksum to QByteArray
     stream << checksum;
 
-    newPort->write(msg_to_send, REQUEST_DIRECT_LENGTH);
+    if (_udp_enable) {
+        _udp->request(msg_to_send);
+    }
+    if (_com_enable) {
+        newPort->write(msg_to_send, REQUEST_DIRECT_LENGTH);
+    }
 }
 
 
@@ -296,7 +301,12 @@ void Server::sendMessageConfig() {
     // Calculating checksum
     addCheckSumm16b(msg_to_send.data(), REQUEST_CONFIG_LENGTH);
 
-    newPort->write(msg_to_send.data(), REQUEST_CONFIG_LENGTH);
+    if (_udp_enable) {
+        _udp->request(msg_to_send);
+    }
+    if (_com_enable) {
+        newPort->write(msg_to_send.data(), REQUEST_CONFIG_LENGTH);
+    }
 
     settings->oldCS = settings->CS;
 
@@ -311,6 +321,15 @@ void Server::connect_udp(const QString &host, const QString &port)
     _udp->set_address(host, port);
     _udp_enable = true;
     sendTimer->start(REQUEST_DELAY);
+}
+
+
+void Server::disconnect_udp()
+{
+    _udp_enable = false;
+    if (!_udp_enable) {
+        sendTimer->stop();
+    }
 }
 
 
@@ -364,131 +383,132 @@ void Server::receiveMessage() {
 
 void Server::receiveNormalMessage()
 {
-    msg_in.clear();
-    msg_in.push_back(newPort->readAll());
-    QDataStream stream(&msg_in, QIODevice::ReadOnly);;
+    if (_com_enable) {
+        msg_in.clear();
+        msg_in.push_back(newPort->readAll());
+        QDataStream stream(&msg_in, QIODevice::ReadOnly);
 
-    // For PLOTS  __________________________________________________________________
+        static QTime time(QTime::currentTime());
+        key1 = time.elapsed()/1000.0;
 
-    //key1 = QTime::currentTime()/1000;
-    static QTime time(QTime::currentTime());
-    key1 = time.elapsed()/1000.0;
+        imu_roll_d = imu_roll;
+        imu_pitch_d = imu_pitch;
+        imu_yaw_d = imu_yaw;
 
-    imu_roll_d = imu_roll;
-    imu_pitch_d = imu_pitch;
-    imu_yaw_d = imu_yaw;
+        imu_roll_speed_d = imu_roll_speed;
+        imu_pitch_speed_d = imu_pitch_speed;
+        imu_yaw_speed_d = imu_yaw_speed;
 
-    imu_roll_speed_d = imu_roll_speed;
-    imu_pitch_speed_d = imu_pitch_speed;
-    imu_yaw_speed_d = imu_yaw_speed;
+        std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
+        std::cout << "Checksum...";
 
-    std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
-    std::cout << "Checksum...";
+        if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_LENGTH)) {
+            std::cout << "OK" << std::endl;
+            msg_received_counter++;
+        } else {
+            std::cout << "INCORRECT!" << std::endl;
+            msg_lost_counter++;
+            return;
+        }
 
-    if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_LENGTH)) {
-        std::cout << "OK" << std::endl;
-        msg_received_counter++;
-    } else {
-        std::cout << "INCORRECT!" << std::endl;
-        msg_lost_counter++;
-        return;
+        // Defining response data structure
+        struct Response_s resp;
+
+        // Moving QByteArray to structure
+        stream >> resp;
+
+        // Moving data from resp structure to application
+        imu_roll = resp.roll;
+        imu_pitch = resp.pitch;
+        imu_yaw = resp.yaw;
+
+        imu_roll_speed = resp.rollSpeed;
+        imu_pitch_speed = resp.pitchSpeed;
+        imu_yaw_speed = resp.yawSpeed;
+
+        imu_pressure = resp.pressure;
+
+        acoustic_state = resp.dev_state;
+        leak_sensor = resp.leak_data;
+        in_pressure = resp.in_pressure;
+
+        current_HLB = resp.vma_current_hlb;
+        current_HLF = resp.vma_current_hlf;
+        current_HRB = resp.vma_current_hrb;
+        current_HRF = resp.vma_current_hrf;
+        current_VB = resp.vma_current_vb;
+        current_VF = resp.vma_current_vf;
+        current_VL = resp.vma_current_vl;
+        current_VR = resp.vma_current_vr;
+
+        current_light = resp.dev_current_light;
+        current_tilt = resp.dev_current_tilt;
+        current_grab = resp.dev_current_grab;
+        current_grab_rotate = resp.dev_current_grab_rotate;
+        current_bottom_light = resp.dev_current_dev1;
+        current_agar = resp.dev_current_dev2;
+
+        err_vma = resp.vma_errors;
+        err_dev = resp.dev_errors;
+        err_pc = resp.pc_errors;
     }
-
-    // Defining response data structure
-    struct Response_s resp;
-
-    // Moving QByteArray to structure
-    stream >> resp;
-
-    // Moving data from resp structure to application
-    imu_roll = resp.roll;
-    imu_pitch = resp.pitch;
-    imu_yaw = resp.yaw;
-
-    imu_roll_speed = resp.rollSpeed;
-    imu_pitch_speed = resp.pitchSpeed;
-    imu_yaw_speed = resp.yawSpeed;
-
-    imu_pressure = resp.pressure;
-
-    acoustic_state = resp.dev_state;
-    leak_sensor = resp.leak_data;
-    in_pressure = resp.in_pressure;
-
-    current_HLB = resp.vma_current_hlb;
-    current_HLF = resp.vma_current_hlf;
-    current_HRB = resp.vma_current_hrb;
-    current_HRF = resp.vma_current_hrf;
-    current_VB = resp.vma_current_vb;
-    current_VF = resp.vma_current_vf;
-    current_VL = resp.vma_current_vl;
-    current_VR = resp.vma_current_vr;
-
-    current_light = resp.dev_current_light;
-    current_tilt = resp.dev_current_tilt;
-    current_grab = resp.dev_current_grab;
-    current_grab_rotate = resp.dev_current_grab_rotate;
-    current_bottom_light = resp.dev_current_dev1;
-    current_agar = resp.dev_current_dev2;
-
-    err_vma = resp.vma_errors;
-    err_dev = resp.dev_errors;
-    err_pc = resp.pc_errors;
 }
 
 void Server::receiveConfigMessage()
 {
-    msg_in.clear();
-    msg_in.push_back(newPort->readAll());
-    QDataStream stream(&msg_in, QIODevice::ReadOnly);;
+    if (_com_enable) {
+        msg_in.clear();
+        msg_in.push_back(newPort->readAll());
+        QDataStream stream(&msg_in, QIODevice::ReadOnly);;
 
-//    std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
-//    std::cout << "Checksum...";
+    //    std::cout << "Got response. First symbol: " << msg_in[0] << std::endl;
+    //    std::cout << "Checksum...";
 
-    if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_CONFIG_LENGTH)) {
-//        std::cout << "OK" << std::endl;
-        msg_received_counter++;
-    } else {
-//        std::cout << "INCORRECT!" << std::endl;
-        msg_lost_counter++;
-        return;
+        if (isCheckSumm16bCorrect(msg_in.data(), RESPONSE_CONFIG_LENGTH)) {
+    //        std::cout << "OK" << std::endl;
+            msg_received_counter++;
+        } else {
+    //        std::cout << "INCORRECT!" << std::endl;
+            msg_lost_counter++;
+            return;
+        }
+
+        // Defining response data structure
+        struct ConfigResponse_s resp;
+
+        // Moving QByteArray to structure
+        stream >> resp;
+
+        imu_roll = resp.roll;
+        imu_pitch = resp.pitch;
+        imu_yaw = resp.yaw;
+        imu_raw_yaw = resp.raw_yaw;
+
+        imu_roll_speed = resp.rollSpeed;
+        imu_pitch_speed = resp.pitchSpeed;
+        imu_yaw_speed = resp.yawSpeed;
+
+        imu_pressure = resp.pressure;
+        in_pressure = resp.in_pressure;
+
+        settings->stabContour[settings->CS].stabState.inputSignal = resp.inputSignal;
+        settings->stabContour[settings->CS].stabState.speedSignal = resp.speedSignal;
+        settings->stabContour[settings->CS].stabState.posSignal = resp.posSignal;
+
+        settings->stabContour[settings->CS].stabState.joyUnitCasted = resp.joyUnitCasted;
+        settings->stabContour[settings->CS].stabState.joy_iValue = resp.joy_iValue;
+        settings->stabContour[settings->CS].stabState.posError = resp.posError;
+        settings->stabContour[settings->CS].stabState.speedError = resp.speedError;
+        settings->stabContour[settings->CS].stabState.dynSummator = resp.dynSummator;
+        settings->stabContour[settings->CS].stabState.pidValue = resp.pidValue;
+        settings->stabContour[settings->CS].stabState.posErrorAmp = resp.posErrorAmp;
+        settings->stabContour[settings->CS].stabState.speedFiltered = resp.speedFiltered;
+        settings->stabContour[settings->CS].stabState.posFiltered = resp.posFiltered;
+
+        settings->stabContour[settings->CS].stabState.pid_iValue = resp.pid_iValue;
+
+        emit updateCsView();
     }
-
-    // Defining response data structure
-    struct ConfigResponse_s resp;
-
-    // Moving QByteArray to structure
-    stream >> resp;
-
-    imu_roll = resp.roll;
-    imu_pitch = resp.pitch;
-    imu_yaw = resp.yaw;
-    imu_raw_yaw = resp.raw_yaw;
-
-    imu_roll_speed = resp.rollSpeed;
-    imu_pitch_speed = resp.pitchSpeed;
-    imu_yaw_speed = resp.yawSpeed;
-
-    imu_pressure = resp.pressure;
-    in_pressure = resp.in_pressure;
-
-    settings->stabContour[settings->CS].stabState.inputSignal = resp.inputSignal;
-    settings->stabContour[settings->CS].stabState.speedSignal = resp.speedSignal;
-    settings->stabContour[settings->CS].stabState.posSignal = resp.posSignal;
-
-    settings->stabContour[settings->CS].stabState.joyUnitCasted = resp.joyUnitCasted;
-    settings->stabContour[settings->CS].stabState.joy_iValue = resp.joy_iValue;
-    settings->stabContour[settings->CS].stabState.posError = resp.posError;
-    settings->stabContour[settings->CS].stabState.speedError = resp.speedError;
-    settings->stabContour[settings->CS].stabState.dynSummator = resp.dynSummator;
-    settings->stabContour[settings->CS].stabState.pidValue = resp.pidValue;
-    settings->stabContour[settings->CS].stabState.posErrorAmp = resp.posErrorAmp;
-    settings->stabContour[settings->CS].stabState.speedFiltered = resp.speedFiltered;
-    settings->stabContour[settings->CS].stabState.posFiltered = resp.posFiltered;
-
-    settings->stabContour[settings->CS].stabState.pid_iValue = resp.pid_iValue;
-
-    emit updateCsView();
 }
 
 /* CRC16-CCITT algorithm */
@@ -557,7 +577,10 @@ void Server::connect_com()
 
 void Server::disconnect_com() {
     std::cout << "Disconnecting" << std::endl;
-    sendTimer->stop();
+    _com_enable = false;
+    if (!_udp_enable) {
+        sendTimer->stop();
+    }
     newPort->disconnect();
     newPort->close();
     newPort->deleteLater();

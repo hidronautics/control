@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1500</width>
-    <height>749</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -954,6 +954,13 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled
                     </size>
                    </property>
                   </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonDisconnectUDP">
+                   <property name="text">
+                    <string>Disconnect</string>
+                   </property>
+                  </widget>
                  </item>
                  <item>
                   <widget class="QPushButton" name="pushButtonConnectUDP">

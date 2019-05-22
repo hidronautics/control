@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
     // UDP connection
     QObject::connect(mainWindow, &MainWindow::connect_udp,
                      server, &Server::connect_udp);
+    QObject::connect(mainWindow, &MainWindow::disconnect_udp,
+                     server, &Server::disconnect_udp);
 
     mainWindow->show();
 
